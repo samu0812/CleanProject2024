@@ -1,3 +1,19 @@
+section{
+  background-color: #eee;
+  font-family: Candara;
+  font-style: italic;
+  font-weight: bolder;
+}
+.img-responsive-container {
+  max-width: 100%;
+  height: auto;
+}
+
+#logo {
+  width: 80%; /* Ancho deseado de la imagen */
+  height: auto; /* Altura automática para mantener la proporción */
+}
+
 .btn-custom {
   border-color: orange !important; /* Añade !important para asegurar prioridad */
   background: FF8C00 !important;
@@ -15,8 +31,6 @@
   background: -webkit-linear-gradient(to right, #ffba75, #ff812d, #FF8C00); /* Para Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #ffba75, #ff812d, #FF8C00); /* Estándar W3C, IE 10+/Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
-
   @media (min-width: 768px) {
   .gradient-form {
   height: 100vh !important;

@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Establece la altura mínima del cuerpo para ocupar toda la ventana del navegador */
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh; /* Establece la altura mínima del contenedor principal para ocupar toda la ventana del navegador */
+}
+
+.content {
+  flex: 1; /* El contenido principal ocupa todo el espacio restante */
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px; /* Espacio entre tarjetas */
+}
+
+.footer {
+  flex-shrink: 0; /* Evita que el footer se contraiga */
+  background-color: #f8f8f8;
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.card {
+  flex: 1 0 20%; /* Ancho del card: 20% del contenedor */
+  margin: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Agrega transición para transform y box-shadow */
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Agrega una sombra al hacer hover */
+}
+
+.card h2 {
+  font-size: 1.5em; /* Tamaño del título */
+  margin-bottom: 10px; /* Espacio inferior del título */
+  white-space: nowrap; /* Evita que el texto se envuelva */
+  overflow: hidden; /* Oculta el texto que desborda */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos (...) si el texto es demasiado largo */
+}
+
+.card p {
+  font-size: 1em; /* Tamaño del texto */
+  color: #555; /* Color del texto */
+  white-space: nowrap; /* Evita que el texto se envuelva */
+  overflow: hidden; /* Oculta el texto que desborda */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos (...) si el texto es demasiado largo */
+}
+
+/* Media Queries para pantallas pequeñas (móviles) */
+@media screen and (max-width: 600px) {
+  .card {
+    flex-basis: calc(50% - 40px); /* Ancho del card al 50% menos márgenes */
+  }
+
+  .card h2 {
+    font-size: 1.2em; /* Tamaño del título reducido */
+  }
+
+  .card p {
+    font-size: 0.9em; /* Tamaño del texto reducido */
+  }
+}
