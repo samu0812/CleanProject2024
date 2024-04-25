@@ -41,8 +41,14 @@ import { InformesdeventaComponent } from './components/reportes/informesdeventas
 import { InformesfinancierosComponent } from './components/reportes/informesfinancieros/informesfinancieros.component';
 import { InformesdeabastecimientoComponent } from './components/reportes/informesdeabastecimiento/informesdeabastecimiento.component';
 import { InformesdeclientesComponent } from './components/reportes/informesdeclientes/informesdeclientes.component';
-import { InformesdeproductoComponent } from './components/reportes/informesdeproducto/informesdeproducto.component';
 import { InformesdeproductosComponent } from './components/reportes/informesdeproductos/informesdeproductos.component';
+
+
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -86,15 +92,20 @@ import { InformesdeproductosComponent } from './components/reportes/informesdepr
     InformesfinancierosComponent,
     InformesdeabastecimientoComponent,
     InformesdeclientesComponent,
-    InformesdeproductoComponent,
     InformesdeproductosComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatMenuModule,
+    MatIconModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

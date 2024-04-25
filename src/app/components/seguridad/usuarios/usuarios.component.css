@@ -1,0 +1,120 @@
+/* Estilos generales */
+.footer {
+  margin-top: 20px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.controls {
+  width: 80%;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: rgb(60, 54, 54);
+}
+
+.controls input[type="text"] {
+  flex: 1;
+  height: 40px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.controls .btn {
+  min-width: 120px;
+  height: auto;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+  color: #fff;
+  cursor: pointer;
+}
+
+.controls .btn:hover {
+  background-color: #ffba75;
+}
+
+/* Estilos para la tabla */
+.table-responsive {
+  width: 80%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: auto;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+
+.table thead,
+.table th {
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-top: 1px solid rgb(224, 223, 221);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Estilos para el menú dropdown */
+.dropdown-toggle,
+.dropdown-menu {
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+}
+
+.dropdown-menu {
+  min-width: 200px;
+  max-width: 300px;
+  white-space: normal;
+  word-wrap: break-word;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.dropdown-menu.dropdown-menu-bottom {
+  top: 100%;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 767px) {
+  .dropdown-menu {
+    min-width: auto;
+    max-width: 100%;
+    right: 0;
+    left: auto;
+    top: 100%;
+    margin-top: 20px;
+  }
+}
