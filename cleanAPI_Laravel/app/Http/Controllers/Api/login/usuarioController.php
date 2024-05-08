@@ -44,8 +44,8 @@ class usuarioController extends Controller
         if (!$resultado) {
             return response()->json([
             'message' => 'Credenciales incorrectas',
-            'status' => 401
-        ], 401);
+            'status' => 400
+        ], 400);
         }
 
         // Generar token
