@@ -7,12 +7,13 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/usuario'; // Reemplaza con la URL de tu API
+  private apiUrl = 'http://127.0.0.1:8000/api'; // Reemplaza con la URL de tu API
 
   constructor(private http: HttpClient) { }
 
+  login(usuario: { Usuario: string, Clave: string }): Observable<any> {
+    return this.http.post<any[]>(`${this.apiUrl}/usuario`, usuario);
 
-  login(credentials: { Usuario: string, Clave: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, credentials);
+
   }
 }

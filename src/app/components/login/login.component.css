@@ -4,6 +4,9 @@ section{
   font-style: italic;
   font-weight: bolder;
 }
+.card-body {
+  overflow-y: auto; /* Allows vertical scrolling if needed */
+}
 .img-responsive-container {
   max-width: 100%;
   height: auto;
@@ -18,7 +21,8 @@ section{
   border-color: orange !important; /* Añade !important para asegurar prioridad */
   background: FF8C00 !important;
   color: white !important; /* Asegura que el texto sea visible */
-  margin-top: 20px;
+  margin-top: 10px;
+  height: 40px;
 }
 
 .btn-custom:hover {

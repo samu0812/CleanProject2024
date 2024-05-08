@@ -2,10 +2,10 @@
   <div class="container-fluid">
     <!-- Logo -->
     <a class="navbar-brand" href="home">
-      <img src="../../../assets/img/clean.png" alt="Logo de Mi Empresa" width="120">
+      <img src="../../../assets/img/clean.png" alt="Logo de Mi Empresa" id="logo">
     </a>
 
-    <!-- Botón de colapso para dispositivos móviles -->
+    <!-- Botón de colapso para dispositivos móviles con flecha de despliegue -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -19,24 +19,63 @@
         <a class="nav-link" routerLink="/recursos" routerLinkActive="active">Recursos</a>
         <a class="nav-link" routerLink="/reportes" routerLinkActive="active">Reportes</a>
         <a class="nav-link" routerLink="/gestion" routerLinkActive="active">Gestión</a>
-
       </div>
     </div>
+    <button class="btn btn-primary rounded-circle" id="botonCampana" type="button">
+      <i class="fa-solid fa-bell"></i>
+    </button>
 
     <!-- Parte derecha del navbar -->
     <div class="navbar-nav ms-auto">
-      <!-- Nombre de la persona conectada -->
-      <span class="nav-link text-light d-lg-block d-none username">Nombre de Usuario</span>
-
       <!-- Botón para desplegar opciones -->
       <div class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-gear-fill"></i> <!-- Icono de configuración (usé un ejemplo con Bootstrap Icons) -->
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href="#">Salir</a></li>
+        <!-- Botón redondo con iniciales -->
+        <button class="btn btn-primary rounded-circle" id="botonUsuarioNav" type="button" data-bs-toggle="dropdown" aria-expanded="false">ST</button>
+        <!-- Menú desplegable -->
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="botonUsuarioNav">
+          <!-- Información del usuario -->
+          <li>
+            <div class="dropdown-item">
+              <i class="fa-solid fa-user"></i><span class="dropdown-item-text">Samuel Torales</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="fa-solid fa-id-card"></i><span class="dropdown-item-text">Administrador</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="fa-solid fa-shop"></i><span class="dropdown-item-text">Sucursal 1</span>
+            </div>
+          </li>
+          <li><a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#CambiarClaveModal" id="CambiarClaveModalbtn"><i class="fa-solid fa-gear"></i>Cambiar Contraseña</a></li>
+          <li><a class="dropdown-item" href="login"><i class="fa-solid fa-right-from-bracket"></i>Salir</a></li>
         </ul>
       </div>
     </div>
   </div>
+  <div class="modal fade" id="CambiarClaveModal" tabindex="-1" aria-labelledby="CambiarClaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="CambiarClaveModalLabel"><i class="fa-solid fa-key"></i>Cambiar Contraseña</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Contraseña</label>
+              <input type="text" id="Clave" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Por favor repita la contraseña</label>
+              <input type="text" id="ClaveRepetida" class="form-control">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger">Cancelar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>
+

@@ -1,0 +1,149 @@
+#tituloTabla {
+  font-family: 'Roboto', sans-serif; /* Utiliza una fuente sans-serif agradable para el título */
+  font-size: 20px; /* Haz el título más grande */
+  font-weight: lighter; /* Haz el título más ligero */
+  text-align: center; /* Centra el título en la página */
+  color: #ffffff; /* Usa un color blanco para el título */
+  margin-top: 10px; /* Agrega un poco de margen encima del título */
+  letter-spacing: 2px;
+  background-color: #FF8C00;
+  border-radius: 10px; /* Redondea los bordes del elemento */
+}
+.footer {
+  margin-top: 20px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.main-section{
+  margin:0 auto;
+  margin-top:5%;
+  margin-bottom: 20px;
+  padding: 0;
+  min-height: 100vh;
+  width: 80%;
+
+}
+.form-group {
+  margin-bottom: 0;
+}
+
+.modal-content{
+  background-color: white;
+  padding: 0 20px;
+  box-shadow: 0px 0px 3px rgb(204, 203, 203);
+
+}
+
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100% - 60px); /* Altura mínima que cubre toda la pantalla menos el espacio del footer */
+}
+
+.modal-header {
+  border-bottom: none; /* Quita el borde inferior del encabezado del modal */
+}
+
+.modal-footer {
+  border-top: none; /* Quita el borde superior del pie de página del modal */
+}
+
+
+#btnAgregarUsuario{
+  margin-right: 5px;
+  margin-top: 20px;
+}
+
+.btn-add-right{
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
+.registros {
+  overflow-y: auto; /* Agrega desplazamiento vertical si los registros son demasiado largos */
+ /* Ocupa todo el espacio disponible dentro del contenedor modal-content */
+
+}
+.thead, th{
+  background-color:#cccccc;
+  text-align: center;
+  color: rgb(22, 22, 72);
+}
+/* Estilos CSS para el menú desplegable */
+.dropdown {
+  position: static; /* Establece la posición relativa para posicionar el menú */
+}
+
+.dropdown-menu {
+  right: 0; /* Alinea el menú a la derecha del botón */
+  top: 100%; /* Coloca el menú debajo del botón */
+  z-index: 10;
+  position: absolute;
+  color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
+}
+
+.dropdown button{
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+  width: 50px;
+  height: 30px;
+  font-size: 12px;
+  padding: 5px; /* Relleno */
+}
+
+
+tbody td {
+  text-align: center;
+  margin-top: auto;
+}
+.dropdown-item i {
+  margin-right: 10px; /* Adjust the value for desired spacing */
+  color: rgb(31, 31, 95);
+}
+.dropdown-item {
+  color: rgb(31, 31, 95);
+}
+
+/* Estilo para el icono dentro del título en los modales */
+.modal-header h1 i {
+  margin-right: 10px; /* Ajusta este valor según sea necesario */
+  color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
+}
+
+/* Estilo para el texto dentro del título en los modales */
+.modal-header h1 {
+  color: rgb(31, 31, 95); /* Cambia el color del texto a azul */
+}
+.button-icon {
+  margin-right: 5px; /* Ajusta el margen derecho del ícono */
+}
+#AgregarRolModalbtn{
+  margin-top: 18px;
+  background-color: rgb(31, 31, 95);
+  border-color: rgb(31, 31, 95);
+}
+/* Estilo para el encabezado del modal */
+.modal-header {
+  display: flex;
+  align-items: center; /* Alinea los elementos verticalmente en el centro */
+  justify-content: space-between; /* Distribuye el espacio entre los elementos */
+  border-bottom: 1px solid #ccc; /* Borde inferior */
+  padding-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para el título del modal */
+.modal-header h1 {
+  color: rgb(31, 31, 95); /* Color del texto */
+  display: flex;
+  align-items: center; /* Alinea los elementos verticalmente en el centro */
+}
+
+/* Estilo para el botón de cerrar */
+.btn-close {
+  align-self: center; /* Alinea el botón verticalmente en el centro */
+}
+

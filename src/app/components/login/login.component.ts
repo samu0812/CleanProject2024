@@ -32,11 +32,8 @@ export class LoginComponent implements OnInit {
     if (this.FormularioLogin.valid) {
       // Obtener valores del formulario
       const formData = this.FormularioLogin.value;
-
       // Mostrar usuario y contraseña en la consola
       console.log(formData);
-
-
       // Llamar al servicio de inicio de sesión
       this.loginService.login(formData).subscribe(
         (response) => {

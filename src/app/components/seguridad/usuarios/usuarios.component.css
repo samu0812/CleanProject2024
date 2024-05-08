@@ -1,4 +1,15 @@
-/* Estilos generales */
+#tituloTabla {
+  font-family: 'Roboto', sans-serif; /* Utiliza una fuente sans-serif agradable para el título */
+  font-size: 20px; /* Haz el título más grande */
+  font-weight: lighter; /* Haz el título más ligero */
+  text-align: center; /* Centra el título en la página */
+  color: #ffffff; /* Usa un color blanco para el título */
+  margin-top: 10px; /* Agrega un poco de margen encima del título */
+  letter-spacing: 2px;
+  background-color: #FF8C00;
+  border-radius: 10px; /* Redondea los bordes del elemento */
+}
+
 .footer {
   margin-top: 20px;
   background-color: #f8f8f8;
@@ -7,114 +18,131 @@
   color: #666;
 }
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.controls {
-  width: 80%;
-  margin-top: 40px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: rgb(60, 54, 54);
-}
-
-.controls input[type="text"] {
-  flex: 1;
-  height: 40px;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
-.controls .btn {
-  min-width: 120px;
-  height: auto;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  background-color: #FF8C00;
-  border-color: #FF8C00;
-  color: #fff;
-  cursor: pointer;
-}
-
-.controls .btn:hover {
-  background-color: #ffba75;
-}
-
-/* Estilos para la tabla */
-.table-responsive {
-  width: 80%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: auto;
-  border: none;
+.main-section{
+  margin:0 auto;
+  margin-top:5%;
   margin-bottom: 20px;
+  padding: 0;
+  min-height: 100vh;
+  width: 80%;
+
+}
+.form-group {
+  margin-bottom: 0;
 }
 
-.table {
-  width: 100%;
-  font-family: 'Poppins', sans-serif;
+.modal-content{
+  background-color: white;
+  padding: 0 20px;
+  box-shadow: 0px 0px 3px rgb(204, 203, 203);
+
+}
+
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100% - 60px); /* Altura mínima que cubre toda la pantalla menos el espacio del footer */
+}
+
+.modal-header {
+  border-bottom: none; /* Quita el borde inferior del encabezado del modal */
+}
+
+.modal-footer {
+  border-top: none; /* Quita el borde superior del pie de página del modal */
+}
+
+
+#btnAgregarUsuario{
+  margin-right: 5px;
+  margin-top: 20px;
+}
+
+.btn-add-right{
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
+.registros {
+  overflow-y: auto; /* Agrega desplazamiento vertical si los registros son demasiado largos */
+ /* Ocupa todo el espacio disponible dentro del contenedor modal-content */
+
+}
+.thead, th{
+  background-color:#cccccc;
   text-align: center;
+  color: rgb(22, 22, 72);
+}
+/* Estilos CSS para el menú desplegable */
+.dropdown {
+  position: static; /* Establece la posición relativa para posicionar el menú */
 }
 
-
-.table thead,
-.table th {
-  color: #fff;
-  padding: 12px;
-  border: none;
-  border-top: 1px solid rgb(224, 223, 221);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Estilos para el menú dropdown */
-.dropdown-toggle,
 .dropdown-menu {
+  right: 0; /* Alinea el menú a la derecha del botón */
+  top: 100%; /* Coloca el menú debajo del botón */
+  z-index: 10;
+  position: absolute;
+  color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
+}
+
+.dropdown button{
   background-color: #FF8C00;
   border-color: #FF8C00;
+  width: 50px;
+  height: 30px;
+  font-size: 12px;
+  padding: 5px; /* Relleno */
 }
 
-.dropdown-menu {
-  min-width: 200px;
-  max-width: 300px;
-  white-space: normal;
-  word-wrap: break-word;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
+tbody td {
+  text-align: center;
+  margin-top: auto;
+}
+.dropdown-item i {
+  margin-right: 10px; /* Adjust the value for desired spacing */
+  color: rgb(31, 31, 95);
+}
+.dropdown-item {
+  color: rgb(31, 31, 95);
 }
 
-.dropdown-menu.dropdown-menu-bottom {
-  top: 100%;
+/* Estilo para el icono dentro del título en los modales */
+.modal-header h1 i {
+  margin-right: 10px; /* Ajusta este valor según sea necesario */
+  color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
 }
 
-/* Ajustes responsivos */
-@media (max-width: 767px) {
-  .dropdown-menu {
-    min-width: auto;
-    max-width: 100%;
-    right: 0;
-    left: auto;
-    top: 100%;
-    margin-top: 20px;
-  }
+/* Estilo para el texto dentro del título en los modales */
+.modal-header h1 {
+  color: rgb(31, 31, 95); /* Cambia el color del texto a azul */
 }
+.button-icon {
+  margin-right: 5px; /* Ajusta el margen derecho del ícono */
+}
+#AgregarUsuarioModalbtn{
+  margin-top: 18px;
+  background-color: rgb(31, 31, 95);
+  border-color: rgb(31, 31, 95);
+}
+.modal-header {
+  display: flex;
+  align-items: center; /* Alinea los elementos verticalmente en el centro */
+  justify-content: space-between; /* Distribuye el espacio entre los elementos */
+  border-bottom: 1px solid #ccc; /* Borde inferior */
+  padding-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para el título del modal */
+.modal-header h1 {
+  color: rgb(31, 31, 95); /* Color del texto */
+  display: flex;
+  align-items: center; /* Alinea los elementos verticalmente en el centro */
+}
+
+/* Estilo para el botón de cerrar */
+.btn-close {
+  align-self: center; /* Alinea el botón verticalmente en el centro */
+}
+
