@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService } from '../../services/login.service';
+import { LoginService } from '../../services/login/login.service';
 
 @Component({
   selector: 'app-login',
@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
       this.loginService.login(formData).subscribe(
         (response) => {
           if (response.status === 200) {
+            console.log(response);
             console.log('Autenticación exitosa');
             this.router.navigate(['/home']);
           } else {

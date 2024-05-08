@@ -54,6 +54,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
+import { TipopersonasistemaComponent } from './components/parametria/tipopersonasistema/tipopersonasistema.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +100,8 @@ import { MatInputModule } from '@angular/material/input';
     InformesdeabastecimientoComponent,
     InformesdeclientesComponent,
     InformesdeproductosComponent,
+    TipomoduloComponent,
+    TipopersonasistemaComponent,
   ],
   imports: [
     BrowserModule,
