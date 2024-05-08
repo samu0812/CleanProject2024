@@ -1,0 +1,152 @@
+<div class="navbar-container">
+  <app-navbar></app-navbar>
+</div>
+
+<div class="col-sm-11 main-section">
+  <div class="modal-content">
+    <!-- Filtros de Búsqueda -->
+    <form>
+      <h1 id="tituloTabla">Modulos por Rol <i class="fa-solid fa-shield-halved"></i></h1>
+      <div class="d-flex align-items-start justify-content-between">
+        <div class="form-group col-md-2 mt-3">
+          <label for="lista">Rol:</label>
+          <select formControlName="tipoLista" class="form-control" id="tipoLista">
+            <option value="2" selected>Solo Habilitados</option>
+            <option value="3">Solo Inhabilitados</option>
+            <option value="1">Todos</option>
+          </select>
+        </div>
+        <div class="form-group col-md-2 mt-3">
+          <label for="lista">Mostrar:</label>
+          <select formControlName="tipoLista" class="form-control" id="tipoLista">
+            <option value="2" selected>Solo Habilitados</option>
+            <option value="3">Solo Inhabilitados</option>
+            <option value="1">Todos</option>
+          </select>
+        </div>
+
+        <div class="form-group mt-3">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarModuloRolModal" id="AgregarModuloRolModalbtn">
+            <i class="fa-solid fa-circle-plus"></i> <!-- Aplica la clase 'button-icon' al ícono -->
+            Agregar
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- Grilla -->
+    <div class="registros mt-3">
+      <h5>No se encontraron registros...</h5>
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col"></th> <!-- Ver -->
+              <th scope="col">Estado</th>
+              <th scope="col">Rol</th>
+              <th scope="col">Módulo</th>
+              <th scope="col">Tipo Permiso</th>
+              <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
+            </tr>
+          </thead>
+          <tbody class="tablaUser">
+            <tr>
+              <td scope="col"></td> <!-- Ver -->
+              <td scope="col">Estado</td>
+              <td scope="col">Rol</td>
+              <td scope="col">Módulo</td>
+              <td scope="col">Tipo Permiso</td>
+              <td scope="col" class="dropdown">
+                  <!-- Botón de acción con menú desplegable -->
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa-solid fa-gears"></i>
+                    </button>
+                    <!-- Menú desplegable con opciones -->
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#inhabilitarModuloRolModal">
+                          <i class="fa-solid fa-xmark"></i>Inhabilitar
+                        </a>
+                      </li>
+                    </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="AgregarModuloRolModal" tabindex="-1" aria-labelledby="AgregarModuloRolModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="AgregarModuloRolModalLabel"><i class="fa-solid fa-circle-plus"></i> Agregar Rol</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Rol</label>
+            <select formControlName="listaRol" class="form-control" id="listaRol">
+                <option value="" disabled selected hidden>Seleccione...</option>
+                <option value="opcion1">Opción 1</option>
+                <option value="opcion2">Opción 2</option>
+                <option value="opcion3">Opción 3</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Modulo</label>
+            <select formControlName="listaModulos" class="form-control" id="listaModulos">
+                <option value="" disabled selected hidden>Seleccione...</option>
+                <option value="opcion1">Opción 1</option>
+                <option value="opcion2">Opción 2</option>
+                <option value="opcion3">Opción 3</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Tipo de Permiso</label>
+            <select formControlName="listaPermisos" class="form-control" id="listaPermisos">
+                <option value="" disabled selected hidden>Seleccione...</option>
+                <option value="opcion1">Opción 1</option>
+                <option value="opcion2">Opción 2</option>
+                <option value="opcion3">Opción 3</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="inhabilitarModuloRolModal" tabindex="-1" aria-labelledby="inhabilitarModuloRolModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="inhabilitarModuloRolModalLabel"><i class="fa-solid fa-xmark"></i>Inhabilitar Rol</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Rol</label>
+            <input type="text" id="rol" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Motivo</label>
+            <input type="text" id="motivo" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <app-footer></app-footer>
+</footer>

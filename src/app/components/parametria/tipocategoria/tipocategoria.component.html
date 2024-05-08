@@ -1,0 +1,143 @@
+<div class="navbar-container">
+  <app-navbar></app-navbar>
+</div>
+
+<div class="col-sm-11 main-section">
+  <div class="modal-content">
+    <!-- Filtros de Búsqueda -->
+    <form>
+      <h1 id="tituloTabla">Categoría <i class="fa-solid fa-layer-group"></i></h1>
+      <div class="d-flex align-items-start justify-content-between">
+        <div class="form-group col-md-2 mt-3">
+          <label for="lista">Filtrar Por:</label>
+          <select formControlName="tipoLista" class="form-control" id="tipoLista">
+            <option value="2" selected>Solo Habilitados</option>
+            <option value="3">Solo Inhabilitados</option>
+            <option value="1">Todos</option>
+          </select>
+        </div>
+        <div class="form-group mt-3">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarCategoriaModal" id="AgregarCategoriaModalbtn">
+            <i class="fa-solid fa-circle-plus"></i> <!-- Aplica la clase 'button-icon' al ícono -->
+            Agregar
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- Grilla -->
+    <div class="registros mt-3">
+      <h5>No se encontraron registros...</h5>
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col"></th> <!-- Ver -->
+              <th scope="col">Estado</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody class="tablaUser">
+            <tr>
+              <td scope="col"></td> <!-- Ver -->
+              <td scope="col">Estado</td>
+              <td scope="col">Descripcion de la Categoria</td>
+              <td scope="col" class="dropdown">
+                  <!-- Botón de acción con menú desplegable -->
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa-solid fa-gears"></i>
+                    </button>
+                    <!-- Menú desplegable con opciones -->
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditarCategoriaModal">
+                          <i class="fa-solid fa-pen-to-square"></i>Editar
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#inhabilitarModal">
+                          <i class="fa-solid fa-xmark"></i>Inhabilitar
+                        </a>
+                      </li>
+                    </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="AgregarCategoriaModal" tabindex="-1" aria-labelledby="AgregarCategoriaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="AgregarCategoriaModalLabel"><i class="fa-solid fa-circle-plus"></i> Agregar Categoría</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Descripcion de la Categoría</label>
+            <input type="text" id="rol" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="EditarCategoriaModal" tabindex="-1" aria-labelledby="EditarCategoriaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="EditarCategoriaModalLabel"><i class="fa-solid fa-pen-to-square"></i>Editar Categoría</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Categoría</label>
+            <input type="text" id="categoria" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="inhabilitarModal" tabindex="-1" aria-labelledby="inhabilitarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="inhabilitarModalLabel"><i class="fa-solid fa-xmark"></i>Inhabilitar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Categoría</label>
+            <input type="text" id="categoria" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Motivo</label>
+            <input type="text" id="motivo" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <app-footer></app-footer>
+</footer>

@@ -1,0 +1,358 @@
+<div class="navbar-container">
+  <app-navbar></app-navbar>
+</div>
+
+<div class="col-sm-11 main-section">
+  <div class="modal-content">
+    <!-- Filtros de Búsqueda -->
+    <form>
+      <h1 id="tituloTabla">Usuarios <i class="fa-solid fa-users"></i></h1>
+
+      <div class="row mt-3">
+        <div class="col-md-3">
+          <label for="tipoLista">Filtrar Por:</label>
+          <select formControlName="tipoLista" class="form-control" id="tipoLista">
+            <option value="2" selected>Solo Habilitados</option>
+            <option value="3">Solo Inhabilitados</option>
+            <option value="1">Todos</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="equipo">Personal:</label>
+          <div class="input-group">
+            <input type="text" formControlName="equipo" class="form-control" id="equipo" placeholder="Equipo">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button">Buscar</button>
+              <button class="btn btn-outline-secondary" type="button">Limpiar</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarPersonalModal" id="AgregarPersonalModalbtn">
+            <i class="fa-solid fa-user-plus button-icon"></i>Agregar Personal
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- Grilla -->
+    <div class="registros mt-3">
+      <h5>No se encontraron registros...</h5>
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col"></th> <!-- Ver -->
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">DNI</th>
+              <th scope="col">Fecha Alta</th>
+              <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
+            </tr>
+          </thead>
+          <tbody class="tablaUser">
+            <tr>
+              <td scope="col"></td> <!-- Ver -->
+              <td scope="col">Nombre</td>
+              <td scope="col">Apellido</td>
+              <td scope="col">DNI</td>
+              <td scope="col">Fecha Alta</td>
+              <td scope="col" class="dropdown">
+                  <!-- Botón de acción con menú desplegable -->
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa-solid fa-gears"></i>
+                    </button>
+                    <!-- Menú desplegable con opciones -->
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#VerPersonalModal">
+                          <i class="fa-solid fa-eye"></i>Ver Datos
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditarPersonalModal">
+                          <i class="fa-solid fa-user-pen"></i>Editar Personal
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#inhabilitarPersonalModal">
+                          <i class="fa-solid fa-user-xmark"></i>Inhabilitar
+                        </a>
+                      </li>
+                    </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="AgregarPersonalModal" tabindex="-1" aria-labelledby="AgregarPersonalModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- Utilizamos modal-lg para un modal más grande -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="AgregarPersonalModalLabel"><i class="fa-solid fa-user-plus"></i>Agregar Personal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="nombre" class="col-form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre">
+              </div>
+              <div class="mb-3">
+                <label for="fecha-nacimiento" class="col-form-label">Fecha de Nacimiento</label>
+                <input type="date" class="form-control" id="fecha-nacimiento" name="fecha-nacimiento">
+              </div>
+              <div class="mb-3">
+                <label for="calle" class="col-form-label">Domicilio - Calle</label>
+                <input type="text" class="form-control" id="calle" name="calle">
+              </div>
+              <div class="mb-3">
+                <label for="provincia" class="col-form-label">Provincia</label>
+                <select class="form-control" id="provincia" name="provincia">
+                  <option value="" disabled selected hidden>Seleccione...</option>
+                  <option value="localidad1">provincia 1</option>
+                  <option value="localidad2">provincia 2</option>
+                  <option value="localidad3">provincia 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="apellido" class="col-form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido">
+              </div>
+              <div class="mb-3">
+                <label for="telefono" class="col-form-label">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" name="telefono">
+              </div>
+              <div class="mb-3">
+                <label for="numero" class="col-form-label">Domicilio - Número</label>
+                <input type="text" class="form-control" id="numero" name="numero">
+              </div>
+              <div class="mb-3">
+                <label for="localidad" class="col-form-label">Localidad</label>
+                <select class="form-control" id="localidad" name="localidad">
+                  <option value="" disabled selected hidden>Seleccione...</option>
+                  <option value="localidad1">Localidad 1</option>
+                  <option value="localidad2">Localidad 2</option>
+                  <option value="localidad3">Localidad 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="email" class="col-form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email">
+              </div>
+              <div class="mb-3">
+                <label for="calle" class="col-form-label">Domicilio</label>
+                <input type="text" class="form-control" id="calle" name="calle">
+              </div>
+              <div class="mb-3">
+                <label for="piso" class="col-form-label">Domicilio - Piso</label>
+                <input type="text" class="form-control" id="piso" name="piso">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="VerPersonalModal" tabindex="-1" aria-labelledby="VerPersonalModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- Utilizamos modal-lg para un modal más grande -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="VerPersonalModalLabel"><i class="fa-solid fa-file-lines"></i>Datos del Personal: Nombre</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="nombre" class="col-form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre">
+              </div>
+              <div class="mb-3">
+                <label for="fecha-nacimiento" class="col-form-label">Fecha de Nacimiento</label>
+                <input type="date" class="form-control" id="fecha-nacimiento" name="fecha-nacimiento">
+              </div>
+              <div class="mb-3">
+                <label for="calle" class="col-form-label">Domicilio - Calle</label>
+                <input type="text" class="form-control" id="calle" name="calle">
+              </div>
+              <div class="mb-3">
+                <label for="provincia" class="col-form-label">Provincia</label>
+                <select class="form-control" id="provincia" name="provincia">
+                  <option value="" disabled selected hidden>Seleccione...</option>
+                  <option value="localidad1">provincia 1</option>
+                  <option value="localidad2">provincia 2</option>
+                  <option value="localidad3">provincia 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="apellido" class="col-form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido">
+              </div>
+              <div class="mb-3">
+                <label for="telefono" class="col-form-label">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" name="telefono">
+              </div>
+              <div class="mb-3">
+                <label for="numero" class="col-form-label">Domicilio - Número</label>
+                <input type="text" class="form-control" id="numero" name="numero">
+              </div>
+              <div class="mb-3">
+                <label for="localidad" class="col-form-label">Localidad</label>
+                <select class="form-control" id="localidad" name="localidad">
+                  <option value="" disabled selected hidden>Seleccione...</option>
+                  <option value="localidad1">Localidad 1</option>
+                  <option value="localidad2">Localidad 2</option>
+                  <option value="localidad3">Localidad 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="email" class="col-form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email">
+              </div>
+              <div class="mb-3">
+                <label for="calle" class="col-form-label">Domicilio</label>
+                <input type="text" class="form-control" id="calle" name="calle">
+              </div>
+              <div class="mb-3">
+                <label for="piso" class="col-form-label">Domicilio - Piso</label>
+                <input type="text" class="form-control" id="piso" name="piso">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="EditarPersonalModal" tabindex="-1" aria-labelledby="EditarPersonalModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- Utilizamos modal-lg para un modal más grande -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="EditarPersonalModalLabel"><i class="fa-solid fa-user-pen"></i>Editar Personal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="nombre" class="col-form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre">
+              </div>
+              <div class="mb-3">
+                <label for="fecha-nacimiento" class="col-form-label">Fecha de Nacimiento</label>
+                <input type="date" class="form-control" id="fecha-nacimiento" name="fecha-nacimiento">
+              </div>
+              <div class="mb-3">
+                <label for="calle" class="col-form-label">Domicilio - Calle</label>
+                <input type="text" class="form-control" id="calle" name="calle">
+              </div>
+              <div class="mb-3">
+                <label for="provincia" class="col-form-label">Provincia</label>
+                <select class="form-control" id="provincia" name="provincia">
+                  <option value="" disabled selected hidden>Seleccione...</option>
+                  <option value="localidad1">provincia 1</option>
+                  <option value="localidad2">provincia 2</option>
+                  <option value="localidad3">provincia 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="apellido" class="col-form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido">
+              </div>
+              <div class="mb-3">
+                <label for="telefono" class="col-form-label">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" name="telefono">
+              </div>
+              <div class="mb-3">
+                <label for="numero" class="col-form-label">Domicilio - Número</label>
+                <input type="text" class="form-control" id="numero" name="numero">
+              </div>
+              <div class="mb-3">
+                <label for="localidad" class="col-form-label">Localidad</label>
+                <select class="form-control" id="localidad" name="localidad">
+                  <option value="" disabled selected hidden>Seleccione...</option>
+                  <option value="localidad1">Localidad 1</option>
+                  <option value="localidad2">Localidad 2</option>
+                  <option value="localidad3">Localidad 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="email" class="col-form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email">
+              </div>
+              <div class="mb-3">
+                <label for="calle" class="col-form-label">Domicilio</label>
+                <input type="text" class="form-control" id="calle" name="calle">
+              </div>
+              <div class="mb-3">
+                <label for="piso" class="col-form-label">Domicilio - Piso</label>
+                <input type="text" class="form-control" id="piso" name="piso">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="inhabilitarPersonalModal" tabindex="-1" aria-labelledby="inhabilitarPersonalModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="inhabilitarPersonalModalLabel"><i class="fa-solid fa-user-xmark"></i>Inhabilitar Personal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Personal</label>
+            <input type="text" id="rol" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Motivo</label>
+            <input type="text" id="motivo" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <app-footer></app-footer>
+</footer>

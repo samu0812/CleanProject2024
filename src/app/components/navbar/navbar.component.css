@@ -1,0 +1,150 @@
+/* Estilos generales del navbar */
+.navbar {
+  background-color: #cccccc;
+  padding: 10px 16px; /* Añadir relleno al navbar */
+}
+
+/* Estilos para el logo */
+.navbar-brand img {
+  width: 120px; /* Ancho deseado del logo */
+  height: auto; /* Altura automática para mantener la proporción */
+  margin-right: 10px; /* Ajustar margen a la derecha del logo */
+}
+
+/* Estilos para los enlaces del navbar */
+.navbar-nav .nav-link {
+  padding: 0.5rem 0.75rem; /* Ajustar el relleno de los enlaces */
+  margin-right: 10px; /* Ajustar margen entre los enlaces */
+  color: rgb(31, 31, 95);
+}
+
+/* Estilos para el enlace activo */
+.navbar-nav .nav-link.active {
+  color: #ffffff;
+  background-color: #FF8C00; /* Color de fondo del enlace activo */
+  border-radius: 4px; /* Añadir bordes redondeados al enlace activo */
+}
+
+/* Estilos para el hover de los enlaces */
+.navbar-nav .nav-link:hover {
+  color: #ffffff;
+  background-color: #ffba75;
+  border-radius: 4px;
+}
+
+/* Estilos para el botón redondo con iniciales */
+#botonUsuarioNav {
+  width: 40px; /* Ancho del botón */
+  height: 40px; /* Altura del botón */
+  font-size: 15px; /* Tamaño de la fuente */
+  line-height: 1.6; /* Espacio entre líneas */
+  border-radius: 50%; /* Bordess redondos */
+  background-color: #FF8C00; /* Color de fondo */
+  color: #ffffff; /* Color del texto */
+  border: none; /* Sin borde */
+  outline: none; /* Sin contorno */
+  cursor: pointer; /* Cursor de puntero */
+  text-align: center;
+}
+
+/* Estilos para el menú desplegable */
+.dropdown-menu {
+  min-width: 200px; /* Ancho mínimo del menú desplegable */
+}
+
+/* Estilos para el texto dentro del menú desplegable */
+/* Alineación vertical del ícono y el texto */
+/* Alineación vertical del ícono y el texto */
+.dropdown-item {
+  display: flex; /* Usar flexbox para alinear elementos */
+  align-items: center; /* Alinear verticalmente al centro */
+}
+
+/* Estilos para el ícono en las dropdown-items */
+.dropdown-item i {
+  margin-right: 10px; /* Espacio a la derecha del ícono */
+  color: rgb(31, 31, 95);
+  width: 20px; /* Ancho del ícono */
+}
+
+/* Estilos para el texto dentro del menú desplegable */
+.dropdown-item-text {
+  font-size: 15px; /* Tamaño de la fuente del texto */
+  flex-grow: 1; /* Permitir que ocupe todo el espacio disponible */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Línea divisoria con color y grosor */
+  padding-bottom: 5px; /* Espacio adicional abajo de la línea divisoria */
+}
+
+
+
+.dropdown-item-text:last-child {
+  margin-bottom: 5px; /* Espacio adicional abajo del último .dropdown-item-text */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Línea divisoria con color y grosor */
+}
+/* Estilos para el ícono en las dropdown-items */
+.dropdown-item i {
+  margin-right: 10px; /* Espacio a la derecha del ícono */
+  color: rgb(31, 31, 95);
+}
+
+/* Estilos para el nuevo botón de la campana */
+#botonCampana {
+  width: 40px; /* Ancho del botón */
+  height: 40px; /* Altura del botón */
+  font-size: 15px; /* Tamaño de la fuente */
+  line-height: 1.6; /* Espacio entre líneas */
+  border-radius: 50%; /* Bordess redondos */
+  background-color: rgb(31, 31, 95); /* Color de fondo */
+  color: #ffffff; /* Color del texto */
+  border: none; /* Sin borde */
+  outline: none; /* Sin contorno */
+  cursor: pointer; /* Cursor de puntero */
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+/* Estilo para el icono dentro del título en los modales */
+.modal-header h1 i {
+  margin-right: 10px; /* Ajusta este valor según sea necesario */
+  color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
+}
+
+/* Estilo para el texto dentro del título en los modales */
+.modal-header h1 {
+  color: rgb(31, 31, 95); /* Cambia el color del texto a azul */
+}
+.modal-header {
+  display: flex;
+  align-items: center; /* Alinea los elementos verticalmente en el centro */
+  justify-content: space-between; /* Distribuye el espacio entre los elementos */
+  border-bottom: 1px solid #ccc; /* Borde inferior */
+  padding-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para el título del modal */
+.modal-header h1 {
+  color: rgb(31, 31, 95); /* Color del texto */
+  display: flex;
+  align-items: center; /* Alinea los elementos verticalmente en el centro */
+}
+.modal-content{
+  background-color: white;
+  padding: 0 20px;
+  box-shadow: 0px 0px 3px rgb(204, 203, 203);
+
+}
+
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100% - 60px); /* Altura mínima que cubre toda la pantalla menos el espacio del footer */
+}
+
+.modal-header {
+  border-bottom: none; /* Quita el borde inferior del encabezado del modal */
+}
+
+.modal-footer {
+  border-top: none; /* Quita el borde superior del pie de página del modal */
+}
