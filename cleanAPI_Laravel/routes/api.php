@@ -9,6 +9,10 @@ use App\Http\Controllers\Api\menu\menuController;
 
 use App\Http\Controllers\Api\sistemaApiController;
 
+use App\Http\Controllers\Api\tiporolController;
+
+use App\Http\Controllers\Api\rolModuloController;
+
 
 //LOGIN Y TOKENS
 Route::post('/usuario',[usuarioController::class, 'spValidarUsuario']);
@@ -29,3 +33,31 @@ Route::get('/SP_GetMenuUsuario',[menuController::class, 'SP_GetMenuUsuario']);
 
 //sistema apis
 Route::get('/SP_SistemaAPIs',[sistemaApiController::class, 'SP_SistemaAPIs']);
+
+//agregar tipo rol
+Route::post('/SPA_TipoRol',[tiporolController::class, 'SPA_TipoRol']);
+
+//modificar tipo rol
+Route::put('/SPM_TipoRol',[tiporolController::class, 'SPM_TipoRol']);
+
+//borrar tipo rol
+Route::delete('/SPB_TipoRol',[tiporolController::class, 'SPB_TipoRol']);
+
+//listar tipo rol
+Route::get('/SPL_TipoRol',[tiporolController::class, 'SPL_TipoRol']);
+
+//habilitar tipo rol
+Route::put('/SPH_TipoRol',[tiporolController::class, 'SPH_TipoRol']);
+
+
+//listar rol modulo
+Route::get('/SPL_RolModulo',[rolModuloController::class, 'SPL_RolModulo']);
+
+//agregar rol modulo
+Route::post('/SPA_RolModulo',[rolModuloController::class, 'SPA_RolModulo']);
+
+//borrar rol modulo
+Route::delete('/SPB_RolModulo',[rolModuloController::class, 'SPB_RolModulo']);
+
+//habilitar rol modulo
+Route::put('/SPH_RolModulo',[rolModuloController::class, 'SPH_RolModulo']);

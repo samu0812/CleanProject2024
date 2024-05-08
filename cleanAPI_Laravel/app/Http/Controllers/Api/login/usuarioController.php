@@ -120,14 +120,14 @@ class usuarioController extends Controller
         $token = $request->input('token');
 
         // Ejecutar la función almacenada y obtener el ID del usuario
-        $idUsuario = DB::select('SELECT ObtenerUsuDesdeBearer(?) AS id_usuario', [$token]);
+        $idUsuario = DB::select('SELECT FN_ObtenerUsuDesdeBearer(?) AS id_usuario', [$token]);
 
         // Verificar si el ID del usuario está vacío o nulo
         if (empty($idUsuario) || is_null($idUsuario[0]->id_usuario)) {
             return response()->json([
                 'message' => 'El token no corresponde a ningún usuario en el sistema',
-                'status' => 404,
-            ], 404);
+                'status' => 400,
+            ], 400);
         }
 
         // Devolver el ID del usuario como respuesta

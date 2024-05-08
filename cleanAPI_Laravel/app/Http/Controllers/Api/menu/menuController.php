@@ -64,6 +64,14 @@ class menuController extends Controller{
         // Ejecutar el procedimiento almacenado y obtener los menús
         $subMenues = DB::select('CALL SP_GetSubMenu(?, ?)', [$token, $id_menu]);
 
+        // Verificar si el resultado está vacío
+        if (empty($subMenues)) {
+            return response()->json([
+                'message' => 'Error al ejecutar el procedimiento almacenado',
+                'status' => 400,
+            ], 400);
+        }
+
         // Devolver los menús como respuesta
         return response()->json([
             'message' => 'OK',
@@ -93,6 +101,14 @@ class menuController extends Controller{
 
         // Ejecutar el procedimiento almacenado y obtener los detalles de la imagen del submenú
         $imagenSubMenu = DB::select('CALL SP_GetImagenSubMenu(?)', [$path]);
+
+        // Verificar si el resultado está vacío
+        if (empty($imagenSubMenu)) {
+            return response()->json([
+                'message' => 'Error al ejecutar el procedimiento almacenado',
+                'status' => 400,
+            ], 400);
+        }
 
         // Devolver los detalles de la imagen del submenú como respuesta
         return response()->json([
@@ -128,8 +144,8 @@ class menuController extends Controller{
         if (empty($menusUsuario)) {
             return response()->json([
                 'message' => 'El ID de persona no existe en el sistema',
-                'status' => 404,
-            ], 404);
+                'status' => 400,
+            ], 400);
         }
 
         
