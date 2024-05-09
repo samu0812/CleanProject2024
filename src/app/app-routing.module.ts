@@ -38,18 +38,18 @@ import { InformesfinancierosComponent } from './components/reportes/informesfina
 import { InformesdeabastecimientoComponent } from './components/reportes/informesdeabastecimiento/informesdeabastecimiento.component';
 import { InformesdeclientesComponent } from './components/reportes/informesdeclientes/informesdeclientes.component';
 import { InformesdeproductosComponent } from './components/reportes/informesdeproductos/informesdeproductos.component';
+import { SubmenuComponent } from './components/navbar/submenu/submenu.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
-  //seguridad
-  {path: 'seguridad', component: SeguridadComponent},
+  {path: ':id/submenu', component: SubmenuComponent},
+
   {path: 'seguridad/usuarios', component: UsuariosComponent},
   {path: 'seguridad/tiporoles', component: TiporolesComponent},
   {path: 'seguridad/rol', component: RolComponent},
   {path: 'seguridad/apis', component: ApisComponent},
-  //parametria
-  {path: 'parametria', component: ParametriaComponent},
+
   {path: 'parametria/tipopersona', component: TipopersonaComponent},
   {path: 'parametria/tiporol', component: TiporolComponent},
   {path: 'parametria/tipodocumento', component: TipodocumentoComponent},
@@ -63,21 +63,18 @@ const routes: Routes = [
   {path: 'parametria/tipoformadepago', component: TipoformadepagoComponent},
   {path: 'parametria/tipopermiso', component: TipopermisoComponent},
   {path: 'parametria/tipopermisodetalle', component: TipopermisodetalleComponent},
-  //recursos
-  {path: 'recursos', component: RecursosComponent},
+
   {path: 'recursos/stock', component:StockComponent},
   {path: 'recursos/proveedores', component: ProveedoresComponent},
   {path: 'recursos/personal', component: PersonalComponent},
   {path: 'recursos/clientes', component:ClientesComponent },
-  //gestion
-  {path: 'gestion', component: GestionComponent},
+
   {path: 'gestion/registrodeventas', component:RegistrodeventasComponent},
   {path: 'gestion/realizarpedidos', component:RealizarpedidosComponent },
   {path: 'gestion/enviodeinventario', component: EnviodeinventarioComponent},
   {path: 'gestion/confirmacionderecepcion', component: ConfirmacionderecepcionComponent},
   {path: 'gestion/vizualizarfacturas', component: VizualizarfacturasComponent},
-  //reportes
-  {path: 'reportes', component: ReportesComponent},
+
   {path: 'reportes/informesdeventa', component:InformesdeventaComponent},
   {path: 'reportes/informesfinancieros', component: InformesfinancierosComponent},
   {path: 'reportes/informesdeabastecimiento', component: InformesdeabastecimientoComponent},

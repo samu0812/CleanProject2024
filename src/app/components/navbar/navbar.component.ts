@@ -1,10 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MenuService } from '../../services/menu/menu.service';
+import { Menu } from '../../models/menu/menu';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  menues: Menu[] = [];
 
+  constructor(private menuService: MenuService) {}
+
+  ngOnInit(): void {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.menuService.getMenuItems(token).subscribe(
+        (response) => {
+          console.log(response);
+          // Asignar todos los elementos del menú recibidos a menuItems
+          this.menues = response.menues;
+        },
+        (error) => {
+          console.error('Error fetching menu items:', error);
+        }
+      );
+    }
+  }
 }

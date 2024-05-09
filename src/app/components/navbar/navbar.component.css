@@ -148,3 +148,10 @@
 .modal-footer {
   border-top: none; /* Quita el borde superior del pie de página del modal */
 }
+.navbar-nav .nav-link.disabled {
+  color: #6c757d; /* Color de texto gris para indicar deshabilitado */
+  pointer-events: none; /* Evitar que se active el enlace */
+  text-decoration: none; /* Quitar subrayado */
+  cursor: not-allowed; /* Cambiar el cursor a no permitido */
+}
+

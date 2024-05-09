@@ -1,40 +1,44 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private tiempoExpiracionToken = 3600000; // 1 hora en milisegundos
-  private ultimaInteracción: number;
+  private temporizadorInactividad: any;
+  private TIEMPO_INACTIVIDAD_MS: number = 3600000; // 1 hora en milisegundos
 
-  constructor(private http: HttpClient) {
-    this.ultimaInteracción = Date.now();
+  constructor(private router: Router) {}
 
-    // Verificar cada 5 segundos si el usuario ha estado inactivo
-    timer(0, 5000).pipe(
-      switchMap(() => {
-        const tiempoActual = Date.now();
-        console.log(tiempoActual)
-        const tiempoUltimaInteraccion = tiempoActual - this.ultimaInteracción;
-        console.log(tiempoUltimaInteraccion)
-        if (tiempoUltimaInteraccion > this.tiempoExpiracionToken) {
-          return this.logout();
-        }
-        return new Observable(); // No hacer nada si no se ha excedido el tiempo
-      })
-    ).subscribe();
+  iniciarSeguimientoInactividad() {
+    this.inicializarTemporizadorInactividad();
+
+    // Escucha eventos de interacción del usuario para resetear el temporizador
+    document.addEventListener('mousemove', this.resetearTemporizadorInactividad.bind(this));
+    document.addEventListener('keypress', this.resetearTemporizadorInactividad.bind(this));
   }
 
-  // Método para actualizar el tiempo de última interacción del usuario
-  updateUltimaInteracción() {
-    this.ultimaInteracción = Date.now();
+  detenerSeguimientoInactividad() {
+    clearTimeout(this.temporizadorInactividad);
+
+    // Remueve los event listeners cuando la inactividad ya no necesita ser rastreada
+    document.removeEventListener('mousemove', this.resetearTemporizadorInactividad.bind(this));
+    document.removeEventListener('keypress', this.resetearTemporizadorInactividad.bind(this));
+
+    // Llama a la función para limpiar el token cuando se detiene el seguimiento de inactividad
+
   }
 
-  // Método para desloguear al usuario
-  logout(): Observable<any> {
-    return this.http.post<any>('/api/logout', null);
+  private inicializarTemporizadorInactividad() {
+    this.temporizadorInactividad = setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, this.TIEMPO_INACTIVIDAD_MS);
   }
+
+  private resetearTemporizadorInactividad() {
+    clearTimeout(this.temporizadorInactividad);
+    this.inicializarTemporizadorInactividad();
+  }
+
+
 }

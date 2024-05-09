@@ -11,16 +11,19 @@
     </button>
 
     <!-- Contenido del navbar -->
+    <!-- Contenido del navbar -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
-        <a class="nav-link" routerLink="/seguridad" routerLinkActive="active">Seguridad</a>
-        <a class="nav-link" routerLink="/parametria" routerLinkActive="active">Parametría</a>
-        <a class="nav-link" routerLink="/recursos" routerLinkActive="active">Recursos</a>
-        <a class="nav-link" routerLink="/reportes" routerLinkActive="active">Reportes</a>
-        <a class="nav-link" routerLink="/gestion" routerLinkActive="active">Gestión</a>
+        <a *ngFor="let item of menues"
+           [class.disabled]="item.PoseePermiso === 0"
+           [routerLink]="item.PathRoute"
+           class="nav-link">
+           {{ item.Detalle }}
+        </a>
       </div>
     </div>
+
+
     <button class="btn btn-primary rounded-circle" id="botonCampana" type="button">
       <i class="fa-solid fa-bell"></i>
     </button>

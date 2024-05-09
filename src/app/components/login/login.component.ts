@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       this.loginService.login(formData).subscribe(
         (response) => {
           if (response.status === 200) {
-            console.log(response);
+            localStorage.setItem("token", response.token)
             console.log('Autenticación exitosa');
             this.router.navigate(['/home']);
           } else {

@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `cleandb`.`TipoModulo` (
   `PathRout` VARCHAR(45) NOT NULL,
   `TipoMenu` INT NOT NULL,
   `TipoIcono` VARCHAR(45) NOT NULL,
-  `Icono` VARCHAR(255) NOT NULL,
+  `Icono` MEDIUMBLOB NOT NULL,
   `FechaAlta` DATETIME NOT NULL,
   `FechaBaja` DATETIME NULL,
   PRIMARY KEY (`IdTipoModulo`))

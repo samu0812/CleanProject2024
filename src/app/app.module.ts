@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -56,6 +57,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
 import { TipopersonasistemaComponent } from './components/parametria/tipopersonasistema/tipopersonasistema.component';
+import { SubmenuComponent } from './components/navbar/submenu/submenu.component';
+import { ItemComponent } from './components/navbar/submenu/item/item.component';
+
 
 @NgModule({
   declarations: [
@@ -102,6 +106,8 @@ import { TipopersonasistemaComponent } from './components/parametria/tipopersona
     InformesdeproductosComponent,
     TipomoduloComponent,
     TipopersonasistemaComponent,
+    SubmenuComponent,
+    ItemComponent
   ],
   imports: [
     BrowserModule,
@@ -115,7 +121,8 @@ import { TipopersonasistemaComponent } from './components/parametria/tipopersona
     MatTableModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    RouterModule
 
   ],
   providers: [
