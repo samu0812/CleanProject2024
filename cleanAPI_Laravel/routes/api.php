@@ -3,15 +3,23 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+//TODO--------------------------------------LOGIN, TOKENS , MENUES--------------------------------------------
+
 use App\Http\Controllers\Api\login\usuarioController;
 
 use App\Http\Controllers\Api\menu\menuController;
 
-use App\Http\Controllers\Api\sistemaApiController;
+//TODO--------------------------------------MODULO DE SEGURIDAD------------------------------------------------------
 
-use App\Http\Controllers\Api\tiporolController;
+use App\Http\Controllers\Api\Seguridad\tiporolController;
 
-use App\Http\Controllers\Api\rolModuloController;
+use App\Http\Controllers\Api\Seguridad\rolModuloController;
+
+use App\Http\Controllers\Api\Seguridad\sistemaApiController;
+
+use App\Http\Controllers\Api\Seguridad\UsuariosController;
+
+//TODO--------------------------------------MODULO DE PARAMETRIA------------------------------------------------------
 
 use App\Http\Controllers\Api\Parametria\tipoPersonaController;
 
@@ -33,7 +41,13 @@ use App\Http\Controllers\Api\Parametria\TipoPersonaSistemaController;
 
 use App\Http\Controllers\Api\Parametria\TipoProductoController;
 
-//TODO--------------------------------------LOGIN, TOKENS , MENUES, APIS--------------------------------------------
+use App\Http\Controllers\Api\Parametria\TipoCategoriaController;
+
+use App\Http\Controllers\Api\Parametria\TipoImpuestoController;
+
+use App\Http\Controllers\Api\Parametria\TipoFormaDePagoController;
+
+//TODO--------------------------------------LOGIN, TOKENS , MENUES--------------------------------------------
 
 //LOGIN Y TOKENS
 Route::post('/usuario',[usuarioController::class, 'spValidarUsuario']);
@@ -52,10 +66,23 @@ Route::get('/SP_GetImagenSubMenu',[menuController::class, 'SP_GetImagenSubMenu']
 //menu usuario
 Route::get('/SP_GetMenuUsuario',[menuController::class, 'SP_GetMenuUsuario']);
 
-//sistema apis
-Route::get('/SP_SistemaAPIs',[sistemaApiController::class, 'SP_SistemaAPIs']);
+
 
 //TODO--------------------------------------MODULO DE SEGURIDAD------------------------------------------------------
+
+//-------------------------SUBMODULO DE Usuarios-------------------------
+//listar Usuarios
+Route::get('/SPL_Usuarios',[UsuariosController::class, 'SPL_Usuarios']);
+
+//agregar Usuarios 
+Route::post('/SPA_Usuarios',[UsuariosController::class, 'SPA_Usuarios']);
+
+//editar Usuarios
+Route::put('/SPM_Usuarios',[UsuariosController::class, 'SPM_Usuarios']);
+
+//borrar Usuarios
+Route::delete('/SPB_Usuarios',[UsuariosController::class, 'SPB_Usuarios']);
+
 
 //-------------------------SUBMODULO DE TipoRol-------------------------
 
@@ -88,6 +115,12 @@ Route::delete('/SPB_RolModulo',[rolModuloController::class, 'SPB_RolModulo']);
 
 //habilitar rol modulo
 Route::put('/SPH_RolModulo',[rolModuloController::class, 'SPH_RolModulo']);
+
+
+//-------------------------SUBMODULO DE SistemaAPIs-------------------------
+
+//sistema apis
+Route::get('/SP_SistemaAPIs',[sistemaApiController::class, 'SP_SistemaAPIs']);
 
 
 //TODO--------------------------------------MODULO DE PARAMETRIA------------------------------------------------------
@@ -155,3 +188,54 @@ Route::delete('/SPB_TipoProducto',[TipoProductoController::class, 'SPB_TipoProdu
 
 //habilitar Tipo Producto
 Route::put('/SPH_TipoProducto',[TipoProductoController::class, 'SPH_TipoProducto']);
+
+//-------------------------SUBMODULO DE TipoCategoria-------------------------
+//listar Tipo Categoria
+Route::get('/SPL_TipoCategoria',[TipoCategoriaController::class, 'SPL_TipoCategoria']);
+
+//agregar Tipo Categoria
+Route::post('/SPA_TipoCategoria',[TipoCategoriaController::class, 'SPA_TipoCategoria']);
+
+//editar Tipo Categoria
+Route::put('/SPM_TipoCategoria',[TipoCategoriaController::class, 'SPM_TipoCategoria']);
+
+//borrar Tipo Categoria
+Route::delete('/SPB_TipoCategoria',[TipoCategoriaController::class, 'SPB_TipoCategoria']);
+
+//habilitar Tipo Categoria
+Route::put('/SPH_TipoCategoria',[TipoCategoriaController::class, 'SPH_TipoCategoria']);
+
+//-------------------------SUBMODULO DE TipoImpuesto-------------------------
+//listar Tipo Impuesto
+Route::get('/SPL_TipoImpuesto',[TipoImpuestoController::class, 'SPL_TipoImpuesto']);
+
+//agregar Tipo Impuesto
+Route::post('/SPA_TipoImpuesto',[TipoImpuestoController::class, 'SPA_TipoImpuesto']);
+
+//editar Tipo Impuesto
+Route::put('/SPM_TipoImpuesto',[TipoImpuestoController::class, 'SPM_TipoImpuesto']);
+
+//borrar Tipo Impuesto
+Route::delete('/SPB_TipoImpuesto',[TipoImpuestoController::class, 'SPB_TipoImpuesto']);
+
+//habilitar Tipo Impuesto
+Route::put('/SPH_TipoImpuesto',[TipoImpuestoController::class, 'SPH_TipoImpuesto']);
+
+//-------------------------SUBMODULO DE FormaDePago-------------------------
+//listar Tipo FormaDePago
+Route::get('/SPL_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPL_TipoFormaDePago']);
+
+//agregar Tipo FormaDePago
+Route::post('/SPA_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPA_TipoFormaDePago']);
+
+//editar Tipo FormaDePago
+Route::put('/SPM_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPM_TipoFormaDePago']);
+
+//borrar Tipo FormaDePago
+Route::delete('/SPB_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPB_TipoFormaDePago']);
+
+//habilitar Tipo FormaDePago
+Route::put('/SPH_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPH_TipoFormaDePago']);
+
+//hasta aca anda todo
+

@@ -63,6 +63,7 @@ class usuarioController extends Controller
             'tiempoCaduca' => $datosToken['tiempoCaduca'],
             'nombrePersonal' => $datosToken['nombrePersonal'],
             'documentacionPersonal' => $datosToken['documentacionPersonal'],
+            'sucursalPersonal' => $datosToken['sucursalPersonal'],
         ], 200);
 
     }
@@ -91,6 +92,7 @@ class usuarioController extends Controller
         $tiempoCaduca = $resultados[0]->TiempoCaduca;
         $nombrePersonal = $resultados[0]->NombrePersonal;
         $documentacionPersonal = $resultados[0]->DocumentacionPersonal;
+        $sucursalPersonal = $resultados[0]->SucursalPersonal;
 
         // Devolver todos los datos en un array asociativo
         return [
@@ -98,6 +100,7 @@ class usuarioController extends Controller
             'tiempoCaduca' => $tiempoCaduca,
             'nombrePersonal' => $nombrePersonal,
             'documentacionPersonal' => $documentacionPersonal,
+            'sucursalPersonal' => $sucursalPersonal,
         ];
     }
 

@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Parametria;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
-class rolModuloController extends Controller
+class TipoCategoriaController extends Controller
 {
-    public function SPL_RolModulo(Request $request) {
-
-            // Validar los datos de entrada
+    public function SPL_TipoCategoria(Request $request) {
+        // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'idTipoRol' => 'required|integer',
-            'tipoLista' => 'required|integer|in:1,2', // 1 para activo, 2 para baja
+            'tipoLista' => 'required|integer',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
@@ -27,36 +25,36 @@ class rolModuloController extends Controller
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $idTipoRol = $request->input('idTipoRol');
         $tipoLista = $request->input('tipoLista');
+        
+        // Ejecutar el procedimiento almacenado SPL_TipoProducto
+        $resultados = DB::select('CALL SPL_TipoCategoria(?)', [$tipoLista]);
 
-        // Ejecutar el procedimiento almacenado SPL_RolModulo
-        $resultado = DB::select('CALL SPL_RolModulo(?, ?)', [$idTipoRol, $tipoLista]);
+        // Obtener el mensaje del resultado
+        $mensaje = isset($resultados[0]->Message) ? $resultados[0]->Message : null;
 
-        // Verificar si el resultado está vacío
-        if (empty($resultado)) {
+        // Verificar si el mensaje es nulo (para el caso de que el tipo de lista sea válido)
+        if ($mensaje === null) {
+            // Devolver los resultados como respuesta
             return response()->json([
-                'message' => 'El idTipoRol proporcionado no existe o no tiene relacionado ningun modulo',
+                'message' => 'OK',
+                'status' => 200,
+                'TipoProducto' => $resultados,
+            ], 200);
+        } else {
+            // Devolver el mensaje de error
+            return response()->json([
+                'message' => $mensaje,
                 'status' => 400,
             ], 400);
         }
-
-        // Devolver los resultados como respuesta
-        return response()->json([
-            'message' => 'OK',
-            'status' => 200,
-            'rolModulos' => $resultado,
-        ], 200);
-
     }
 
-    public function SPA_RolModulo(Request $request) {
+    public function SPA_TipoCategoria(Request $request) {
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'idTipoRol' => 'required|integer',
-            'idTipoModulo' => 'required|integer',
-            'idTipoPermiso' => 'required|integer',
+            'descripcion' => 'required|string|max:50',
             'token' => 'required|string|max:500',
         ]);
 
@@ -70,25 +68,16 @@ class rolModuloController extends Controller
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $idTipoRol = $request->input('idTipoRol');
-        $idTipoModulo = $request->input('idTipoModulo');
-        $idTipoPermiso = $request->input('idTipoPermiso');
+        $descripcion = $request->input('descripcion');
         $token = $request->input('token');
 
-        // Ejecutar el procedimiento almacenado SPA_RolModulo
-        $resultado = DB::select('CALL SPA_RolModulo(?, ?, ?, ?)', [$idTipoRol, $idTipoModulo, $idTipoPermiso, $token]);
-
-        // Verificar si el resultado está vacío
-        if (empty($resultado)) {
-            return response()->json([
-                'message' => 'Error al ejecutar el procedimiento almacenado',
-                'status' => 400,
-            ], 400);
-        }
+        // Ejecutar el procedimiento almacenado SPA_TipoProducto
+        $resultados = DB::select('CALL SPA_TipoCategoria(?, ?)', [$descripcion, $token]);
 
         // Obtener el mensaje del resultado
-        $mensaje = $resultado[0]->Message;
-        // Determinar el estado de la operación según el mensaje
+        $mensaje = $resultados[0]->v_Message;
+
+        // Devolver la respuesta según el mensaje obtenido
         if ($mensaje === 'OK') {
             return response()->json([
                 'message' => 'OK',
@@ -97,72 +86,20 @@ class rolModuloController extends Controller
         } else {
             return response()->json([
                 'message' => $mensaje,
-                'status' => 400, // Bad Request
+                'status' => 400,
             ], 400);
         }
 
     }
 
-    public function SPB_RolModulo(Request $request) {
-
-            // Validar los datos de entrada
-        $validator = Validator::make($request->all(), [
-            'idRolModulo' => 'required|integer',
-            'token' => 'required|string|max:500',
-        ]);
-
-        // Si la validación falla, devolver la respuesta correspondiente
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
-            ], 400);
-        }
-
-        // Obtener los datos del cuerpo de la solicitud
-        $idRolModulo = $request->input('idRolModulo');
-        $token = $request->input('token');
-
-        // Ejecutar el procedimiento almacenado SPB_RolModulo
-        $resultado = DB::select('CALL SPB_RolModulo(?, ?)', [$idRolModulo, $token]);
-
-        // Verificar si el resultado está vacío
-        if (empty($resultado)) {
-            return response()->json([
-                'message' => 'Error al ejecutar el procedimiento almacenado',
-                'status' => 400,
-            ], 400);
-        }
-
-        // Obtener el mensaje del resultado
-        $mensaje = $resultado[0]->v_Message;
-
-        // Determinar el estado de la operación según el mensaje
-        if ($mensaje === 'OK') {
-            return response()->json([
-                'message' => 'OK',
-                'status' => 200,
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => $mensaje,
-                'status' => 400, // Bad Request
-            ], 400);
-        }
-    }
-
-
-    
-
-    public function SPH_RolModulo(Request $request) {
-    
+    public function SPM_TipoCategoria(Request $request) {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'idRolModulo' => 'required|integer',
+            'id' => 'required|integer',
+            'descripcion' => 'required|string|max:50',
             'token' => 'required|string|max:500',
         ]);
-    
+
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
@@ -171,24 +108,58 @@ class rolModuloController extends Controller
                 'status' => 400,
             ], 400);
         }
-    
+
         // Obtener los datos del cuerpo de la solicitud
-        $idRolModulo = $request->input('idRolModulo');
+        $id = $request->input('id');
+        $descripcion = $request->input('descripcion');
         $token = $request->input('token');
 
-        // Ejecutar el procedimiento almacenado SPH_RolModulo
-        $resultado = DB::select('CALL SPH_RolModulo(?, ?)', [$idRolModulo, $token]);
+        // Ejecutar el procedimiento almacenado SPM_TipoProducto
+        $resultados = DB::select('CALL SPM_TipoCategoria(?, ?, ?)', [$id, $descripcion, $token]);
 
-        // Verificar si el resultado está vacío
-        if (empty($resultado)) {
+        // Obtener el mensaje del resultado
+        $mensaje = $resultados[0]->v_Message;
+
+        // Determinar el estado de la operación según el mensaje
+        if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'Error al ejecutar el procedimiento almacenado',
+                'message' => 'OK',
+                'status' => 200,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => $mensaje,
+                'status' => 400, // Bad Request
+            ], 400);
+        }
+    }
+
+    public function SPB_TipoCategoria(Request $request) {
+
+        // Validar los datos de entrada
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer',
+            'token' => 'required|string|max:500',
+        ]);
+
+        // Si la validación falla, devolver la respuesta correspondiente
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
                 'status' => 400,
             ], 400);
         }
 
+        // Obtener los datos del cuerpo de la solicitud
+        $id = $request->input('id');
+        $token = $request->input('token');
+
+        // Ejecutar el procedimiento almacenado SPB_TipoProducto
+        $resultados = DB::select('CALL SPB_TipoCategoria(?, ?)', [$id, $token]);
+
         // Obtener el mensaje del resultado
-        $mensaje = $resultado[0]->v_Message;
+        $mensaje = $resultados[0]->v_Message;
 
         // Determinar el estado de la operación según el mensaje
         if ($mensaje === 'OK') {
@@ -203,9 +174,47 @@ class rolModuloController extends Controller
             ], 400);
         }
 
+    }    
+
+    public function SPH_TipoCategoria(Request $request) {
+
+        // Validar los datos de entrada
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer',
+            'token' => 'required|string|max:500',
+        ]);
+
+        // Si la validación falla, devolver la respuesta correspondiente
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400,
+            ], 400);
+        }
+
+        // Obtener los datos del cuerpo de la solicitud
+        $id = $request->input('id');
+        $token = $request->input('token');
+
+        // Ejecutar el procedimiento almacenado SPH_TipoProducto
+        $resultados = DB::select('CALL SPH_TipoCategoria(?, ?)', [$id, $token]);
+
+        // Obtener el mensaje del resultado
+        $mensaje = $resultados[0]->v_Message;
+
+        // Determinar el estado de la operación según el mensaje
+        if ($mensaje === 'OK') {
+            return response()->json([
+                'message' => 'OK',
+                'status' => 200,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => $mensaje,
+                'status' => 400, // Bad Request
+            ], 400);
+        }
     }
-
-
-
 
 }
