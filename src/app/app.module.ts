@@ -18,7 +18,6 @@ import { RolComponent } from './components/seguridad/rol/rol.component';
 import { ApisComponent } from './components/seguridad/apis/apis.component';
 import { TipopersonaComponent } from './components/parametria/tipopersona/tipopersona.component';
 import { TiporolComponent } from './components/parametria/tiporol/tiporol.component';
-import { TipodocumentoComponent } from './components/parametria/tipodocumento/tipodocumento.component';
 import { TipoproductoComponent } from './components/parametria/tipoproducto/tipoproducto.component';
 import { TipocategoriaComponent } from './components/parametria/tipocategoria/tipocategoria.component';
 import { TipomedidaComponent } from './components/parametria/tipomedida/tipomedida.component';
@@ -59,6 +58,7 @@ import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodu
 import { TipopersonasistemaComponent } from './components/parametria/tipopersonasistema/tipopersonasistema.component';
 import { SubmenuComponent } from './components/navbar/submenu/submenu.component';
 import { ItemComponent } from './components/navbar/submenu/item/item.component';
+import { TipodocumentacionComponent } from './components/parametria/tipodocumentacion/tipodocumentacion.component';
 
 
 @NgModule({
@@ -79,7 +79,6 @@ import { ItemComponent } from './components/navbar/submenu/item/item.component';
     ApisComponent,
     TipopersonaComponent,
     TiporolComponent,
-    TipodocumentoComponent,
     TipoproductoComponent,
     TipocategoriaComponent,
     TipomedidaComponent,
@@ -107,7 +106,8 @@ import { ItemComponent } from './components/navbar/submenu/item/item.component';
     TipomoduloComponent,
     TipopersonasistemaComponent,
     SubmenuComponent,
-    ItemComponent
+    ItemComponent,
+    TipodocumentacionComponent
   ],
   imports: [
     BrowserModule,

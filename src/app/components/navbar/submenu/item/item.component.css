@@ -3,9 +3,11 @@
   -moz-box-shadow: 1px 11px 17px -1px rgba(0, 0, 0, 0.75);
   box-shadow: 1px 11px 17px -1px rgba(0, 0, 0, 0.75);
   cursor: pointer;
+  transform: scale(1.05);
 }
 
 .card-icon{
+  margin-top: 20px;
   width: 100px;
   height: 100px;
 }
@@ -25,7 +27,18 @@
   }
 }
 
-
 .card-menu-disabled{
   opacity: .5 !important;
 }
+.card {
+  margin-top: 15px; /* Ajusta el margen superior según sea necesario */
+}
+.card h5 {
+  font-family: "Briem Hand", cursive;
+  font-size: 18px;
+
+  max-height: 40px; /* Establece una altura máxima para el contenedor del título */
+  line-height: 20px; /* Ajusta la altura de línea según sea necesario */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poetsen+One&family=Rowdies:wght@300;400;700&display=swap');

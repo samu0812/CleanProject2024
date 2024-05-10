@@ -19,7 +19,6 @@ export class NavbarComponent implements OnInit {
       this.menuService.getMenuItems(token).subscribe(
         (response) => {
           console.log(response);
-          // Asignar todos los elementos del menú recibidos a menuItems
           this.menues = response.menues;
         },
         (error) => {

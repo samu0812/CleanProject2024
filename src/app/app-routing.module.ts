@@ -2,18 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import {HomeComponent} from './components/home/home.component';
-import { SeguridadComponent } from './components/seguridad/seguridad.component';
-import { ParametriaComponent } from './components/parametria/parametria.component';
-import { GestionComponent } from './components/gestion/gestion.component';
-import { RecursosComponent } from './components/recursos/recursos.component';
-import { ReportesComponent } from './components/reportes/reportes.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { UsuariosComponent } from './components/seguridad/usuarios/usuarios.component';
 import { TiporolesComponent } from './components/seguridad/tiporoles/tiporoles.component';
 import { RolComponent } from './components/seguridad/rol/rol.component';
 import { ApisComponent } from './components/seguridad/apis/apis.component';
 import { TipopersonaComponent } from './components/parametria/tipopersona/tipopersona.component';
 import { TiporolComponent } from './components/parametria/tiporol/tiporol.component';
-import { TipodocumentoComponent } from './components/parametria/tipodocumento/tipodocumento.component';
+import { TipodocumentacionComponent } from './components/parametria/tipodocumentacion/tipodocumentacion.component';
 import { TipoproductoComponent } from './components/parametria/tipoproducto/tipoproducto.component';
 import { TipocategoriaComponent } from './components/parametria/tipocategoria/tipocategoria.component';
 import { TipomedidaComponent } from './components/parametria/tipomedida/tipomedida.component';
@@ -52,7 +49,7 @@ const routes: Routes = [
 
   {path: 'parametria/tipopersona', component: TipopersonaComponent},
   {path: 'parametria/tiporol', component: TiporolComponent},
-  {path: 'parametria/tipodocumento', component: TipodocumentoComponent},
+  {path: 'parametria/tipodocumentacion', component: TipodocumentacionComponent},
   {path: 'parametria/tipoproducto', component: TipoproductoComponent},
   {path: 'parametria/tipocategoria', component: TipocategoriaComponent},
   {path: 'parametria/tipomedida', component: TipomedidaComponent},
