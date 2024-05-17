@@ -10,20 +10,23 @@ import { Menu } from '../../../models/menu/menu';
   styleUrls: ['./submenu.component.css']
 })
 export class SubmenuComponent implements OnInit {
-  menues: Menu[] = [];
+  Menues: Menu[] = [];
   respuesta: Menu[] = [];
 
   constructor(private route: ActivatedRoute, private menuService: MenuService) {}
 
   ngOnInit(): void {
+    console.log("hola")
     this.route.params.subscribe(params => {
-      const id_menu = +params['id'];
-      const token = localStorage.getItem('token');
-
-      if (token !== null) {
-        this.menuService.getSubMenuItems(token, id_menu).subscribe( data=>{
-          this.respuesta = data.menus;
-          this.menues = this.respuesta;
+      const IdMenu = +params['id'];
+      const Token = localStorage.getItem('Token');
+      console.log(Token, "ceci 2");
+      if (Token !== null) {
+        this.menuService.getSubMenuItems(Token, IdMenu).subscribe( data=>{
+          this.respuesta = data.Menus;
+          console.log(data)
+          this.Menues = this.respuesta;
+          console.log(this.Menues, "ceci");
         }
 
         );

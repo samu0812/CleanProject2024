@@ -11,21 +11,21 @@ class menuController extends Controller{
     public function SP_GetMenu(Request $request) {
         // Validar el token
         $validator = Validator::make($request->all(), [
-            'token' => 'required|string', // Puedes agregar reglas de validación adicionales según tus necesidades
+            'Token' => 'required|string', // Puedes agregar reglas de validación adicionales según tus necesidades
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación del token',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación del token',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
 
         // Obtener el token de la solicitud
-        $token = $request->input('token');
+        $token = $request->input('Token');
 
         // Ejecutar el procedimiento almacenado SP_GetMenu
         $menues = DB::select('CALL SP_GetMenu(?)', [$token]);
@@ -33,9 +33,9 @@ class menuController extends Controller{
         // Procesar los resultados del procedimiento almacenado según sea necesario
         // En este ejemplo, simplemente devolvemos los resultados como parte de la respuesta JSON
         return response()->json([
-            'message' => 'OK',
-            'status' => 200,
-            'menues' => $menues,
+            'Message' => 'OK',
+            'Status' => 200,
+            'Menues' => $menues,
         ], 200);
 
     }
@@ -43,23 +43,23 @@ class menuController extends Controller{
     public function SP_GetSubMenu (Request $request){
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'token' => 'required|string',
-            'id_menu' => 'required|integer',
+            'Token' => 'required|string',
+            'IdMenu' => 'required|integer',
         ]);
 
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener el token y el ID del menú del cuerpo de la solicitud
-        $token = $request->input('token');
-        $id_menu = $request->input('id_menu');
+        $token = $request->input('Token');
+        $id_menu = $request->input('IdMenu');
 
         // Ejecutar el procedimiento almacenado y obtener los menús
         $subMenues = DB::select('CALL SP_GetSubMenu(?, ?)', [$token, $id_menu]);
@@ -67,16 +67,16 @@ class menuController extends Controller{
         // Verificar si el resultado está vacío
         if (empty($subMenues)) {
             return response()->json([
-                'message' => 'Error al ejecutar el procedimiento almacenado',
-                'status' => 400,
+                'Message' => 'Error al ejecutar el procedimiento almacenado',
+                'Status' => 400,
             ], 400);
         }
 
         // Devolver los menús como respuesta
         return response()->json([
-            'message' => 'OK',
-            'status' => 200,
-            'menus' => $subMenues,
+            'Message' => 'OK',
+            'Status' => 200,
+            'Menus' => $subMenues,
         ], 200);
     }
 
@@ -84,20 +84,20 @@ class menuController extends Controller{
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'path' => 'required|string',
+            'Path' => 'required|string',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener la ruta del submenú del cuerpo de la solicitud
-        $path = $request->input('path');
+        $path = $request->input('Path');
 
         // Ejecutar el procedimiento almacenado y obtener los detalles de la imagen del submenú
         $imagenSubMenu = DB::select('CALL SP_GetImagenSubMenu(?)', [$path]);
@@ -105,16 +105,16 @@ class menuController extends Controller{
         // Verificar si el resultado está vacío
         if (empty($imagenSubMenu)) {
             return response()->json([
-                'message' => 'Error al ejecutar el procedimiento almacenado',
-                'status' => 400,
+                'Message' => 'Error al ejecutar el procedimiento almacenado',
+                'Status' => 400,
             ], 400);
         }
 
         // Devolver los detalles de la imagen del submenú como respuesta
         return response()->json([
-            'message' => 'OK',
-            'status' => 200,
-            'imagen_submenu' => $imagenSubMenu,
+            'Message' => 'OK',
+            'Status' => 200,
+            'ImagenSubmenu' => $imagenSubMenu,
         ], 200);
     }
 
@@ -122,20 +122,20 @@ class menuController extends Controller{
     public function SP_GetMenuUsuario (Request $request) {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'id_persona' => 'required|integer',
+            'IdPersona' => 'required|integer',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener el ID del usuario del cuerpo de la solicitud
-        $idPersona = $request->input('id_persona');
+        $idPersona = $request->input('IdPersona');
 
         // Ejecutar el procedimiento almacenado y obtener los menús del usuario
         $menusUsuario = DB::select('CALL SP_GetMenuUsuario(?)', [$idPersona]);
@@ -143,22 +143,22 @@ class menuController extends Controller{
         // Verificar si el conjunto de menús está vacío
         if (empty($menusUsuario)) {
             return response()->json([
-                'message' => 'El ID de persona no existe en el sistema',
-                'status' => 400,
+                'Message' => 'El ID de persona no existe en el sistema',
+                'Status' => 400,
             ], 400);
         }
 
-        
+
         // Devolver los menús del usuario como respuesta
         return response()->json([
-            'message' => 'OK',
-            'status' => 200,
-            'menus_usuario' => $menusUsuario,
+            'Message' => 'OK',
+            'Status' => 200,
+            'MenusUsuario' => $menusUsuario,
         ], 200);
     }
 
 
 
 
-    
+
 }

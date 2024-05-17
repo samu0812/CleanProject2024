@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,15 +10,13 @@ import { LoginService } from '../../services/login/login.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  FormularioLogin: FormGroup = this.formBuilder.group({
-    Usuario: [''],
-    Clave: ['']
-  });
+  FormularioLogin: FormGroup;
   Error: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -30,16 +29,13 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.FormularioLogin.valid) {
-      // Obtener valores del formulario
       const formData = this.FormularioLogin.value;
-      // Mostrar usuario y contraseña en la consola
-      console.log(formData);
-      // Llamar al servicio de inicio de sesión
       this.loginService.login(formData).subscribe(
         (response) => {
-          if (response.status === 200) {
-            localStorage.setItem("token", response.token)
-            console.log('Autenticación exitosa');
+          if (response.Status === 200) {
+            localStorage.setItem("Token", response.Token);
+            console.log(response);
+            this.authService.setAuthenticated(true); // Establecer autenticado a true
             this.router.navigate(['/home']);
           } else {
             console.log('Credenciales incorrectas');

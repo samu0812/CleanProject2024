@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import {HomeComponent} from './components/home/home.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { UsuariosComponent } from './components/seguridad/usuarios/usuarios.component';
 import { TiporolesComponent } from './components/seguridad/tiporoles/tiporoles.component';
 import { RolComponent } from './components/seguridad/rol/rol.component';

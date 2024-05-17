@@ -5,10 +5,21 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
+  private sesion = false;
   private temporizadorInactividad: any;
   private TIEMPO_INACTIVIDAD_MS: number = 3600000; // 1 hora en milisegundos
 
   constructor(private router: Router) {}
+
+    // Método para establecer el estado de autenticación
+    setAuthenticated(status: boolean) {
+      this.sesion = status;
+    }
+
+    // Método para verificar si el usuario está autenticado
+    isAuthenticatedUser(): boolean {
+      return this.sesion;
+    }
 
   iniciarSeguimientoInactividad() {
     this.inicializarTemporizadorInactividad();

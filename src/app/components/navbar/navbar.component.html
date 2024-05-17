@@ -14,7 +14,7 @@
     <!-- Contenido del navbar -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a *ngFor="let item of menues"
+        <a *ngFor="let item of Menues"
            [class.disabled]="item.PoseePermiso === 0"
            [routerLink]="item.PathRoute"
            class="nav-link">
