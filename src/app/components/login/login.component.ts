@@ -1,3 +1,4 @@
+import { Usuario } from './../../models/usuario/usuario';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,6 +13,7 @@ import { AuthService } from '../../services/auth/auth.service';
 export class LoginComponent implements OnInit {
   FormularioLogin: FormGroup;
   Error: string = '';
+  datosUsuario: Usuario[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,7 +37,7 @@ export class LoginComponent implements OnInit {
           if (response.Status === 200) {
             localStorage.setItem("Token", response.Token);
             console.log(response);
-            this.authService.setAuthenticated(true); // Establecer autenticado a true
+            this.authService.setAuthenticated(true, response); // Pasa la información del usuario
             this.router.navigate(['/home']);
           } else {
             console.log('Credenciales incorrectas');

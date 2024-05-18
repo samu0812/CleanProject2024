@@ -13,7 +13,7 @@
           </select>
         </div>
         <div class="form-group mt-3">
-          <button type="button" class="btn btn-primary" (click)="openAgregar(content)">
+          <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
             <i class="fa-solid fa-circle-plus"></i> <!-- Aplica la clase 'button-icon' al ícono -->
             Agregar
           </button>
@@ -21,8 +21,8 @@
       </div>
     </form>
     <!-- Grilla -->
-    <div class="registros mt-3">
-      <div class="table-responsive" *ngIf="listaGrilla != undefined && listaGrilla.length > 0">
+    <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
+      <div class="table-responsive">
         <table class="table">
           <thead class="thead-light">
             <tr>
@@ -66,7 +66,11 @@
         </table>
       </div>
     </div>
+    <ng-template #noData>
+      <h5>No se encontraron registros...</h5>
+    </ng-template>
   </div>
+</div>
 <!-- AgregarCategoriaModal -->
 <ng-template #content let-modal>
   <div class="modal-header">

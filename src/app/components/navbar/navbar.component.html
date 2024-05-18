@@ -11,7 +11,6 @@
     </button>
 
     <!-- Contenido del navbar -->
-    <!-- Contenido del navbar -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a *ngFor="let item of Menues"
@@ -23,32 +22,28 @@
       </div>
     </div>
 
-
     <button class="btn btn-primary rounded-circle" id="botonCampana" type="button">
       <i class="fa-solid fa-bell"></i>
     </button>
 
     <!-- Parte derecha del navbar -->
-    <div class="navbar-nav ms-auto">
+    <div class="navbar-nav ms-auto" *ngIf="usuarioActual">
       <!-- Botón para desplegar opciones -->
       <div class="nav-item dropdown">
         <!-- Botón redondo con iniciales -->
-        <button class="btn btn-primary rounded-circle" id="botonUsuarioNav" type="button" data-bs-toggle="dropdown" aria-expanded="false">ST</button>
+        <button class="btn btn-primary rounded-circle" id="botonUsuarioNav" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ usuarioActual.NombrePersonal.charAt(0) }}</button>
         <!-- Menú desplegable -->
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="botonUsuarioNav">
           <!-- Información del usuario -->
           <li>
             <div class="dropdown-item">
-              <i class="fa-solid fa-user"></i><span class="dropdown-item-text">Samuel Torales</span>
+              <i class="fa-solid fa-user"></i><span class="dropdown-item-text">{{ usuarioActual.NombrePersonal }}</span>
             </div>
             <div class="dropdown-item">
-              <i class="fa-solid fa-id-card"></i><span class="dropdown-item-text">Administrador</span>
-            </div>
-            <div class="dropdown-item">
-              <i class="fa-solid fa-shop"></i><span class="dropdown-item-text">Sucursal 1</span>
+              <i class="fa-solid fa-shop"></i><span class="dropdown-item-text">{{ usuarioActual.SucursalPersonal }}</span>
             </div>
           </li>
-          <li><a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#CambiarClaveModal" id="CambiarClaveModalbtn"><i class="fa-solid fa-gear"></i>Cambiar Contraseña</a></li>
+          <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#CambiarClaveModal" id="CambiarClaveModalbtn"><i class="fa-solid fa-gear"></i>Cambiar Contraseña</a></li>
           <li><a class="dropdown-item" href="login"><i class="fa-solid fa-right-from-bracket"></i>Salir</a></li>
         </ul>
       </div>
@@ -81,4 +76,3 @@
     </div>
   </div>
 </nav>
-
