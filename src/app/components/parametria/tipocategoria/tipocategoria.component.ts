@@ -23,26 +23,41 @@ export class TipocategoriaComponent implements OnInit {
     private modalService: NgbModal,
     private formBuilder: FormBuilder
   ) {}
-
+  
   ngOnInit(): void {
     this.Token = localStorage.getItem('Token');
-    // validar que idFiltro si es null asiganrlo como 1 y si no dejarle el valor
-    this.listar(1);
     this.formItemGrilla = this.formBuilder.group({
-      descripcion: new FormControl('', [Validators.required])});
+      descripcion: new FormControl('', [Validators.required])
+    });
 
     this.formFiltro = this.formBuilder.group({
-      idFiltro: new FormControl('', [Validators.required])});
+      idFiltro: new FormControl('1', [Validators.required]) // Default value set to 1
+    });
+
+    this.listar(1); // Initially list only enabled items
+
+    // Listen for changes in the filter and update the list accordingly
+    this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
+      this.listar(value);
+    });
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    this.tipoCategoriaService.listar(TipoLista)
-      .subscribe(response => {
+    this.tipoCategoriaService.listar(TipoLista).subscribe(
+      response => {
+        console.log('API response:', response);
         this.itemGrilla = new TipoCategoria();
         this.listaGrilla = response.TipoCategoria || [];
-      }, error => {
+      },
+      error => {
         console.error('Error al cargar tipos de categoría:', error);
-      });
+      }
+    );
+  }
+
+  cambiarFiltro(): void {
+    const filtro = this.formFiltro.get('idFiltro').value;
+    this.listar(filtro);
   }
 
   openAgregar(content) {

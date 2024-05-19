@@ -1,15 +1,15 @@
 <div class="col-sm-11 main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
-    <form>
-      <h1 id="tituloTabla">Categoría <i class="fa-solid fa-layer-group"></i></h1>
+    <form [formGroup]="formFiltro">
+      <h1 id="tituloTabla">Formas de Pago <i class="fa-solid fa-layer-group"></i></h1>
       <div class="d-flex align-items-start justify-content-between">
         <div class="form-group col-md-2 mt-3">
           <label for="idFiltro">Filtrar Por:</label>
-          <select formControlName="idFiltro" class="form-control" id="idFiltro">
-            <option value="2" selected>Solo Habilitados</option>
-            <option value="3">Solo Inhabilitados</option>
-            <option value="1">Todos</option>
+          <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
+            <option value="1">Solo Habilitados</option>
+            <option value="2">Solo Inhabilitados</option>
+            <option value="0">Todos</option>
           </select>
         </div>
         <div class="form-group mt-3">
@@ -44,23 +44,26 @@
                 </button>
                 <!-- Menú desplegable con opciones -->
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li>
-                    <a class="dropdown-item" (click)="openEditar(content, item)">
-                      <i class="fa-solid fa-pen-to-square"></i>Editar
-                    </a>
-                  </li>
-                  <li *ngIf="item.FechaBaja !== null"> <!-- Mostrar solo si FechaBaja no es null -->
-                    <a class="dropdown-item" click()="openHabilitar(contentHabilitar, item)">
+                  <!-- Mostrar solo si FechaBaja no es null -->
+                  <li *ngIf="item.FechaBaja !== null">
+                    <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
                       <i class="fa-solid fa-check"></i> Habilitar
                     </a>
                   </li>
-                  <li *ngIf="item.FechaBaja == null">
+                  <!-- Mostrar solo si FechaBaja es null -->
+                  <li *ngIf="item.FechaBaja === null">
                     <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
                       <i class="fa-solid fa-xmark"></i> Inhabilitar
                     </a>
                   </li>
+                  <!-- Mostrar solo si FechaBaja es null -->
+                  <li *ngIf="item.FechaBaja === null">
+                    <a class="dropdown-item" (click)="openEditar(content, item)">
+                      <i class="fa-solid fa-pen-to-square"></i> Editar
+                    </a>
+                  </li>
                 </ul>
-              </td>
+              </td>              
             </tr>
           </tbody>
         </table>

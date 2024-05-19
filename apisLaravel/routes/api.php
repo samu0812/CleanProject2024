@@ -85,7 +85,7 @@ Route::post('/SPA_Usuarios',[UsuariosController::class, 'SPA_Usuarios']);
 Route::put('/SPM_Usuarios',[UsuariosController::class, 'SPM_Usuarios']);
 
 //borrar Usuarios
-Route::delete('/SPB_Usuarios',[UsuariosController::class, 'SPB_Usuarios']);
+Route::put('/SPB_Usuarios',[UsuariosController::class, 'SPB_Usuarios']);
 
 
 //-------------------------SUBMODULO DE TipoRol-------------------------
@@ -97,7 +97,7 @@ Route::post('/SPA_TipoRol',[tiporolController::class, 'SPA_TipoRol']);
 Route::put('/SPM_TipoRol',[tiporolController::class, 'SPM_TipoRol']);
 
 //borrar tipo rol
-Route::delete('/SPB_TipoRol',[tiporolController::class, 'SPB_TipoRol']);
+Route::put('/SPB_TipoRol',[tiporolController::class, 'SPB_TipoRol']);
 
 //listar tipo rol
 Route::get('/SPL_TipoRol',[tiporolController::class, 'SPL_TipoRol']);
@@ -115,7 +115,7 @@ Route::get('/SPL_RolModulo',[rolModuloController::class, 'SPL_RolModulo']);
 Route::post('/SPA_RolModulo',[rolModuloController::class, 'SPA_RolModulo']);
 
 //borrar rol modulo
-Route::delete('/SPB_RolModulo',[rolModuloController::class, 'SPB_RolModulo']);
+Route::put('/SPB_RolModulo',[rolModuloController::class, 'SPB_RolModulo']);
 
 //habilitar rol modulo
 Route::put('/SPH_RolModulo',[rolModuloController::class, 'SPH_RolModulo']);
@@ -172,7 +172,7 @@ Route::post('/SPA_TipoPersonaSistema',[TipoPersonaSistemaController::class, 'SPA
 Route::put('/SPM_TipoPersonaSistema',[TipoPersonaSistemaController::class, 'SPM_TipoPersonaSistema']);
 
 //borrar tipo PersonaSistema
-Route::delete('/SPB_TipoPersonaSistema',[TipoPersonaSistemaController::class, 'SPB_TipoPersonaSistema']);
+Route::put('/SPB_TipoPersonaSistema',[TipoPersonaSistemaController::class, 'SPB_TipoPersonaSistema']);
 
 //habilitar tipo PersonaSistema
 Route::put('/SPH_TipoPersonaSistema',[TipoPersonaSistemaController::class, 'SPH_TipoPersonaSistema']);
@@ -188,7 +188,7 @@ Route::post('/SPA_TipoProducto',[TipoProductoController::class, 'SPA_TipoProduct
 Route::put('/SPM_TipoProducto',[TipoProductoController::class, 'SPM_TipoProducto']);
 
 //borrar Tipo Producto
-Route::delete('/SPB_TipoProducto',[TipoProductoController::class, 'SPB_TipoProducto']);
+Route::put('/SPB_TipoProducto',[TipoProductoController::class, 'SPB_TipoProducto']);
 
 //habilitar Tipo Producto
 Route::put('/SPH_TipoProducto',[TipoProductoController::class, 'SPH_TipoProducto']);
@@ -220,7 +220,7 @@ Route::post('/SPA_TipoImpuesto',[TipoImpuestoController::class, 'SPA_TipoImpuest
 Route::put('/SPM_TipoImpuesto',[TipoImpuestoController::class, 'SPM_TipoImpuesto']);
 
 //borrar Tipo Impuesto
-Route::delete('/SPB_TipoImpuesto',[TipoImpuestoController::class, 'SPB_TipoImpuesto']);
+Route::put('/SPB_TipoImpuesto',[TipoImpuestoController::class, 'SPB_TipoImpuesto']);
 
 //habilitar Tipo Impuesto
 Route::put('/SPH_TipoImpuesto',[TipoImpuestoController::class, 'SPH_TipoImpuesto']);
@@ -236,7 +236,7 @@ Route::post('/SPA_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPA_TipoF
 Route::put('/SPM_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPM_TipoFormaDePago']);
 
 //borrar Tipo FormaDePago
-Route::delete('/SPB_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPB_TipoFormaDePago']);
+Route::put('/SPB_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPB_TipoFormaDePago']);
 
 //habilitar Tipo FormaDePago
 Route::put('/SPH_TipoFormaDePago',[TipoFormaDePagoController::class, 'SPH_TipoFormaDePago']);

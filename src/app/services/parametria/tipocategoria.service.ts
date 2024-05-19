@@ -43,9 +43,9 @@ export class TipoCategoriaService {
 
   habilitar(item: TipoCategoria, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPH_TipoCategoria`;
-    let headers = new HttpHeaders();
-    headers = headers.append("IdTipoCategoria", item.IdTipoCategoria.toString());
-    headers = headers.append("Token", Token);
-    return this.http.put<TipoCategoria[]>(url,{ headers: headers});
+    const body = {
+      IdTipoCategoria: item.IdTipoCategoria,
+      Token: Token};
+    return this.http.put<TipoCategoria[]>(url,body);
   }
 }

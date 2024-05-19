@@ -12,23 +12,23 @@ class TipoFormaDePagoController extends Controller
     public function SPL_TipoFormaDePago(Request $request) {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'tipoLista' => 'required|integer',
+            'TipoLista' => 'required|integer',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $tipoLista = $request->input('tipoLista');
+        $TipoLista = $request->input('TipoLista');
 
-        // Ejecutar el procedimiento almacenado SPL_TipoProducto
-        $resultados = DB::select('CALL SPL_TipoFormaDePago(?)', [$tipoLista]);
+        // Ejecutar el procedimiento almacenado SPL_TipoFormaDePago
+        $resultados = DB::select('CALL SPL_TipoFormaDePago(?)', [$TipoLista]);
 
         // Obtener el mensaje del resultado
         $mensaje = isset($resultados[0]->Message) ? $resultados[0]->Message : null;
@@ -37,15 +37,15 @@ class TipoFormaDePagoController extends Controller
         if ($mensaje === null) {
             // Devolver los resultados como respuesta
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
-                'TipoProducto' => $resultados,
+                'Message' => 'OK',
+                'Status' => 200,
+                'TipoFormaDePago' => $resultados,
             ], 200);
         } else {
             // Devolver el mensaje de error
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400,
+                'Message' => $mensaje,
+                'Status' => 400,
             ], 400);
         }
     }
@@ -54,24 +54,24 @@ class TipoFormaDePagoController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'descripcion' => 'required|string|max:50',
-            'token' => 'required|string|max:500',
+            'Descripcion' => 'required|string|max:50',
+            'Token' => 'required|string|max:500',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $descripcion = $request->input('descripcion');
-        $token = $request->input('token');
+        $descripcion = $request->input('Descripcion');
+        $token = $request->input('Token');
 
-        // Ejecutar el procedimiento almacenado SPA_TipoProducto
+        // Ejecutar el procedimiento almacenado SPA_TipoFormaDePago
         $resultados = DB::select('CALL SPA_TipoFormaDePago(?, ?)', [$descripcion, $token]);
 
         // Obtener el mensaje del resultado
@@ -80,13 +80,13 @@ class TipoFormaDePagoController extends Controller
         // Devolver la respuesta según el mensaje obtenido
         if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
             ], 200);
         } else {
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400,
+                'Message' => $mensaje,
+                'Status' => 400,
             ], 400);
         }
 
@@ -95,29 +95,29 @@ class TipoFormaDePagoController extends Controller
     public function SPM_TipoFormaDePago(Request $request) {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer',
-            'descripcion' => 'required|string|max:50',
-            'token' => 'required|string|max:500',
+            'IdTipoFormaDePago' => 'required|integer',
+            'Descripcion' => 'required|string|max:50',
+            'Token' => 'required|string|max:500',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $id = $request->input('id');
-        $descripcion = $request->input('descripcion');
-        $token = $request->input('token');
+        $IdTipoFormaDePago = $request->input('IdTipoFormaDePago');
+        $Descripcion = $request->input('Descripcion');
+        $Token = $request->input('Token');
 
 
 
-        // Ejecutar el procedimiento almacenado SPM_TipoProducto
-        $resultados = DB::select('CALL SPM_TipoFormaDePago(?, ?, ?)', [$id, $descripcion , $token]);
+        // Ejecutar el procedimiento almacenado SPM_TipoFormaDePago
+        $resultados = DB::select('CALL SPM_TipoFormaDePago(?, ?, ?)', [$IdTipoFormaDePago, $Descripcion , $Token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;
@@ -125,13 +125,13 @@ class TipoFormaDePagoController extends Controller
         // Determinar el estado de la operación según el mensaje
         if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
             ], 200);
         } else {
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400, // Bad Request
+                'Message' => $mensaje,
+                'Status' => 400, // Bad Request
             ], 400);
         }
     }
@@ -140,25 +140,25 @@ class TipoFormaDePagoController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer',
-            'token' => 'required|string|max:500',
+            'IdTipoFormaDePago' => 'required|integer',
+            'Token' => 'required|string|max:500',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $id = $request->input('id');
-        $token = $request->input('token');
+        $IdTipoFormaDePago = $request->input('IdTipoFormaDePago');
+        $Token = $request->input('Token');
 
-        // Ejecutar el procedimiento almacenado SPH_TipoProducto
-        $resultados = DB::select('CALL SPB_TipoFormaDePago(?, ?)', [$id, $token]);
+        // Ejecutar el procedimiento almacenado SPH_TipoFormaDePago
+        $resultados = DB::select('CALL SPB_TipoFormaDePago(?, ?)', [$IdTipoFormaDePago, $Token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;
@@ -166,13 +166,13 @@ class TipoFormaDePagoController extends Controller
         // Determinar el estado de la operación según el mensaje
         if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
             ], 200);
         } else {
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400, // Bad Request
+                'Message' => $mensaje,
+                'Status' => 400, // Bad Request
             ], 400);
         }
     }
@@ -181,25 +181,25 @@ class TipoFormaDePagoController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer',
-            'token' => 'required|string|max:500',
+            'IdTipoFormaDePago' => 'required|integer',
+            'Token' => 'required|string|max:500',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $id = $request->input('id');
-        $token = $request->input('token');
+        $IdTipoFormaDePago = $request->input('IdTipoFormaDePago');
+        $Token = $request->input('Token');
 
-        // Ejecutar el procedimiento almacenado SPH_TipoProducto
-        $resultados = DB::select('CALL SPH_TipoFormaDePago(?, ?)', [$id, $token]);
+        // Ejecutar el procedimiento almacenado SPH_TipoFormaDePago
+        $resultados = DB::select('CALL SPH_TipoFormaDePago(?, ?)', [$IdTipoFormaDePago, $Token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;
@@ -207,13 +207,13 @@ class TipoFormaDePagoController extends Controller
         // Determinar el estado de la operación según el mensaje
         if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
             ], 200);
         } else {
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400, // Bad Request
+                'Message' => $mensaje,
+                'Status' => 400, // Bad Request
             ], 400);
         }
     }
