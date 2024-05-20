@@ -85,7 +85,7 @@
 }
 /* Estilos CSS para el menú desplegable */
 .dropdown {
-  position: static; /* Establece la posición relativa para posicionar el menú */
+  position: relative; /* Establece la posición relativa para posicionar el menú */
 }
 
 .dropdown-menu {

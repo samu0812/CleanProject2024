@@ -12,20 +12,20 @@ class TipoImpuestoController extends Controller
     public function SPL_TipoImpuesto(Request $request) {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'tipoLista' => 'required|integer',
+            'TipoLista' => 'required|integer',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $tipoLista = $request->input('tipoLista');
+        $tipoLista = $request->input('TipoLista');
     
         // Ejecutar el procedimiento almacenado SPL_TipoProducto
         $resultados = DB::select('CALL SPL_TipoImpuesto(?)', [$tipoLista]);
@@ -37,15 +37,15 @@ class TipoImpuestoController extends Controller
         if ($mensaje === null) {
             // Devolver los resultados como respuesta
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
-                'TipoProducto' => $resultados,
+                'Message' => 'OK',
+                'Status' => 200,
+                'TipoImpuesto' => $resultados,
             ], 200);
         } else {
             // Devolver el mensaje de error
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400,
+                'Message' => $mensaje,
+                'Status' => 400,
             ], 400);
         }
     }
@@ -55,27 +55,27 @@ class TipoImpuestoController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'descripcion' => 'required|string|max:50',
-            'porcentaje'=> 'required|integer|max:500',
-            'token' => 'required|string|max:500',
+            'Detalle' => 'required|string|max:50',
+            'Porcentaje'=> 'required|numeric|max:500',
+            'Token' => 'required|string|max:500',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $descripcion = $request->input('descripcion');
-        $porcentaje = $request->input('porcentaje');
-        $token = $request->input('token');
+        $detalle = $request->input('Detalle');
+        $porcentaje = $request->input('Porcentaje');
+        $token = $request->input('Token');
 
         // Ejecutar el procedimiento almacenado SPA_TipoProducto
-        $resultados = DB::select('CALL SPA_TipoImpuesto(?, ?,?)', [$descripcion, $porcentaje, $token]);
+        $resultados = DB::select('CALL SPA_TipoImpuesto(?, ?,?)', [$detalle, $porcentaje, $token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;
@@ -83,13 +83,13 @@ class TipoImpuestoController extends Controller
         // Devolver la respuesta según el mensaje obtenido
         if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
             ], 200);
         } else {
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400,
+                'Message' => $mensaje,
+                'Status' => 400,
             ], 400);
         }
 
@@ -98,29 +98,29 @@ class TipoImpuestoController extends Controller
     public function SPM_TipoImpuesto(Request $request) {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer',
-            'descripcion' => 'required|string|max:50',
-            'porcentaje'=> 'required|integer|max:500',
-            'token' => 'required|string|max:500',
+            'IdTipoImpuesto' => 'required|integer',
+            'Detalle' => 'required|string|max:50',
+            'Porcentaje'=> 'required|numeric|max:500',
+            'Token' => 'required|string|max:500',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $id = $request->input('id');
-        $descripcion = $request->input('descripcion');
-        $porcentaje = $request->input('porcentaje');
-        $token = $request->input('token');
+        $id = $request->input('IdTipoImpuesto');
+        $detalle = $request->input('Detalle');
+        $porcentaje = $request->input('Porcentaje');
+        $token = $request->input('Token');
 
         // Ejecutar el procedimiento almacenado SPM_TipoProducto
-        $resultados = DB::select('CALL SPM_TipoImpuesto(?, ?, ?,?)', [$id, $descripcion, $porcentaje , $token]);
+        $resultados = DB::select('CALL SPM_TipoImpuesto(?, ?, ?,?)', [$id, $detalle, $porcentaje , $token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;
@@ -128,13 +128,13 @@ class TipoImpuestoController extends Controller
         // Determinar el estado de la operación según el mensaje
         if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
             ], 200);
         } else {
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400, // Bad Request
+                'Message' => $mensaje,
+                'Status' => 400, // Bad Request
             ], 400);
         }
     }
@@ -143,22 +143,22 @@ class TipoImpuestoController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer',
-            'token' => 'required|string|max:500',
+            'IdTipoImpuesto' => 'required|integer',
+            'Token' => 'required|string|max:500',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $id = $request->input('id');
-        $token = $request->input('token');
+        $id = $request->input('IdTipoImpuesto');
+        $token = $request->input('Token');
 
         // Ejecutar el procedimiento almacenado SPB_TipoProducto
         $resultados = DB::select('CALL SPB_TipoImpuesto(?, ?)', [$id, $token]);
@@ -169,13 +169,13 @@ class TipoImpuestoController extends Controller
         // Determinar el estado de la operación según el mensaje
         if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
             ], 200);
         } else {
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400, // Bad Request
+                'Message' => $mensaje,
+                'Status' => 400, // Bad Request
             ], 400);
         }
 
@@ -185,22 +185,22 @@ class TipoImpuestoController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer',
-            'token' => 'required|string|max:500',
+            'IdTipoImpuesto' => 'required|integer',
+            'Token' => 'required|string|max:500',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $id = $request->input('id');
-        $token = $request->input('token');
+        $id = $request->input('IdTipoImpuesto');
+        $token = $request->input('Token');
 
         // Ejecutar el procedimiento almacenado SPH_TipoProducto
         $resultados = DB::select('CALL SPH_TipoImpuesto(?, ?)', [$id, $token]);
@@ -211,13 +211,13 @@ class TipoImpuestoController extends Controller
         // Determinar el estado de la operación según el mensaje
         if ($mensaje === 'OK') {
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
             ], 200);
         } else {
             return response()->json([
-                'message' => $mensaje,
-                'status' => 400, // Bad Request
+                'Message' => $mensaje,
+                'Status' => 400, // Bad Request
             ], 400);
         }
     }

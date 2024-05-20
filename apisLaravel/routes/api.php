@@ -78,7 +78,7 @@ Route::get('/SP_GetMenuUsuario',[menuController::class, 'SP_GetMenuUsuario']);
 //listar Usuarios
 Route::get('/SPL_Usuarios',[UsuariosController::class, 'SPL_Usuarios']);
 
-//agregar Usuarios
+//agregar Usuarios 
 Route::post('/SPA_Usuarios',[UsuariosController::class, 'SPA_Usuarios']);
 
 //editar Usuarios

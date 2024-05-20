@@ -123,6 +123,7 @@ export class TipocategoriaComponent implements OnInit {
     this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.modalRef.close();
       }, error => {
         console.error('Error al habilitar tipo de categoría:', error);
       });

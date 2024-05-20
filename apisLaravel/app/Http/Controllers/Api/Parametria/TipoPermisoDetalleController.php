@@ -13,20 +13,20 @@ class TipoPermisoDetalleController extends Controller
     public function SPL_TipoPermisoDetalle(Request $request) {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'idTipoPermiso' => 'nullable|integer',
+            'IdTipoPermiso' => 'nullable|integer',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400,
+                'Message' => 'Error en la validación de los datos',
+                'Errors' => $validator->errors(),
+                'Status' => 400,
             ], 400);
         }
 
         // Obtener el ID del tipo de permiso de la solicitud
-        $idTipoPermiso = $request->input('idTipoPermiso');
+        $idTipoPermiso = $request->input('IdTipoPermiso');
 
         // Ejecutar el procedimiento almacenado SPL_TipoPermisoDetalle
         $resultados = DB::select('CALL SPL_TipoPermisoDetalle(?)', [$idTipoPermiso]);
@@ -39,21 +39,21 @@ class TipoPermisoDetalleController extends Controller
             if ($mensaje === 'OK') {
                 // Devolver los resultados como respuesta
                 return response()->json([
-                    'message' => 'OK',
-                    'status' => 200,
+                    'Message' => 'OK',
+                    'Status' => 200,
                     'TipoPermisoDetalles' => $resultados,
                 ], 200);
             } else {
                 return response()->json([
-                    'message' => $mensaje,
-                    'status' => 400, // Bad Request
+                    'Message' => $mensaje,
+                    'Status' => 400, // Bad Request
                 ], 400);
             }
         } else {
             // Si no hay un campo 'v_Message', devolver los resultados como respuesta
             return response()->json([
-                'message' => 'OK',
-                'status' => 200,
+                'Message' => 'OK',
+                'Status' => 200,
                 'TipoPermisoDetalles' => $resultados,
             ], 200);
         }
