@@ -1,9 +1,10 @@
-import { Usuario } from './../../models/usuario/usuario';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { AlertasService } from '../../services/alertas/alertas.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -12,14 +13,13 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class LoginComponent implements OnInit {
   FormularioLogin: FormGroup;
-  Error: string = '';
-  datosUsuario: Usuario[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
@@ -40,17 +40,17 @@ export class LoginComponent implements OnInit {
             this.authService.setAuthenticated(true, response); // Pasa la información del usuario
             this.router.navigate(['/home']);
           } else {
-            console.log('Credenciales incorrectas');
-            this.Error = 'Credenciales incorrectas, por favor intenta de nuevo.';
+            this.alertasService.ErrorAlert('Credenciales incorrectas', 'Por favor intenta de nuevo.');
           }
         },
         (error) => {
-          console.error('Error al autenticar:', error);
-          this.Error = 'Error al intentar iniciar sesión, por favor intenta de nuevo más tarde.';
+          this.alertasService.ErrorAlert('Error al autenticar:', 'Por favor intenta de nuevo.');
         }
       );
     } else {
-      this.Error = 'Por favor ingresa tu usuario y contraseña correctamente.';
+      this.alertasService.ErrorAlert('Error al autenticar:', 'Por favor intenta de nuevo.');
     }
   }
+
+
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TipoCategoriaService } from '../../../services/parametria/tipocategoria.service';
 import { TipoCategoria } from '../../../models/parametria/tipoCategoria'
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { Menu } from '../../../models/menu/menu';
 
 @Component({
   selector: 'app-tipocategoria',
@@ -10,6 +11,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
   styleUrls: ['./tipocategoria.component.css']
 })
 export class TipocategoriaComponent implements OnInit {
+  @Input() menu: Menu;
   tituloModal: string;
   tituloBoton: string;
   itemGrilla: TipoCategoria; // cada item de la tabla
