@@ -41,7 +41,7 @@ export class TipomedidaComponent {
     console.log(TipoLista, "sa");
     this.tipomedidaService.listar(TipoLista)
       .subscribe(response => {
-        this.listaGrilla = response.TipoDestinatarioFacturas || [];
+        this.listaGrilla = response.TipoMedidas || [];
         console.log(this.listaGrilla, "sasass");
       }, error => {
         console.error('Error al cargar tipos de categoría:', error);

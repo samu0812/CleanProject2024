@@ -8,6 +8,7 @@
   letter-spacing: 2px;
   background-color: #FF8C00;
   border-radius: 10px; /* Redondea los bordes del elemento */
+  background: linear-gradient(to right, rgba(255, 140, 0, 0) 0%, rgba(255, 140, 0, 0) 30%, #FF8C00 30%, #FF8C00 70%, rgba(255, 140, 0, 0) 0%, rgba(255, 140, 0, 0) 100%);
 }
 .footer {
   margin-top: 20px;

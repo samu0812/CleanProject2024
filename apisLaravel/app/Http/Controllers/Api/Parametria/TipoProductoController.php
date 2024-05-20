@@ -54,7 +54,7 @@ class TipoProductoController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'Descripcion' => 'required|string|max:50',
+            'Detalle' => 'required|string|max:50',
             'Token' => 'required|string|max:500',
         ]);
 
@@ -68,12 +68,12 @@ class TipoProductoController extends Controller
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $descripcion = $request->input('Descripcion');
+        $Detalle = $request->input('Detalle');
         $token = $request->input('Token');
 
 
         // Ejecutar el procedimiento almacenado SPA_TipoProducto
-        $resultados = DB::select('CALL SPA_TipoProducto(?, ?)', [$descripcion, $token]);
+        $resultados = DB::select('CALL SPA_TipoProducto(?, ?)', [$Detalle, $token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;
@@ -98,7 +98,7 @@ class TipoProductoController extends Controller
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
             'IdTipoProducto' => 'required|integer',
-            'Descripcion' => 'required|string|max:50',
+            'Detalle' => 'required|string|max:50',
             'Token' => 'required|string|max:500',
         ]);
 
@@ -113,11 +113,11 @@ class TipoProductoController extends Controller
 
         // Obtener los datos del cuerpo de la solicitud
         $id = $request->input('IdTipoProducto');
-        $descripcion = $request->input('Descripcion');
+        $Detalle = $request->input('Detalle');
         $token = $request->input('Token');
 
         // Ejecutar el procedimiento almacenado SPM_TipoProducto
-        $resultados = DB::select('CALL SPM_TipoProducto(?, ?, ?)', [$id, $descripcion, $token]);
+        $resultados = DB::select('CALL SPM_TipoProducto(?, ?, ?)', [$id, $Detalle, $token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;

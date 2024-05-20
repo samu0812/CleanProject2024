@@ -1,23 +1,19 @@
-<div class="navbar-container">
-  <app-navbar></app-navbar>
-</div>
-
-<div class="col-sm-11 main-section">
+<div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
-    <form>
-      <h1 id="tituloTabla"><i class="fa-solid fa-people-arrows"></i></h1>
+    <form [formGroup]="formFiltro">
+      <h1 id="tituloTabla">Tipo Producto <i class="fa-solid fa-layer-group"></i></h1>
       <div class="d-flex align-items-start justify-content-between">
         <div class="form-group col-md-2 mt-3">
-          <label for="lista">Filtrar Por:</label>
-          <select formControlName="tipoLista" class="form-control" id="tipoLista">
-            <option value="2" selected>Solo Habilitados</option>
-            <option value="3">Solo Inhabilitados</option>
-            <option value="1">Todos</option>
+          <label for="idFiltro">Filtrar Por:</label>
+          <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
+            <option value="1">Solo Habilitados</option>
+            <option value="2">Solo Inhabilitados</option>
+            <option value="0">Todos</option>
           </select>
         </div>
         <div class="form-group mt-3">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarModal" id="AgregarModalbtn">
+          <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
             <i class="fa-solid fa-circle-plus"></i> <!-- Aplica la clase 'button-icon' al ícono -->
             Agregar
           </button>
@@ -25,119 +21,108 @@
       </div>
     </form>
     <!-- Grilla -->
-    <div class="registros mt-3">
-      <h5>No se encontraron registros...</h5>
+    <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
       <div class="table-responsive">
         <table class="table">
-          <thead class="thead-light">
+          <thead class="thead-dark">
             <tr>
-              <th scope="col"></th> <!-- Ver -->
+              <th scope="col">Nro</th>
               <th scope="col">Estado</th>
-              <th scope="col">Descripción del </th>
+              <th scope="col">Descripción</th>
               <th scope="col">Acción</th>
             </tr>
           </thead>
           <tbody class="tablaUser">
-            <tr>
-              <td scope="col"></td> <!-- Ver -->
-              <td scope="col">Estado</td>
-              <td scope="col">Descripcion del </td>
+            <tr *ngFor="let item of listaGrilla; let i = index">
+              <td scope="col">{{ item.IdTipoProducto }}</td>
+              <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+              <td scope="col">{{ item.Detalle }}</td>
               <td scope="col" class="dropdown">
-                  <!-- Botón de acción con menú desplegable -->
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa-solid fa-gears"></i>
-                    </button>
-                    <!-- Menú desplegable con opciones -->
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditarModal">
-                          <i class="fa-solid fa-pen-to-square"></i>Editar
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#inhabilitarModal">
-                          <i class="fa-solid fa-xmark"></i>Inhabilitar
-                        </a>
-                      </li>
-                    </ul>
-              </td>
+                <!-- Botón de acción con menú desplegable -->
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-gears"></i>
+                </button>
+                <!-- Menú desplegable con opciones -->
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <!-- Mostrar solo si FechaBaja no es null -->
+                  <li *ngIf="item.FechaBaja !== null">
+                    <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
+                      <i class="fa-solid fa-check"></i> Habilitar
+                    </a>
+                  </li>
+                  <!-- Mostrar solo si FechaBaja es null -->
+                  <li *ngIf="item.FechaBaja === null">
+                    <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                      <i class="fa-solid fa-xmark"></i> Inhabilitar
+                    </a>
+                  </li>
+                  <!-- Mostrar solo si FechaBaja es null -->
+                  <li *ngIf="item.FechaBaja === null">
+                    <a class="dropdown-item" (click)="openEditar(content, item)">
+                      <i class="fa-solid fa-pen-to-square"></i> Editar
+                    </a>
+                  </li>
+                </ul>
+              </td>              
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <ng-template #noData>
+      <h5>No se encontraron registros...</h5>
+    </ng-template>
   </div>
 </div>
-<div class="modal fade" id="AgregarModal" tabindex="-1" aria-labelledby="AgregarModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="AgregarModalLabel"><i class="fa-solid fa-circle-plus"></i> Agregar </h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Descripcion del </label>
-            <input type="text" id="rol" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Crear</button>
-      </div>
-    </div>
+<!-- AgregarCategoriaModal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
-</div>
-<div class="modal fade" id="EditarModal" tabindex="-1" aria-labelledby="EditarModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="EditarModalLabel"><i class="fa-solid fa-pen-to-square"></i>Editar</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label"> </label>
-            <input type="text" id="" class="form-control">
+  <div class="modal-body">
+    <form [formGroup]="formItemGrilla">
+      <div class="form-row">
+        <div class="form-group col-md-10">
+          <div style="margin-bottom: 15px">
+            <label for="Detalle">Descripción:</label>
           </div>
-        </form>
+          <input [(ngModel)]="itemGrilla.Detalle" type="text" formControlName="Detalle" class="form-control" id="Detalle" placeholder="Descripción">
+        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
+      <div class="form-group col text-right" style="margin-top: 25px;">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="guardar()">{{ tituloBoton }}</button>
       </div>
-    </div>
+    </form>
   </div>
-</div>
-<div class="modal fade" id="inhabilitarModal" tabindex="-1" aria-labelledby="inhabilitarModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="inhabilitarModalLabel"><i class="fa-solid fa-xmark"></i>Inhabilitar</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label"></label>
-            <input type="text" id="" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Motivo</label>
-            <input type="text" id="motivo" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
+</ng-template>
+
+<ng-template #contentInhabilitar let-modal>
+  <div class="modal-header">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
-</div>
+  <div class="modal-body">
+      <a></a><h4 class="">Desea Eliminar?</h4>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
+        </div>
+  </div>
+</ng-template>
+
+<ng-template #contentHabilitar let-modal>
+  <div class="modal-header">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+  </div>
+  <div class="modal-body">
+      <a></a><h4 class="">Desea Habilitar?</h4>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
+        </div>
+  </div>
+</ng-template>
+
 <footer class="footer">
   <app-footer></app-footer>
 </footer>
