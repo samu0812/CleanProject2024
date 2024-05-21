@@ -7,13 +7,12 @@ import { AlertasService } from '../../services/alertas/alertas.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-login',
+  selector:'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   FormularioLogin: FormGroup;
-
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
