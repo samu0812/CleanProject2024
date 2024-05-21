@@ -1,15 +1,20 @@
 <div class="container-fluid main-section">
   <div class="modal-content">
-    <!-- Filtros de Búsqueda -->
-      <h1 id="tituloTabla">Destinatario de Factura <i class="fa-solid fa-people-arrows"></i></h1>
-    <!-- Grilla -->
+    <div class="container">
+      <h4 class="title-menu centered-rounded-background">
+          <a>
+              <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+          </a>
+          <a style="margin-left: 5px;">Tipo Domicilio</a>
+      </h4>
+  </div>
     <div class="registros mt-3" *ngIf="listaGrilla.length > 0; else noData">
       <div class="table-responsive">
         <table class="table">
           <thead class="thead-light">
             <tr>
               <th scope="col">Nro</th>
-              <th scope="col">Descripción del Destinatario</th>
+              <th scope="col">Descripción del Domicilio</th>
             </tr>
           </thead>
           <tbody>

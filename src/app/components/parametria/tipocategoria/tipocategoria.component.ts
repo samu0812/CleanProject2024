@@ -4,6 +4,7 @@ import { TipoCategoria } from '../../../models/parametria/tipoCategoria'
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
 
 @Component({
   selector: 'app-tipocategoria',
@@ -20,13 +21,16 @@ export class TipocategoriaComponent implements OnInit {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(private tipoCategoriaService: TipoCategoriaService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService
   ) {}
   
   ngOnInit(): void {
+    this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       descripcion: new FormControl('', [Validators.required])
@@ -42,7 +46,15 @@ export class TipocategoriaComponent implements OnInit {
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
     });
+
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipocategoria').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+      console.log(data);
+      console.log(data.ImagenSubmenu[0]);
+    });
+  }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoCategoriaService.listar(TipoLista).subscribe(

@@ -1,7 +1,14 @@
 <div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
-      <h1 id="tituloTabla">Destinatario de Factura <i class="fa-solid fa-people-arrows"></i></h1>
+    <div class="container">
+      <h4 class="title-menu centered-rounded-background">
+          <a>
+              <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+          </a>
+          <a style="margin-left: 5px;">Documentaciones</a>
+      </h4>
+  </div>
     <!-- Grilla -->
     <div class="registros mt-3" *ngIf="listaGrilla.length > 0; else noData">
       <div class="table-responsive">
@@ -9,7 +16,7 @@
           <thead class="thead-light">
             <tr>
               <th scope="col">Nro</th>
-              <th scope="col">Descripción del Destinatario</th>
+              <th scope="col">Descripción de la Documentación</th>
             </tr>
           </thead>
           <tbody>

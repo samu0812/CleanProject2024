@@ -1,18 +1,35 @@
-#tituloTabla {
+.container {
+  display: flex; /* Utiliza flexbox para el contenedor */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
+
+/* Estilos para el elemento h4 */
+.centered-rounded-background {
   font-family: 'Roboto', sans-serif;
-  font-size: 22px;
   text-align: center;
   color: #ffffff;
   margin-top: 30px;
   margin-bottom: 30px;
   letter-spacing: 1px;
-  border-radius: 10px;
-  padding-top: 15px;
-  padding-bottom: 15px;
   margin-bottom: 0%;
-  background: linear-gradient(to right, rgba(255, 140, 0, 0) 0%, rgba(255, 140, 0, 0) 30%, #FF8C00 30%, #FF8C00 70%, rgba(255, 140, 0, 0) 0%, rgba(255, 140, 0, 0) 100%);
+  display: inline-flex; /* Ajusta el tamaño al contenido */
+  background-color: #FF8C00; /* Color de fondo */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 5px 50px; /* Espacio interno reducido */
+  align-items: center; /* Alinea los elementos hijos verticalmente */
 }
 
+.title-menu {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espacio entre los elementos internos */
+}
+.img-crud{
+  width: 40px;
+  vertical-align: middle;
+}
 .main-section {
   margin: 0 auto;
   margin-top: 5%;
@@ -161,3 +178,9 @@ tbody td {
   border-radius: 10px; /* Redondea los bordes */
   overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
 }
+
+
+/* Estilos para centrar el contenedor en la página */
+
+
+
