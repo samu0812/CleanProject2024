@@ -59,6 +59,7 @@ import { TipopersonasistemaComponent } from './components/parametria/tipopersona
 import { SubmenuComponent } from './components/navbar/submenu/submenu.component';
 import { ItemComponent } from './components/navbar/submenu/item/item.component';
 import { TipodocumentacionComponent } from './components/parametria/tipodocumentacion/tipodocumentacion.component';
+import { TiposucursalComponent } from './components/parametria/tiposucursal/tiposucursal.component';
 
 
 @NgModule({
@@ -107,7 +108,8 @@ import { TipodocumentacionComponent } from './components/parametria/tipodocument
     TipopersonasistemaComponent,
     SubmenuComponent,
     ItemComponent,
-    TipodocumentacionComponent
+    TipodocumentacionComponent,
+    TiposucursalComponent
   ],
   imports: [
     BrowserModule,
