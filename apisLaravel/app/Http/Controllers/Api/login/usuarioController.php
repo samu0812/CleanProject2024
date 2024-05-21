@@ -25,9 +25,9 @@ class usuarioController extends Controller
         // Si hay errores de validación, devolver la respuesta correspondiente
         if($validator->fails()) {
             $data = [
-                'Message' => 'Error en la validacion de los datos',
-                'Erros' => $validator->errors(),
-                'Status' => 400,
+                'message' => 'Error en la validacion de los datos',
+                'erros' => $validator->errors(),
+                'status' => 400,
             ];
             return response()->json($data, 400);
         }
@@ -43,8 +43,8 @@ class usuarioController extends Controller
         //devuelve error
         if (!$resultado) {
             return response()->json([
-            'Message' => 'Credenciales incorrectas',
-            'Status' => 400
+            'message' => 'Credenciales incorrectas',
+            'status' => 400
         ], 400);
         }
 
@@ -57,19 +57,19 @@ class usuarioController extends Controller
         $datosToken  = $this->SPA_UsuarioToken($idPersona, $token);
 
         return response()->json([
-            'Message' => 'OK',
-            'Status' => 200,
-            'Token' => $token,
-            'TiempoCaduca' => $datosToken['TiempoCaduca'],
-            'NombrePersonal' => $datosToken['NombrePersonal'],
-            'DocumentacionPersonal' => $datosToken['DocumentacionPersonal'],
-            'SucursalPersonal' => $datosToken['SucursalPersonal'],
+            'message' => 'OK',
+            'status' => 200,
+            'token' => $token,
+            'tiempoCaduca' => $datosToken['tiempoCaduca'],
+            'nombrePersonal' => $datosToken['nombrePersonal'],
+            'documentacionPersonal' => $datosToken['documentacionPersonal'],
+            'sucursalPersonal' => $datosToken['sucursalPersonal'],
         ], 200);
 
     }
 
     private function obtenerIdPersona($usuario) {
-
+        
         // Consulta SQL para obtener el ID de la persona
         $idPersona = DB::table('Usuario')
           ->join('Persona', 'Usuario.IdPersona', '=', 'Persona.IdPersona')
@@ -77,10 +77,10 @@ class usuarioController extends Controller
           ->select('Persona.IdPersona')
           ->first()
           ->IdPersona;
-
+      
         return $idPersona; // ID de la persona del usuario encontrado
       }
-
+      
 
 
     private function SPA_UsuarioToken($idPersona, $token) {
@@ -88,39 +88,39 @@ class usuarioController extends Controller
         $resultados = DB::select('CALL SPA_UsuarioToken(?, ?)', [$idPersona, $token]);
 
         // Extraer los valores de las variables de salida
-        $Mensaje = $resultados[0]->Mensaje;
-        $TiempoCaduca = $resultados[0]->TiempoCaduca;
-        $NombrePersonal = $resultados[0]->NombrePersonal;
-        $DocumentacionPersonal = $resultados[0]->DocumentacionPersonal;
-        $SucursalPersonal = $resultados[0]->SucursalPersonal;
+        $mensaje = $resultados[0]->Mensaje;
+        $tiempoCaduca = $resultados[0]->TiempoCaduca;
+        $nombrePersonal = $resultados[0]->NombrePersonal;
+        $documentacionPersonal = $resultados[0]->DocumentacionPersonal;
+        $sucursalPersonal = $resultados[0]->SucursalPersonal;
 
         // Devolver todos los datos en un array asociativo
         return [
-            'Mensaje' => $Mensaje,
-            'TiempoCaduca' => $TiempoCaduca,
-            'NombrePersonal' => $NombrePersonal,
-            'DocumentacionPersonal' => $DocumentacionPersonal,
-            'SucursalPersonal' => $SucursalPersonal,
+            'mensaje' => $mensaje,
+            'tiempoCaduca' => $tiempoCaduca,
+            'nombrePersonal' => $nombrePersonal,
+            'documentacionPersonal' => $documentacionPersonal,
+            'sucursalPersonal' => $sucursalPersonal,
         ];
     }
 
     public function fnObtenerUsuDesdeBearer(Request $request) {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'Token' => 'required|string',
+            'token' => 'required|string',
         ]);
 
         // Si la validación falla, devolver la respuesta correspondiente
         if ($validator->fails()) {
             return response()->json([
-                'Message' => 'Error en la validación de los datos',
-                'Errors' => $validator->errors(),
-                'Status' => 400,
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400,
             ], 400);
         }
 
         // Obtener el token del cuerpo de la solicitud
-        $token = $request->input('Token');
+        $token = $request->input('token');
 
         // Ejecutar la función almacenada y obtener el ID del usuario
         $idUsuario = DB::select('SELECT FN_ObtenerUsuDesdeBearer(?) AS id_usuario', [$token]);
@@ -128,16 +128,16 @@ class usuarioController extends Controller
         // Verificar si el ID del usuario está vacío o nulo
         if (empty($idUsuario) || is_null($idUsuario[0]->id_usuario)) {
             return response()->json([
-                'Message' => 'El token no corresponde a ningún usuario en el sistema',
-                'Status' => 400,
+                'message' => 'El token no corresponde a ningún usuario en el sistema',
+                'status' => 400,
             ], 400);
         }
 
         // Devolver el ID del usuario como respuesta
         return response()->json([
-            'Message' => 'OK',
-            'Status' => 200,
-            'IdUsuario' => $idUsuario[0]->id_usuario, // Se asume que el resultado es un solo valor
+            'message' => 'OK',
+            'status' => 200,
+            'id_usuario' => $idUsuario[0]->id_usuario, // Se asume que el resultado es un solo valor
         ], 200);
     }
 

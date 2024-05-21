@@ -39,7 +39,7 @@ class TipoImpuestoController extends Controller
             return response()->json([
                 'Message' => 'OK',
                 'Status' => 200,
-                'TipoImpuesto' => $resultados,
+                'TipoProducto' => $resultados,
             ], 200);
         } else {
             // Devolver el mensaje de error
@@ -55,8 +55,8 @@ class TipoImpuestoController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'Detalle' => 'required|string|max:50',
-            'Porcentaje'=> 'required|numeric|max:500',
+            'Descripcion' => 'required|string|max:50',
+            'Porcentaje'=> 'required|integer|max:500',
             'Token' => 'required|string|max:500',
         ]);
 
@@ -70,12 +70,12 @@ class TipoImpuestoController extends Controller
         }
 
         // Obtener los datos del cuerpo de la solicitud
-        $detalle = $request->input('Detalle');
+        $descripcion = $request->input('Descripcion');
         $porcentaje = $request->input('Porcentaje');
         $token = $request->input('Token');
 
         // Ejecutar el procedimiento almacenado SPA_TipoProducto
-        $resultados = DB::select('CALL SPA_TipoImpuesto(?, ?,?)', [$detalle, $porcentaje, $token]);
+        $resultados = DB::select('CALL SPA_TipoImpuesto(?, ?,?)', [$descripcion, $porcentaje, $token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;
@@ -99,8 +99,8 @@ class TipoImpuestoController extends Controller
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
             'IdTipoImpuesto' => 'required|integer',
-            'Detalle' => 'required|string|max:50',
-            'Porcentaje'=> 'required|numeric|max:500',
+            'Descripcion' => 'required|string|max:50',
+            'Porcentaje'=> 'required|integer|max:500',
             'Token' => 'required|string|max:500',
         ]);
 
@@ -115,12 +115,12 @@ class TipoImpuestoController extends Controller
 
         // Obtener los datos del cuerpo de la solicitud
         $id = $request->input('IdTipoImpuesto');
-        $detalle = $request->input('Detalle');
+        $descripcion = $request->input('Descripcion');
         $porcentaje = $request->input('Porcentaje');
         $token = $request->input('Token');
 
         // Ejecutar el procedimiento almacenado SPM_TipoProducto
-        $resultados = DB::select('CALL SPM_TipoImpuesto(?, ?, ?,?)', [$id, $detalle, $porcentaje , $token]);
+        $resultados = DB::select('CALL SPM_TipoImpuesto(?, ?, ?,?)', [$id, $descripcion, $porcentaje , $token]);
 
         // Obtener el mensaje del resultado
         $mensaje = $resultados[0]->v_Message;
