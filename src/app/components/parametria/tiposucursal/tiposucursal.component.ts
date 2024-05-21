@@ -1,26 +1,25 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import { TipoProducto } from '../../../models/parametria/tipoproducto';
+import {TipoS}
 import { TipoproductoService } from '../../../services/parametria/tipoproducto.service';
 
 @Component({
-  selector: 'app-tipoproducto',
-  templateUrl: './tipoproducto.component.html',
-  styleUrl: './tipoproducto.component.css'
+  selector: 'app-tiposucursal',
+  templateUrl: './tiposucursal.component.html',
+  styleUrl: './tiposucursal.component.css'
 })
-
-export class TipoproductoComponent {
+export class TiposucursalComponent {
   tituloModal: string;
   tituloBoton: string;
-  itemGrilla: TipoProducto; // cada item de la tabla
-  listaGrilla: TipoProducto[]; // tabla completa en donde se cargan los datos
+  itemGrilla: TipoCategoria; // cada item de la tabla
+  listaGrilla: TipoCategoria[]; // tabla completa en donde se cargan los datos
   modalRef: NgbModalRef;
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
 
-  constructor(private tipoproductoService: TipoproductoService,
+  constructor(private tipoCategoriaService: TipoCategoriaService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder
   ) {}
@@ -28,7 +27,7 @@ export class TipoproductoComponent {
   ngOnInit(): void {
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
-      Detalle: new FormControl('', [Validators.required])
+      descripcion: new FormControl('', [Validators.required])
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -44,12 +43,11 @@ export class TipoproductoComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    this.tipoproductoService.listar(TipoLista).subscribe(
+    this.tipoCategoriaService.listar(TipoLista).subscribe(
       response => {
         console.log('API response:', response);
-        this.itemGrilla = new TipoProducto();
-        this.listaGrilla = response.TipoProducto || [];
-        console.log(this.listaGrilla);
+        this.itemGrilla = new TipoCategoria();
+        this.listaGrilla = response.TipoCategoria || [];
       },
       error => {
         console.error('Error al cargar tipos de categoría:', error);
@@ -65,32 +63,32 @@ export class TipoproductoComponent {
   openAgregar(content) {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
-    this.itemGrilla = Object.assign({}, new TipoProducto());
+    this.itemGrilla = Object.assign({}, new TipoCategoria());
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
 
-  openEditar(content, item: TipoProducto) {
+  openEditar(content, item: TipoCategoria) {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item); // duplica el item para que no cambie por detras y modifiquemos este para enviar al back
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
 
-  openInhabilitar(contentInhabilitar, item: TipoProducto) {
+  openInhabilitar(contentInhabilitar, item: TipoCategoria) {
     this.tituloModal = "Inhabilitar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentInhabilitar, { size: 'sm', centered: true });
   }
 
-  openHabilitar(contentHabilitar, item: TipoProducto) {
+  openHabilitar(contentHabilitar, item: TipoCategoria) {
     this.tituloModal = "Habilitar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
   }
 
   guardar(): void {
-    if (this.itemGrilla.IdTipoProducto == null) {
-      this.tipoproductoService.agregar(this.itemGrilla, this.Token)
+    if (this.itemGrilla.IdTipoCategoria == null) {
+      this.tipoCategoriaService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
           this.modalRef.close();
@@ -99,7 +97,7 @@ export class TipoproductoComponent {
         })
       }
     else{
-      this.tipoproductoService.editar(this.itemGrilla, this.Token)
+      this.tipoCategoriaService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
         this.modalRef.close();
@@ -110,7 +108,7 @@ export class TipoproductoComponent {
   }
 
   inhabilitar(): void {
-    this.tipoproductoService.inhabilitar(this.itemGrilla, this.Token)
+    this.tipoCategoriaService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
         this.modalRef.close();
@@ -120,7 +118,7 @@ export class TipoproductoComponent {
   }
 
   habilitar(): void {
-    this.tipoproductoService.habilitar(this.itemGrilla, this.Token)
+    this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
         this.modalRef.close();

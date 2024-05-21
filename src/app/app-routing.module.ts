@@ -19,6 +19,7 @@ import { TipodestinatariofacturaComponent } from './components/parametria/tipode
 import { TipoformadepagoComponent } from './components/parametria/tipoformadepago/tipoformadepago.component';
 import { TipopermisoComponent } from './components/parametria/tipopermiso/tipopermiso.component';
 import { TipopermisodetalleComponent } from './components/parametria/tipopermisodetalle/tipopermisodetalle.component';
+import { TiposucursalComponent } from './components/parametria/tiposucursal/tiposucursal.component';
 import { StockComponent } from './components/recursos/stock/stock.component';
 import { ProveedoresComponent } from './components/recursos/proveedores/proveedores.component';
 import { PersonalComponent } from './components/recursos/personal/personal.component';
@@ -58,6 +59,7 @@ const routes: Routes = [
   {path: 'parametria/tipoformadepago', component: TipoformadepagoComponent},
   {path: 'parametria/tipopermiso', component: TipopermisoComponent},
   {path: 'parametria/tipopermisodetalle', component: TipopermisodetalleComponent},
+  {path: 'parametria/tiposucursal', component: TiposucursalComponent},
 
   {path: 'recursos/stock', component:StockComponent},
   {path: 'recursos/proveedores', component: ProveedoresComponent},
