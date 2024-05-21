@@ -26,17 +26,29 @@
           <table class="table">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">Nro</th>
-                <th scope="col">Estado</th>
+                <th scope="col">Nro Sucursal</th>
+                <th scope="col">Nro Domicilio</th>
                 <th scope="col">Descripción</th>
+                <th scope="col">Calle</th>
+                <th scope="col">Nro</th>
+                <th scope="col">Piso</th>
+                <th scope="col">IdUsuarioCarga</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Fecha Alta</th>
                 <th scope="col">Acción</th>
               </tr>
             </thead>
             <tbody class="tablaUser">
               <tr *ngFor="let item of listaGrilla; let i = index">
-                <td scope="col">{{ item.IdTipoCategoria }}</td>
-                <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                <td scope="col">{{ item.IdSucursal }}</td>
+                <td scope="col">{{ item.IdDomicilio }}</td>
                 <td scope="col">{{ item.Descripcion }}</td>
+                <td scope="col">{{ item.Calle }}</td>
+                <td scope="col">{{ item.Nro }}</td>
+                <td scope="col">{{ item.Piso }}</td>
+                <td scope="col">{{ item.IdUsuarioCarga }}</td>
+                <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                <td scope="col">{{ item.FechaAlta}}</td>
                 <td scope="col" class="dropdown">
                   <!-- Botón de acción con menú desplegable -->
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">

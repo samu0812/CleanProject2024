@@ -59,7 +59,7 @@ const routes: Routes = [
   {path: 'parametria/tipoformadepago', component: TipoformadepagoComponent},
   {path: 'parametria/tipopermiso', component: TipopermisoComponent},
   {path: 'parametria/tipopermisodetalle', component: TipopermisodetalleComponent},
-  {path: 'parametria/tiposucursal', component: TiposucursalComponent},
+  {path: 'parametria/sucursal', component: TiposucursalComponent},
 
   {path: 'recursos/stock', component:StockComponent},
   {path: 'recursos/proveedores', component: ProveedoresComponent},
