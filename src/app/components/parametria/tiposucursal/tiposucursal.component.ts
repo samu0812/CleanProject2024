@@ -3,6 +3,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Sucursales } from '../../../models/parametria/tiposucursal';
 import { TiposucursalService } from '../../../services/parametria/tiposucursal.service';
+import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
 
 @Component({
   selector: 'app-tiposucursal',
@@ -18,13 +20,16 @@ export class TiposucursalComponent {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(private tiposucursalService: TiposucursalService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService
   ) {}
   
   ngOnInit(): void {
+    this.obtenerImgMenu();
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       descripcion: new FormControl('', [Validators.required])
@@ -41,7 +46,13 @@ export class TiposucursalComponent {
       this.listar(value);
     });
   }
-
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/sucursal').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+      console.log(data);
+      console.log(data.ImagenSubmenu[0]);
+    });
+  }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tiposucursalService.listar(TipoLista).subscribe(
       response => {
