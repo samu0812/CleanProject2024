@@ -4,6 +4,8 @@ import { TipoImpuesto } from '../../../models/parametria/tipoimpuesto';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
+
 @Component({
   selector: 'app-tipoimpuesto',
   templateUrl: './tipoimpuesto.component.html',
@@ -19,13 +21,16 @@ export class TipoimpuestoComponent {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(private tipoImpuestoService: TipoimpuestoService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService
   ) {}
   
   ngOnInit(): void {
+    this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       detalle: new FormControl('', [Validators.required]),
@@ -44,6 +49,14 @@ export class TipoimpuestoComponent {
       this.listar(value);
     });
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipoimpuesto').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+      console.log(data);
+      console.log(data.ImagenSubmenu[0]);
+    });
+  }
+
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoImpuestoService.listar(TipoLista).subscribe(

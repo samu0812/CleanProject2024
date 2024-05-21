@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import {TipoS}
-import { TipoproductoService } from '../../../services/parametria/tipoproducto.service';
+import { Sucursales } from '../../../models/parametria/tiposucursal';
+import { TiposucursalService } from '../../../services/parametria/tiposucursal.service';
 
 @Component({
   selector: 'app-tiposucursal',
@@ -12,14 +12,14 @@ import { TipoproductoService } from '../../../services/parametria/tipoproducto.s
 export class TiposucursalComponent {
   tituloModal: string;
   tituloBoton: string;
-  itemGrilla: TipoCategoria; // cada item de la tabla
-  listaGrilla: TipoCategoria[]; // tabla completa en donde se cargan los datos
+  itemGrilla: Sucursales; // cada item de la tabla
+  listaGrilla: Sucursales[]; // tabla completa en donde se cargan los datos
   modalRef: NgbModalRef;
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
 
-  constructor(private tipoCategoriaService: TipoCategoriaService,
+  constructor(private tiposucursalService: TiposucursalService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder
   ) {}
@@ -43,11 +43,11 @@ export class TiposucursalComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    this.tipoCategoriaService.listar(TipoLista).subscribe(
+    this.tiposucursalService.listar(TipoLista).subscribe(
       response => {
         console.log('API response:', response);
-        this.itemGrilla = new TipoCategoria();
-        this.listaGrilla = response.TipoCategoria || [];
+        this.itemGrilla = new Sucursales();
+        this.listaGrilla = response.Sucursales || [];
       },
       error => {
         console.error('Error al cargar tipos de categoría:', error);
@@ -63,32 +63,32 @@ export class TiposucursalComponent {
   openAgregar(content) {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
-    this.itemGrilla = Object.assign({}, new TipoCategoria());
+    this.itemGrilla = Object.assign({}, new Sucursales());
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
 
-  openEditar(content, item: TipoCategoria) {
+  openEditar(content, item: Sucursales) {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item); // duplica el item para que no cambie por detras y modifiquemos este para enviar al back
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
 
-  openInhabilitar(contentInhabilitar, item: TipoCategoria) {
+  openInhabilitar(contentInhabilitar, item: Sucursales) {
     this.tituloModal = "Inhabilitar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentInhabilitar, { size: 'sm', centered: true });
   }
 
-  openHabilitar(contentHabilitar, item: TipoCategoria) {
+  openHabilitar(contentHabilitar, item: Sucursales) {
     this.tituloModal = "Habilitar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
   }
 
   guardar(): void {
-    if (this.itemGrilla.IdTipoCategoria == null) {
-      this.tipoCategoriaService.agregar(this.itemGrilla, this.Token)
+    if (this.itemGrilla.IdSucursal == null) {
+      this.tiposucursalService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
           this.modalRef.close();
@@ -97,7 +97,7 @@ export class TiposucursalComponent {
         })
       }
     else{
-      this.tipoCategoriaService.editar(this.itemGrilla, this.Token)
+      this.tiposucursalService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
         this.modalRef.close();
@@ -108,7 +108,7 @@ export class TiposucursalComponent {
   }
 
   inhabilitar(): void {
-    this.tipoCategoriaService.inhabilitar(this.itemGrilla, this.Token)
+    this.tiposucursalService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
         this.modalRef.close();
@@ -118,7 +118,7 @@ export class TiposucursalComponent {
   }
 
   habilitar(): void {
-    this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token)
+    this.tiposucursalService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
         this.modalRef.close();

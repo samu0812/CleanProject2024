@@ -3,6 +3,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { TipoProducto } from '../../../models/parametria/tipoproducto';
 import { TipoproductoService } from '../../../services/parametria/tipoproducto.service';
+import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
 
 @Component({
   selector: 'app-tipoproducto',
@@ -19,13 +21,16 @@ export class TipoproductoComponent {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(private tipoproductoService: TipoproductoService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService
   ) {}
   
   ngOnInit(): void {
+    this.obtenerImgMenu();
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       Detalle: new FormControl('', [Validators.required])
@@ -42,6 +47,13 @@ export class TipoproductoComponent {
       this.listar(value);
     });
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipoproducto').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+      console.log(data);
+      console.log(data.ImagenSubmenu[0]);
+    });
+  }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoproductoService.listar(TipoLista).subscribe(
