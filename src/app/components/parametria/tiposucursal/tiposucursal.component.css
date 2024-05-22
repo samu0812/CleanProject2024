@@ -63,23 +63,6 @@
   }
   
   
-  
-  .modal-dialog {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: calc(100% - 60px); /* Altura mínima que cubre toda la pantalla menos el espacio del footer */
-  }
-  
-  .modal-header {
-    border-bottom: none; /* Quita el borde inferior del encabezado del modal */
-  }
-  
-  .modal-footer {
-    border-top: none; /* Quita el borde superior del pie de página del modal */
-  }
-  
-  
   #btnAgregarUsuario{
     margin-right: 5px;
     margin-top: 20px;
@@ -135,16 +118,7 @@
     color: rgb(31, 31, 95);
   }
   
-  /* Estilo para el icono dentro del título en los modales */
-  .modal-header h1 i {
-    margin-right: 10px; /* Ajusta este valor según sea necesario */
-    color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
-  }
-  
-  /* Estilo para el texto dentro del título en los modales */
-  .modal-header h1 {
-    color: rgb(31, 31, 95); /* Cambia el color del texto a azul */
-  }
+
   .button-icon {
     margin-right: 5px; /* Ajusta el margen derecho del ícono */
   }
@@ -152,21 +126,6 @@
     margin-top: 18px;
     background-color: rgb(31, 31, 95);
     border-color: rgb(31, 31, 95);
-  }
-  /* Estilo para el encabezado del modal */
-  .modal-header {
-    display: flex;
-    align-items: center; /* Alinea los elementos verticalmente en el centro */
-    justify-content: space-between; /* Distribuye el espacio entre los elementos */
-    border-bottom: 1px solid #ccc; /* Borde inferior */
-    padding-bottom: 10px; /* Espaciado inferior */
-  }
-  
-  /* Estilo para el título del modal */
-  .modal-header h1 {
-    color: rgb(31, 31, 95); /* Color del texto */
-    display: flex;
-    align-items: center; /* Alinea los elementos verticalmente en el centro */
   }
   
   /* Estilo para el botón de cerrar */
@@ -178,4 +137,74 @@
     border-radius: 10px; /* Redondea los bordes */
     overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
   }
-  
+  .hide-column {
+    display: none;
+  }
+  .scroll-table {
+    max-height: auto; /* Ajusta según sea necesario */
+    overflow-y: auto; /* Agrega desplazamiento vertical si es necesario */
+}
+
+.table {
+    min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
+    margin-bottom: 0; /* Elimina el margen inferior de la tabla */
+}
+
+/* Estilos adicionales según sea necesario */
+
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100% - 60px); /* Altura mínima que cubre toda la pantalla menos el espacio del footer */
+}
+
+
+/*modalessss*/
+#btnGuardar{
+  background-color: rgb(31, 31, 95);
+  border-color: rgb(31, 31, 95);
+  margin-left: 5px;
+}
+#btnCancelar{
+  background-color: #FF0000;
+}
+
+.modal-header {
+  border-bottom: 2px solid #f0f0f0; /* Borde inferior */
+  margin: 0; /* Elimina márgenes */
+  padding: 15px; /* Agrega padding para un espaciado uniforme */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  background-color: #FF8C00; /* Color de fondo */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+  box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
+}
+.modal-header .modal-title {
+  font-weight: bold; /* Hace que el título esté en negrita */
+}
+
+.modal-body .form-group {
+  margin-bottom: 15px; /* Espacio entre grupos de formularios */
+}
+
+.modal-body .form-group:last-child {
+  margin-bottom: 0; /* Elimina el margen inferior del último grupo */
+}
+.modal-body label {
+  margin-bottom: 5px; /* Espacio entre el label y el input */
+  display: block; /* Asegura que el label esté alineado con su input */
+}
+
+.modal-body input {
+  margin-bottom: 15px; /* Espacio inferior para los inputs */
+}
+
+.modal-footer {
+  border-top: none; /* Quita el borde superior del pie de página del modal */
+}
+
+.text-right {
+  text-align: right; /* Alinea los botones a la derecha */
+}

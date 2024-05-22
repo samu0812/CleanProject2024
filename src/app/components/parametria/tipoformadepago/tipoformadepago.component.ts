@@ -5,6 +5,7 @@ import { TipoFormaDePago } from '../../../models/parametria/tipoformadepago';
 import { TipoformadepagoService } from './../../../services/parametria/tipoformadepago.service';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipoformadepago',
@@ -27,7 +28,8 @@ export class TipoformadepagoComponent implements OnInit {
     private tipoformadepagoService: TipoformadepagoService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
@@ -52,8 +54,6 @@ export class TipoformadepagoComponent implements OnInit {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipoformadepago').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
@@ -66,7 +66,7 @@ export class TipoformadepagoComponent implements OnInit {
         this.listaGrilla = response.TipoFormaDePago || [];
       },
       error => {
-        console.error('Error al cargar tipos de forma de pago:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
       }
     );
   }
@@ -107,20 +107,22 @@ export class TipoformadepagoComponent implements OnInit {
       this.tipoformadepagoService.agregar(this.itemGrilla, this.Token).subscribe(
         response => {
           this.listar(this.formFiltro.get('idFiltro').value);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         },
         error => {
-          console.error('Error al agregar tipo de forma de pago:', error);
+          this.alertasService.ErrorAlert('Error', 'Error al Agregar.');
         }
       );
     } else {
       this.tipoformadepagoService.editar(this.itemGrilla, this.Token).subscribe(
         response => {
           this.listar(this.formFiltro.get('idFiltro').value);
+          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
         },
         error => {
-          console.error('Error al modificar tipo de forma de pago:', error);
+          this.alertasService.ErrorAlert('Error', 'Error al Modificar.');
         }
       );
     }
@@ -130,10 +132,11 @@ export class TipoformadepagoComponent implements OnInit {
     this.tipoformadepagoService.inhabilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(this.formFiltro.get('idFiltro').value);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       },
       error => {
-        console.error('Error al inhabilitar tipo de forma de pago:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Inhabilitar.');
       }
     );
   }
@@ -142,10 +145,11 @@ export class TipoformadepagoComponent implements OnInit {
     this.tipoformadepagoService.habilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(this.formFiltro.get('idFiltro').value);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       },
       error => {
-        console.error('Error al habilitar tipo de forma de pago:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
       }
     );
   }

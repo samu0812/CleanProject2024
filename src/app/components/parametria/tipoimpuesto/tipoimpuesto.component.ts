@@ -5,6 +5,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipoimpuesto',
@@ -26,7 +27,8 @@ export class TipoimpuestoComponent {
   constructor(private tipoImpuestoService: TipoimpuestoService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
   
   ngOnInit(): void {
@@ -107,18 +109,20 @@ export class TipoimpuestoComponent {
       this.tipoImpuestoService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         }, error => {
-          console.error('Error al agregar tipo de impuesto:', error);
+          this.alertasService.ErrorAlert('Error', 'Error al Agregar.');
         })
       }
     else{
       this.tipoImpuestoService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al modificar tipo de impuesto:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Modificar.');
       })
     };
   }
@@ -128,9 +132,10 @@ export class TipoimpuestoComponent {
     this.tipoImpuestoService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al inhabilitar tipo de impuesto:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Inhabilitarr.');
       });
   }
 
@@ -138,9 +143,10 @@ export class TipoimpuestoComponent {
     this.tipoImpuestoService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al habilitar tipo de impuesto:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
       });
   }
 

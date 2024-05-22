@@ -16,7 +16,6 @@
           <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
             <option value="1">Solo Habilitados</option>
             <option value="2">Solo Inhabilitados</option>
-            <option value="0">Todos</option>
           </select>
         </div>
         <div class="form-group mt-3">
@@ -86,7 +85,10 @@
 <!-- AgregarCategoriaModal -->
 <ng-template #content let-modal>
   <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a>
+      <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+  </a>
+    <a style="margin-left: 5px;"></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="formItemGrilla">
@@ -107,20 +109,23 @@
     </form>
   </div>
   <div class="form-group col text-right" style="margin-top: 25px;">
-    <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
-    <button type="button" class="btn btn-success" (click)="guardar()">{{ tituloBoton }}</button>
+    <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+    <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
   </div>
 </ng-template>
 
 
 <ng-template #contentInhabilitar let-modal>
   <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a>
+      <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+  </a>
+    <a style="margin-left: 5px;"></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
       <a></a><h4 class="">Desea Eliminar?</h4>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
         </div>
   </div>
@@ -128,12 +133,15 @@
 
 <ng-template #contentHabilitar let-modal>
   <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a>
+      <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+  </a>
+    <a style="margin-left: 5px;"></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
       <a></a><h4 class="">Desea Habilitar?</h4>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
         </div>
   </div>
