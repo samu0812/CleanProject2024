@@ -50,8 +50,6 @@ export class TipofacturaComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipofactura').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
@@ -59,7 +57,6 @@ export class TipofacturaComponent {
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipofacturaService.listar(TipoLista)
       .subscribe(response => {
-        console.log(response)
         this.listaGrilla = response.TipoFacturas || [];
       }, error => {
         console.error('Error al cargar tipos de categoría:', error);

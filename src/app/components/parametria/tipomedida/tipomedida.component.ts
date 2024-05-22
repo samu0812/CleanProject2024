@@ -43,17 +43,13 @@ export class TipomedidaComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipomedida').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    console.log(TipoLista, "sa");
     this.tipomedidaService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoMedidas || [];
-        console.log(this.listaGrilla, "sasass");
       }, error => {
         console.error('Error al cargar tipos de categoría:', error);
       });

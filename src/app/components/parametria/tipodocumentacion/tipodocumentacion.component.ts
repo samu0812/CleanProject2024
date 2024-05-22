@@ -50,8 +50,6 @@ export class TipodocumentacionComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipodocumentacion').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 

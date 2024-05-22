@@ -43,8 +43,6 @@ export class TipodestinatariofacturaComponent implements OnInit {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipodestinatariofactura').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 

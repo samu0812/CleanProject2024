@@ -43,7 +43,7 @@ const routes: Routes = [
 
   {path: 'seguridad/usuarios', component: UsuariosComponent},
   {path: 'seguridad/tiporoles', component: TiporolesComponent},
-  {path: 'seguridad/rol', component: RolComponent},
+  {path: 'seguridad/rolmodulos', component: RolComponent},
   {path: 'seguridad/apis', component: ApisComponent},
 
   {path: 'parametria/tipopersona', component: TipopersonaComponent},

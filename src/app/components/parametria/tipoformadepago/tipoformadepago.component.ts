@@ -61,7 +61,6 @@ export class TipoformadepagoComponent implements OnInit {
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoformadepagoService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoFormaDePago();
         this.listaGrilla = response.TipoFormaDePago || [];
       },

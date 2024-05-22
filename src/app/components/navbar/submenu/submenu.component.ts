@@ -16,17 +16,13 @@ export class SubmenuComponent implements OnInit {
   constructor(private route: ActivatedRoute, private menuService: MenuService) {}
 
   ngOnInit(): void {
-    console.log("hola")
     this.route.params.subscribe(params => {
       const IdMenu = +params['id'];
       const Token = localStorage.getItem('Token');
-      console.log(Token, "ceci 2");
       if (Token !== null) {
         this.menuService.getSubMenuItems(Token, IdMenu).subscribe( data=>{
           this.respuesta = data.Menus;
-          console.log(data)
           this.Menues = this.respuesta;
-          console.log(this.Menues, "ceci");
         }
 
         );

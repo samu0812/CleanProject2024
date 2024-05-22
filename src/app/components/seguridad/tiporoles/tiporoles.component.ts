@@ -58,7 +58,6 @@ export class TiporolesComponent {
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.TiporolService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoRol();
         this.listaGrilla = response.TiposRol || [];
       },

@@ -53,15 +53,12 @@ export class TipocategoriaComponent implements OnInit {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipocategoria').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoCategoriaService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoCategoria();
         this.listaGrilla = response.TipoCategoria || [];
       },

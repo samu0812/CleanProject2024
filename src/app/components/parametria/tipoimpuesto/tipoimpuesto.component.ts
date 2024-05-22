@@ -54,8 +54,6 @@ export class TipoimpuestoComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipoimpuesto').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
@@ -63,7 +61,6 @@ export class TipoimpuestoComponent {
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoImpuestoService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoImpuesto();
         this.listaGrilla = response.TipoImpuesto || [];
       },

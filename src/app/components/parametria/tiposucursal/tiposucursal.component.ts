@@ -49,14 +49,11 @@ export class TiposucursalComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/sucursal').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tiposucursalService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new Sucursales();
         this.listaGrilla = response.Sucursales || [];
       },
