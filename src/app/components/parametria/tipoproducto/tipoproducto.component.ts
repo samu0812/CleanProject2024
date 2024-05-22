@@ -5,6 +5,7 @@ import { TipoProducto } from '../../../models/parametria/tipoproducto';
 import { TipoproductoService } from '../../../services/parametria/tipoproducto.service';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipoproducto',
@@ -26,7 +27,8 @@ export class TipoproductoComponent {
   constructor(private tipoproductoService: TipoproductoService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
   
   ngOnInit(): void {
@@ -64,7 +66,7 @@ export class TipoproductoComponent {
         console.log(this.listaGrilla);
       },
       error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
       }
     );
   }
@@ -105,18 +107,21 @@ export class TipoproductoComponent {
       this.tipoproductoService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
+          this.alertasService.OkAlert('OK', 'Se Agrego Correctamente');
+          console.log('OkAlert called');
           this.modalRef.close();
         }, error => {
-          console.error('Error al agregar tipo de categoría:', error);
+          this.alertasService.ErrorAlert('Error', 'Error al Agregar.');
         })
       }
     else{
       this.tipoproductoService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al modificar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Modificar.');
       })
     };
   }
@@ -125,9 +130,10 @@ export class TipoproductoComponent {
     this.tipoproductoService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al inhabilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Inhabilitar.');
       });
   }
 
@@ -135,13 +141,12 @@ export class TipoproductoComponent {
     this.tipoproductoService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al habilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
       });
   }
-
-
 
 
 }

@@ -19,7 +19,7 @@ export class TipoproductoService {
   agregar(item: TipoProducto, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPA_TipoProducto`;
     const body = {
-      Detalle: item.Detalle,
+      Descripcion: item.Detalle,
       Token: Token};
     return this.http.post(url, body);
   }
@@ -28,7 +28,7 @@ export class TipoproductoService {
     const url = `${this.apiUrl}/SPM_TipoProducto`;
     const body = {
       IdTipoProducto: item.IdTipoProducto,
-      Detalle: item.Detalle,
+      Descripcion: item.Detalle,
       Token: Token};
       return this.http.put(url, body);
   }

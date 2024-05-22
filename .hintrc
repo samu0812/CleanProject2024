@@ -46,6 +46,14 @@
           "zoom"
         ]
       }
+    ],
+    "compat-api/html": [
+      "default",
+      {
+        "ignore": [
+          "button[is]"
+        ]
+      }
     ]
   }
 }

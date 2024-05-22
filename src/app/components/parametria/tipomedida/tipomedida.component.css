@@ -179,3 +179,12 @@ tbody td {
   border-radius: 10px; /* Redondea los bordes */
   overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
 }
+.scroll-table {
+  max-height: auto; /* Ajusta según sea necesario */
+  overflow-y: auto; /* Agrega desplazamiento vertical si es necesario */
+}
+
+.table {
+  min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
+  margin-bottom: 0; /* Elimina el margen inferior de la tabla */
+}
