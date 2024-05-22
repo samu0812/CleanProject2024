@@ -19,7 +19,7 @@ export class TiposucursalService {
   agregar(item: Sucursales, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPA_Sucursal`;
     const body = {
-      IdTipoDomicilio: 1,
+      IdTipoDomicilio: item.IdTipoDomicilio,
       Descripcion: item.Descripcion,
       Calle: item.Calle,
       Nro: item.Nro,
