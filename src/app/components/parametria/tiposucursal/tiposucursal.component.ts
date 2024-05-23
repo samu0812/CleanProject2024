@@ -32,7 +32,11 @@ export class TiposucursalComponent {
     this.obtenerImgMenu();
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
-      descripcion: new FormControl('', [Validators.required])
+      descripcion: new FormControl('', [Validators.required]),
+      IdTipoDomicilio: new FormControl('', [Validators.required]),
+      calle: new FormControl('', [Validators.required]),
+      nro: new FormControl('', [Validators.required]),
+      piso: new FormControl('', [Validators.required])
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -75,14 +79,14 @@ export class TiposucursalComponent {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Sucursales());
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.modalRef = this.modalService.open(content, { size: 'md', centered: true });
   }
 
   openEditar(content, item: Sucursales) {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item); // duplica el item para que no cambie por detras y modifiquemos este para enviar al back
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.modalRef = this.modalService.open(content, { size: 'md', centered: true });
   }
 
   openInhabilitar(contentInhabilitar, item: Sucursales) {
@@ -131,7 +135,7 @@ export class TiposucursalComponent {
   habilitar(): void {
     this.tiposucursalService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(0);
         this.modalRef.close();
       }, error => {
         console.error('Error al habilitar tipo de categoría:', error);
