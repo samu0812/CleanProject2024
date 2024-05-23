@@ -8,6 +8,8 @@ import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
 import { TiporolService } from '../../../services/seguridad/tiporol.service';
 import { TipoRol } from '../../../models/seguridad/TipoRol';
+import { TipopermisoService } from '../../../services/parametria/tipopermiso.service';
+import { TipoPermiso } from '../../../models/parametria/tipopermiso';
 
 @Component({
   selector: 'app-rol',
@@ -26,9 +28,11 @@ export class RolComponent {
   Token: string;
   imgSubmenu: Menu;
   lTipoRol: TipoRol[];
+  lTipoPermiso: TipoPermiso[];
 
   constructor(private modulosPorRolService: ModulosporrolService,
     private tipoRolService: TiporolService,
+    private tipoPermisoService: TipopermisoService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
@@ -50,30 +54,33 @@ export class RolComponent {
       idFiltroRoles: new FormControl(null)
     });
 
-    this.listar(1);
+    this.listar(1, null);
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
-      this.listar(value);
+      this.listar(value, null);
     });
 
   }
   obtenerImgMenu(){
-    this.imagenService.getImagenSubMenu('/seguridad/rolmodulo').subscribe(data => {
+    this.imagenService.getImagenSubMenu('/seguridad/rolmodulos').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
     });
   }
 
   obtenerListas(){
     this.tipoRolService.listar(1).subscribe(data => {
-      this.lTipoRol = data;
+      this.lTipoRol = data.TiposRol;
+      });
+    this.tipoPermisoService.listar().subscribe(data => {
+      this.lTipoPermiso = data.TipoPermisos;
+      console.log(this.lTipoPermiso)
       });
     }
 
-  listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    this.modulosPorRolService.listar(TipoLista, this.idFiltroRoles).subscribe(
+  listar(TipoLista: number, TipoRol): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.modulosPorRolService.listar(TipoLista, 0).subscribe(
       response => {
-        console.log(response, "ceci")
         this.itemGrilla = new ModulosPorRol();
-        this.listaGrilla = response.ModulosPorRol || [];
+        this.listaGrilla = response.RolModulo || [];
       },
       error => {
         this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
@@ -83,14 +90,14 @@ export class RolComponent {
 
   cambiarFiltro(): void {
     const filtro = this.formFiltro.get('idFiltro').value;
-    this.listar(filtro);
+    this.listar(filtro, null);
   }
 
   openAgregar(content) {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new ModulosPorRol());
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
   }
 
   openInhabilitar(contentInhabilitar, item: ModulosPorRol) {
@@ -108,7 +115,7 @@ export class RolComponent {
   guardar(): void {
     this.modulosPorRolService.agregar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(1, 0);
         this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
         this.modalRef.close();
       }, error => {
@@ -119,7 +126,7 @@ export class RolComponent {
   inhabilitar(): void {
     this.modulosPorRolService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(1, 0);
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, response => {
@@ -130,7 +137,7 @@ export class RolComponent {
   habilitar(): void {
     this.modulosPorRolService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(1, 0);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {

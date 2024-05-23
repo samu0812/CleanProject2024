@@ -32,20 +32,26 @@
         <table class="table">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">Nro</th>
-              <th scope="col">Tipo Rol</th>
-              <th scope="col">Tipo Modulo</th>
-              <th scope="col">Tipo Permiso</th>
+              <th scope="col-1">Nro Rol</th>
+              <th scope="col-2">Tipo Rol</th>
+              <th scope="col-1">Nro Modulo</th>
+              <th scope="col-2">Tipo Modulo</th>
+              <th scope="col-1">Nro Permiso</th>
+              <th scope="col-3">Tipo Permiso</th>
+              <th scope="col-1">Estado</th>
+              <th scope="col-1">Acción</th>
             </tr>
           </thead>
           <tbody class="tablaUser">
             <tr *ngFor="let item of listaGrilla; let i = index">
-              <td scope="col">{{ item.IdRolModulo }}</td>
-              <td scope="col">{{ item.DescripcionTipoRol }}</td>
-              <td scope="col">{{ item.DetalleTipoModulo }}</td>
-              <td scope="col">{{ item.DetalleTipoPermiso }}</td>
-              <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
-              <td scope="col" class="dropdown">
+              <td scope="col-1">{{ item.IdTipoRol }}</td>
+              <td scope="col-2">{{ item.DescripcionTipoRol }}</td>
+              <td scope="col-1">{{ item.IdTipoModulo }}</td>
+              <td scope="col-2">{{ item.DetalleTipoModulo }}</td>
+              <td scope="col-1">{{ item.IdTipoPermiso }}</td>
+              <td scope="col-3">{{ item.DetalleTipoPermiso }}</td>
+              <td scope="col-1">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+              <td scope="col-1" class="dropdown">
                 <!-- Botón de acción con menú desplegable -->
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa-solid fa-gears"></i>
@@ -76,27 +82,44 @@
     </ng-template>
   </div>
 </div>
-<!-- AgregarCategoriaModal -->
+<!-- AgregarRolModuloModal -->
 <ng-template #content let-modal>
   <div class="modal-header">
     <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="formItemGrilla">
-      <div class="form-row">
-        <div class="form-group col-md-4">
+      <div class="d-flex flex-row">
+        <div class="flex-grow-1 form-group p-2">
           <label for="tiporol">Tipo Rol:</label>
           <select [(ngModel)]="itemGrilla.IdTipoRol" class="form-control" id="tiporol" formControlName="tiporol">
-            <option [value]=undefined>Seleccione...</option>
+            <option [value]="undefined">Seleccione...</option>
             <option [value]="itemTipoRol.Descripcion" *ngFor="let itemTipoRol of lTipoRol">{{itemTipoRol.Descripcion}}</option>
           </select>
         </div>
-      </div>
+        <div class="flex-grow-1 form-group p-2">
+          <label for="tipopermiso">Tipo Permiso:</label>
+          <select [(ngModel)]="itemGrilla.IdTipoPermiso" class="form-control" id="tipopermiso" formControlName="tipopermiso">
+            <option [value]="undefined">Seleccione...</option>
+            <option [value]="itemTipoPermiso.Detalle" *ngFor="let itemTipoPermiso of lTipoPermiso">{{itemTipoPermiso.Detalle}}</option>
+          </select>
+        </div>
+        <div class="flex-grow-1 form-group p-2">
+          <label for="tipopermiso">Tipo Permiso:</label>
+          <select [(ngModel)]="itemGrilla.IdTipoPermiso" class="form-control" id="tipopermiso" formControlName="tipopermiso">
+            <option [value]="undefined">Seleccione...</option>
+            <option [value]="itemTipoPermiso.Detalle" *ngFor="let itemTipoPermiso of lTipoPermiso">{{itemTipoPermiso.Detalle}}</option>
+          </select>
+        </div>
+      </div>      
       <div class="form-group col text-right" style="margin-top: 25px;">
         <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
         <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
       </div>
     </form>
+  </div>
+  <div class="modal-footer">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
 </ng-template>
 
