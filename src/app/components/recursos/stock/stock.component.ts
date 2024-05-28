@@ -57,7 +57,7 @@ export class StockComponent {
 
   }
   obtenerImgMenu(){
-    this.imagenService.getImagenSubMenu('/parametria/inventario').subscribe(data => {
+    this.imagenService.getImagenSubMenu('/recursos/inventario').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
     });
   }
