@@ -1,32 +1,47 @@
-#tituloTabla {
-  font-family: 'Roboto', sans-serif; /* Utiliza una fuente sans-serif agradable para el título */
-  font-size: 20px; /* Haz el título más grande */
-  font-weight: lighter; /* Haz el título más ligero */
-  text-align: center; /* Centra el título en la página */
-  color: #ffffff; /* Usa un color blanco para el título */
-  margin-top: 10px; /* Agrega un poco de margen encima del título */
-  letter-spacing: 2px;
-  background-color: #FF8C00;
-  border-radius: 10px; /* Redondea los bordes del elemento */
+.container {
+  display: flex; /* Utiliza flexbox para el contenedor */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
 }
 
-.footer {
-  margin-top: 20px;
-  background-color: #f8f8f8;
-  padding: 20px;
+/* Estilos para el elemento h4 */
+.centered-rounded-background {
+  font-family: 'Roboto', sans-serif;
   text-align: center;
-  color: #666;
+  color: #ffffff;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  margin-bottom: 0%;
+  display: inline-flex; /* Ajusta el tamaño al contenido */
+  background-color: #FF8C00; /* Color de fondo */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 5px 50px; /* Espacio interno reducido */
+  align-items: center; /* Alinea los elementos hijos verticalmente */
 }
 
-.main-section{
-  margin:0 auto;
-  margin-top:5%;
+.title-menu {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espacio entre los elementos internos */
+}
+.img-crud{
+  width: 40px;
+  vertical-align: middle;
+}
+.main-section {
+  margin: 0 auto;
+  margin-top: 5%;
   margin-bottom: 20px;
-  padding: 0;
+  padding: 20px;
   min-height: 100vh;
-  width: 80%;
-
+  margin-top: 0%;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Agrega una sombra suave */
 }
+
 .form-group {
   margin-bottom: 0;
 }
