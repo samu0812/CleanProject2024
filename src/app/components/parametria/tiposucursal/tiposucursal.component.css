@@ -3,8 +3,6 @@
   justify-content: center; /* Centra horizontalmente */
   align-items: center; /* Centra verticalmente */
 }
-
-/* Estilos para el elemento h4 */
 .centered-rounded-background {
   font-family: 'Roboto', sans-serif;
   text-align: center;
@@ -51,7 +49,7 @@
   
   .footer {
     margin-top: 20px;
-    background-color: #f8f8f8;
+    background-color: #f8f8f8;/*/
     padding: 20px;
     text-align: center;
     color: #666;
@@ -136,6 +134,7 @@
   .table-responsive {
     border-radius: 10px; /* Redondea los bordes */
     overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
+    min-height: 400px;
   }
   .hide-column {
     display: none;
@@ -147,9 +146,10 @@
 
 .table {
     min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
-    margin-bottom: 0; /* Elimina el margen inferior de la tabla */
+    margin-bottom: 0; 
+    width: 100%; /* Elimina el margen inferior de la tabla */
+    min-height: 400px;
 }
-
 /* Estilos adicionales según sea necesario */
 
 .modal-dialog {
@@ -165,9 +165,6 @@
   background-color: rgb(31, 31, 95);
   border-color: rgb(31, 31, 95);
   margin-left: 5px;
-}
-#btnCancelar{
-  background-color: #FF0000;
 }
 
 .modal-header {
