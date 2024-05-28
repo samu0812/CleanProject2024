@@ -52,21 +52,17 @@ export class TipoproductoComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipoproducto').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoproductoService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoProducto();
         this.listaGrilla = response.TipoProducto || [];
-        console.log(this.listaGrilla);
       },
       error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -108,10 +104,9 @@ export class TipoproductoComponent {
         .subscribe(response => {
           this.listar(1);
           this.alertasService.OkAlert('OK', 'Se Agrego Correctamente');
-          console.log('OkAlert called');
           this.modalRef.close();
         }, error => {
-          this.alertasService.ErrorAlert('Error', 'Error al Agregar.');
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
@@ -121,7 +116,7 @@ export class TipoproductoComponent {
         this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Modificar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
@@ -133,7 +128,7 @@ export class TipoproductoComponent {
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Inhabilitar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 
@@ -144,7 +139,7 @@ export class TipoproductoComponent {
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 

@@ -61,12 +61,11 @@ export class TipoformadepagoComponent implements OnInit {
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoformadepagoService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoFormaDePago();
         this.listaGrilla = response.TipoFormaDePago || [];
       },
       error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -111,7 +110,7 @@ export class TipoformadepagoComponent implements OnInit {
           this.modalRef.close();
         },
         error => {
-          this.alertasService.ErrorAlert('Error', 'Error al Agregar.');
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         }
       );
     } else {
@@ -122,7 +121,7 @@ export class TipoformadepagoComponent implements OnInit {
           this.modalRef.close();
         },
         error => {
-          this.alertasService.ErrorAlert('Error', 'Error al Modificar.');
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         }
       );
     }
@@ -136,7 +135,7 @@ export class TipoformadepagoComponent implements OnInit {
         this.modalRef.close();
       },
       error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Inhabilitar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -149,7 +148,7 @@ export class TipoformadepagoComponent implements OnInit {
         this.modalRef.close();
       },
       error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
