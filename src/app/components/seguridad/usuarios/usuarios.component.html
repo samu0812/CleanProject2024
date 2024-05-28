@@ -1,5 +1,4 @@
-
-<div class="col-sm-11 main-section">
+<div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
     <form [formGroup]="formFiltro">
@@ -12,15 +11,12 @@
             <a style="margin-left: 5px;">Usuario</a>
         </h4>
       </div>
-
-
       <div class="row mt-3">
         <div class="col-md-3">
           <label for="idFiltro">Filtrar Por:</label>
           <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
             <option value="1">Solo Habilitados</option>
             <option value="2">Solo Inhabilitados</option>
-            <option value="0">Todos</option>
           </select>
         </div>
         <div class="col-md-4">
@@ -43,60 +39,62 @@
     </form>
     <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
       <div class="table-responsive">
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col"></th> <!-- Ver -->
-              <th scope="col">Nro</th>
-              <th scope="col">Usuario</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Apellido</th>
-              <th scope="col">Documentacion</th>
-              <th scope="col">Fecha de Alta</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
-            </tr>
-          </thead>
-          <tbody class="tablaUser" *ngFor="let item of listaGrilla; let i = index">
-            <tr>
-              <td scope="col"></td> <!-- Ver -->
-              <td scope="col">{{ item.IdUsuario }}</td>
-              <td scope="col">{{ item.Usuario}}</td>
-              <td scope="col">{{ item.Nombre}}</td>
-              <td scope="col">{{ item.Apellido}}</td>
-              <td scope="col">{{ item.Documentacion}}</td>
-              <td scope="col">{{ item.FechaAlta }}</td>
-              <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
-              <td scope="col" class="dropdown">
-                  <!-- Botón de acción con menú desplegable -->
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa-solid fa-user-gear"></i>
-                    </button>
-                    <!-- Menú desplegable con opciones -->
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <!-- Mostrar solo si FechaBaja no es null -->
-                  <li *ngIf="item.FechaBaja !== null">
-                    <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
-                      <i class="fa-solid fa-check"></i> Habilitar
-                    </a>
-                  </li>
-                  <!-- Mostrar solo si FechaBaja es null -->
-                  <li *ngIf="item.FechaBaja === null">
-                    <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
-                      <i class="fa-solid fa-xmark"></i> Inhabilitar
-                    </a>
-                  </li>
-                  <!-- Mostrar solo si FechaBaja es null -->
-                  <li *ngIf="item.FechaBaja === null">
-                    <a class="dropdown-item" (click)="openEditar(content, item)">
-                      <i class="fa-solid fa-pen-to-square"></i> Editar
-                    </a>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="scroll-table">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"></th> <!-- Ver -->
+                <th scope="col">Nro</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Documentacion</th>
+                <th scope="col">Fecha de Alta</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
+              </tr>
+            </thead>
+            <tbody class="tablaUser" *ngFor="let item of listaGrilla; let i = index">
+              <tr>
+                <td scope="col"></td> <!-- Ver -->
+                <td scope="col">{{ item.IdUsuario }}</td>
+                <td scope="col">{{ item.Usuario}}</td>
+                <td scope="col">{{ item.Nombre}}</td>
+                <td scope="col">{{ item.Apellido}}</td>
+                <td scope="col">{{ item.Documentacion}}</td>
+                <td scope="col">{{ item.FechaAlta }}</td>
+                <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                <td scope="col" class="dropdown">
+                    <!-- Botón de acción con menú desplegable -->
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-user-gear"></i>
+                      </button>
+                      <!-- Menú desplegable con opciones -->
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <!-- Mostrar solo si FechaBaja no es null -->
+                    <li *ngIf="item.FechaBaja !== null">
+                      <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
+                        <i class="fa-solid fa-check"></i> Habilitar
+                      </a>
+                    </li>
+                    <!-- Mostrar solo si FechaBaja es null -->
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                        <i class="fa-solid fa-xmark"></i> Inhabilitar
+                      </a>
+                    </li>
+                    <!-- Mostrar solo si FechaBaja es null -->
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openEditar(content, item)">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                      </a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <ng-template #noData>
