@@ -4,6 +4,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TiporolService } from '../../../services/seguridad/tiporol.service';
 import { Menu } from '../../../models/menu/menu';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tiporoles',
@@ -12,6 +13,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 })
 export class TiporolesComponent {
   @Input() menu: Menu;
+  alerta: AlertasService;
   tituloModal: string;
   tituloBoton: string;
   itemGrilla: TipoRol; // cada item de la tabla
@@ -24,6 +26,7 @@ export class TiporolesComponent {
 
   constructor(private TiporolService: TiporolService,
     private modalService: NgbModal,
+    private alertasService: AlertasService,
     private formBuilder: FormBuilder){
 
   }
@@ -53,7 +56,7 @@ export class TiporolesComponent {
         this.listaGrilla = response.TiposRol || [];
       },
       error => {
-        console.error('Error al cargar tipos de roles:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -94,18 +97,20 @@ export class TiporolesComponent {
       this.TiporolService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         }, error => {
-          console.error('Error al agregar tipo de categoría:', error);
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
       this.TiporolService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al modificar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
@@ -114,9 +119,10 @@ export class TiporolesComponent {
     this.TiporolService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al inhabilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 
@@ -124,9 +130,10 @@ export class TiporolesComponent {
     this.TiporolService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al habilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }
