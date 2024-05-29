@@ -2,14 +2,20 @@
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
     <form [formGroup]="formFiltro">
-      <h1 id="tituloTabla">Categorías <i class="fa-solid fa-layer-group"></i></h1>
+      <div class="container">
+        <h4 class="title-menu centered-rounded-background">
+            <a>
+                <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+            </a>
+            <a style="margin-left: 5px;">Categoría</a>
+        </h4>
+    </div>
       <div class="d-flex align-items-start justify-content-between">
         <div class="form-group col-md-2 mt-3">
           <label for="idFiltro">Filtrar Por:</label>
           <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
             <option value="1">Solo Habilitados</option>
             <option value="2">Solo Inhabilitados</option>
-            <option value="0">Todos</option>
           </select>
         </div>
         <div class="form-group mt-3">
@@ -90,8 +96,8 @@
         </div>
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
-        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
-        <button type="button" class="btn btn-success" (click)="guardar()">{{ tituloBoton }}</button>
+        <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
       </div>
     </form>
   </div>
@@ -104,7 +110,7 @@
   <div class="modal-body">
       <a></a><h4 class="">Desea Eliminar?</h4>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
         </div>
   </div>
@@ -117,7 +123,7 @@
   <div class="modal-body">
       <a></a><h4 class="">Desea Habilitar?</h4>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
         </div>
   </div>

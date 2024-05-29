@@ -5,6 +5,22 @@
   cursor: pointer;
   transform: scale(1.05);
 }
+.card-menu {
+  width: 250px; /* Ancho fijo para las tarjetas */
+  height: 200px; /* Altura fija para las tarjetas */
+  overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede la altura de la tarjeta */
+  margin: 0 auto 20px;
+  box-shadow: 1px 4px 8px -1px rgba(0, 0, 0, 0.75);
+}
+
+.card-menu::-webkit-scrollbar {
+  width: 0; /* Oculta la barra de desplazamiento en navegadores WebKit */
+}
+
+.card-menu {
+  scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores no-WebKit */
+}
+
 
 .card-icon{
   margin-top: 20px;
@@ -14,8 +30,8 @@
 
 .card-menu {
   width: 100%;
-  max-width: 250px;
-  margin: 0 auto 20px; /* Ajusta el margen inferior para aumentar el espacio entre las tarjetas */
+  max-width: 250px; /* Ajusta este valor según tus necesidades */
+  margin: 0 auto 20px;
   box-shadow: 1px 4px 8px -1px rgba(0, 0, 0, 0.75);
 }
 

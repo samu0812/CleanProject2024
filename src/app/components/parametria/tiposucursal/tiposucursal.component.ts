@@ -1,8 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import {TipoS}
-import { TipoproductoService } from '../../../services/parametria/tipoproducto.service';
+import { Sucursales } from '../../../models/parametria/tiposucursal';
+import { TiposucursalService } from '../../../services/parametria/tiposucursal.service';
+import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tiposucursal',
@@ -12,22 +15,30 @@ import { TipoproductoService } from '../../../services/parametria/tipoproducto.s
 export class TiposucursalComponent {
   tituloModal: string;
   tituloBoton: string;
-  itemGrilla: TipoCategoria; // cada item de la tabla
-  listaGrilla: TipoCategoria[]; // tabla completa en donde se cargan los datos
+  itemGrilla: Sucursales; // cada item de la tabla
+  listaGrilla: Sucursales[]; // tabla completa en donde se cargan los datos
   modalRef: NgbModalRef;
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
-  constructor(private tipoCategoriaService: TipoCategoriaService,
+  constructor(private tiposucursalService: TiposucursalService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
   
   ngOnInit(): void {
+    this.obtenerImgMenu();
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
-      descripcion: new FormControl('', [Validators.required])
+      descripcion: new FormControl('', [Validators.required]),
+      IdTipoDomicilio: new FormControl('', [Validators.required]),
+      calle: new FormControl('', [Validators.required]),
+      nro: new FormControl('', [Validators.required]),
+      piso: new FormControl('', [Validators.required])
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -41,16 +52,19 @@ export class TiposucursalComponent {
       this.listar(value);
     });
   }
-
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/sucursal').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+    });
+  }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    this.tipoCategoriaService.listar(TipoLista).subscribe(
+    this.tiposucursalService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
-        this.itemGrilla = new TipoCategoria();
-        this.listaGrilla = response.TipoCategoria || [];
+        this.itemGrilla = new Sucursales();
+        this.listaGrilla = response.Sucursales || [];
       },
       error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -63,67 +77,71 @@ export class TiposucursalComponent {
   openAgregar(content) {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
-    this.itemGrilla = Object.assign({}, new TipoCategoria());
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.itemGrilla = Object.assign({}, new Sucursales());
+    this.modalRef = this.modalService.open(content, { size: 'md', centered: true });
   }
 
-  openEditar(content, item: TipoCategoria) {
+  openEditar(content, item: Sucursales) {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item); // duplica el item para que no cambie por detras y modifiquemos este para enviar al back
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.modalRef = this.modalService.open(content, { size: 'md', centered: true });
   }
 
-  openInhabilitar(contentInhabilitar, item: TipoCategoria) {
+  openInhabilitar(contentInhabilitar, item: Sucursales) {
     this.tituloModal = "Inhabilitar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentInhabilitar, { size: 'sm', centered: true });
   }
 
-  openHabilitar(contentHabilitar, item: TipoCategoria) {
+  openHabilitar(contentHabilitar, item: Sucursales) {
     this.tituloModal = "Habilitar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
   }
 
   guardar(): void {
-    if (this.itemGrilla.IdTipoCategoria == null) {
-      this.tipoCategoriaService.agregar(this.itemGrilla, this.Token)
+    if (this.itemGrilla.IdSucursal == null) {
+      this.tiposucursalService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         }, error => {
-          console.error('Error al agregar tipo de categoría:', error);
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
-      this.tipoCategoriaService.editar(this.itemGrilla, this.Token)
+      this.tiposucursalService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al modificar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
 
   inhabilitar(): void {
-    this.tipoCategoriaService.inhabilitar(this.itemGrilla, this.Token)
+    this.tiposucursalService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al inhabilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 
   habilitar(): void {
-    this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token)
+    this.tiposucursalService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(0);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al habilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 

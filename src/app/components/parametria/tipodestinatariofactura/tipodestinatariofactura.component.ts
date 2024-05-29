@@ -3,6 +3,9 @@ import { TipodestinatariofacturaService } from '../../../services/parametria/tip
 import { TipoDestinatarioFacturas } from '../../../models/parametria/tipodestinatariofactura';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipodestinatariofactura',
@@ -17,14 +20,18 @@ export class TipodestinatariofacturaComponent implements OnInit {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(
     private tipodestinatariofacturaService: TipodestinatariofacturaService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
+    this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.listar(1);
     this.formItemGrilla = this.formBuilder.group({
@@ -35,13 +42,18 @@ export class TipodestinatariofacturaComponent implements OnInit {
       idFiltro: new FormControl('', [Validators.required])
     });
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipodestinatariofactura').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+    });
+  }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipodestinatariofacturaService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoDestinatarioFacturas || [];
       }, error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }

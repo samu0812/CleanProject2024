@@ -4,6 +4,9 @@ import { TipoImpuesto } from '../../../models/parametria/tipoimpuesto';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
+
 @Component({
   selector: 'app-tipoimpuesto',
   templateUrl: './tipoimpuesto.component.html',
@@ -19,13 +22,17 @@ export class TipoimpuestoComponent {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(private tipoImpuestoService: TipoimpuestoService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
   
   ngOnInit(): void {
+    this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       detalle: new FormControl('', [Validators.required]),
@@ -44,16 +51,21 @@ export class TipoimpuestoComponent {
       this.listar(value);
     });
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipoimpuesto').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+    });
+  }
+
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoImpuestoService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoImpuesto();
         this.listaGrilla = response.TipoImpuesto || [];
       },
       error => {
-        console.error('Error al cargar tipos de impuesto:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -94,18 +106,20 @@ export class TipoimpuestoComponent {
       this.tipoImpuestoService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         }, error => {
-          console.error('Error al agregar tipo de impuesto:', error);
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
       this.tipoImpuestoService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al modificar tipo de impuesto:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
@@ -115,9 +129,10 @@ export class TipoimpuestoComponent {
     this.tipoImpuestoService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al inhabilitar tipo de impuesto:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 
@@ -125,13 +140,11 @@ export class TipoimpuestoComponent {
     this.tipoImpuestoService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al habilitar tipo de impuesto:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
-
-
-
 
 }

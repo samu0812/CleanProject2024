@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { AlertasService } from '../../services/alertas/alertas.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector:'app-login',
@@ -35,7 +34,6 @@ export class LoginComponent implements OnInit {
         (response) => {
           if (response.Status === 200) {
             localStorage.setItem("Token", response.Token);
-            console.log(response);
             this.authService.setAuthenticated(true, response); // Pasa la información del usuario
             this.router.navigate(['/home']);
           } else {
@@ -43,11 +41,11 @@ export class LoginComponent implements OnInit {
           }
         },
         (error) => {
-          this.alertasService.ErrorAlert('Error al autenticar:', 'Por favor intenta de nuevo.');
+          this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
         }
       );
     } else {
-      this.alertasService.ErrorAlert('Error al autenticar:', 'Por favor intenta de nuevo.');
+      this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
     }
   }
 

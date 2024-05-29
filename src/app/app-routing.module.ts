@@ -43,7 +43,7 @@ const routes: Routes = [
 
   {path: 'seguridad/usuarios', component: UsuariosComponent},
   {path: 'seguridad/tiporoles', component: TiporolesComponent},
-  {path: 'seguridad/rol', component: RolComponent},
+  {path: 'seguridad/rolmodulos', component: RolComponent},
   {path: 'seguridad/apis', component: ApisComponent},
 
   {path: 'parametria/tipopersona', component: TipopersonaComponent},
@@ -59,9 +59,9 @@ const routes: Routes = [
   {path: 'parametria/tipoformadepago', component: TipoformadepagoComponent},
   {path: 'parametria/tipopermiso', component: TipopermisoComponent},
   {path: 'parametria/tipopermisodetalle', component: TipopermisodetalleComponent},
-  {path: 'parametria/tiposucursal', component: TiposucursalComponent},
+  {path: 'parametria/sucursal', component: TiposucursalComponent},
 
-  {path: 'recursos/stock', component:StockComponent},
+  {path: 'recursos/inventario', component:StockComponent},
   {path: 'recursos/proveedores', component: ProveedoresComponent},
   {path: 'recursos/personal', component: PersonalComponent},
   {path: 'recursos/clientes', component:ClientesComponent },

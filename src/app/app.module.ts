@@ -7,10 +7,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
-import { SeguridadComponent } from './components/seguridad/seguridad.component';
-import { ParametriaComponent } from './components/parametria/parametria.component';
 import { GestionComponent } from './components/gestion/gestion.component';
-import { RecursosComponent } from './components/recursos/recursos.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { UsuariosComponent } from './components/seguridad/usuarios/usuarios.component';
 import { TiporolesComponent } from './components/seguridad/tiporoles/tiporoles.component';
@@ -69,10 +66,7 @@ import { TiposucursalComponent } from './components/parametria/tiposucursal/tipo
     LoginComponent,
     FooterComponent,
     HomeComponent,
-    SeguridadComponent,
-    ParametriaComponent,
     GestionComponent,
-    RecursosComponent,
     ReportesComponent,
     UsuariosComponent,
     TiporolesComponent,

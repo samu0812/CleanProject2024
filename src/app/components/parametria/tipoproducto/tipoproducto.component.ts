@@ -3,6 +3,9 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { TipoProducto } from '../../../models/parametria/tipoproducto';
 import { TipoproductoService } from '../../../services/parametria/tipoproducto.service';
+import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipoproducto',
@@ -19,13 +22,17 @@ export class TipoproductoComponent {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(private tipoproductoService: TipoproductoService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
   
   ngOnInit(): void {
+    this.obtenerImgMenu();
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       Detalle: new FormControl('', [Validators.required])
@@ -42,17 +49,20 @@ export class TipoproductoComponent {
       this.listar(value);
     });
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipoproducto').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+    });
+  }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoproductoService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoProducto();
         this.listaGrilla = response.TipoProducto || [];
-        console.log(this.listaGrilla);
       },
       error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -93,18 +103,20 @@ export class TipoproductoComponent {
       this.tipoproductoService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
+          this.alertasService.OkAlert('OK', 'Se Agrego Correctamente');
           this.modalRef.close();
         }, error => {
-          console.error('Error al agregar tipo de categoría:', error);
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
       this.tipoproductoService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al modificar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
@@ -113,9 +125,10 @@ export class TipoproductoComponent {
     this.tipoproductoService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al inhabilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 
@@ -123,13 +136,12 @@ export class TipoproductoComponent {
     this.tipoproductoService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al habilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
-
-
 
 
 }

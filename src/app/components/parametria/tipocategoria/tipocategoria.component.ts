@@ -4,6 +4,8 @@ import { TipoCategoria } from '../../../models/parametria/tipoCategoria'
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipocategoria',
@@ -20,13 +22,17 @@ export class TipocategoriaComponent implements OnInit {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(private tipoCategoriaService: TipoCategoriaService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
   
   ngOnInit(): void {
+    this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       descripcion: new FormControl('', [Validators.required])
@@ -42,17 +48,22 @@ export class TipocategoriaComponent implements OnInit {
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
     });
+
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipocategoria').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+    });
+  }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoCategoriaService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoCategoria();
         this.listaGrilla = response.TipoCategoria || [];
       },
       error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.message);
       }
     );
   }
@@ -93,18 +104,20 @@ export class TipocategoriaComponent implements OnInit {
       this.tipoCategoriaService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         }, error => {
-          console.error('Error al agregar tipo de categoría:', error);
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
       this.tipoCategoriaService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al modificar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
@@ -113,9 +126,10 @@ export class TipocategoriaComponent implements OnInit {
     this.tipoCategoriaService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
-      }, error => {
-        console.error('Error al inhabilitar tipo de categoría:', error);
+      }, response => {
+        this.alertasService.ErrorAlert('Error', response.error.Message);
       });
   }
 
@@ -123,9 +137,10 @@ export class TipocategoriaComponent implements OnInit {
     this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al habilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 

@@ -3,6 +3,9 @@ import { TipoMedidas } from '../../../models/parametria/tipomedida';
 import { TipomedidaService } from '../../../services/parametria/tipomedida.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipomedida',
@@ -10,22 +13,25 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
   styleUrl: './tipomedida.component.css'
 })
 export class TipomedidaComponent {
-
-
   itemGrilla: TipoMedidas; // cada item de la tabla
   listaGrilla: TipoMedidas[] = []; // tabla completa en donde se cargan los datos
   modalRef: NgbModalRef;
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(
     private tipomedidaService: TipomedidaService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
+    this.obtenerImgMenu();
     this.Token = localStorage.getItem('Token');
     this.listar(1);
     this.formItemGrilla = this.formBuilder.group({
@@ -36,15 +42,18 @@ export class TipomedidaComponent {
       idFiltro: new FormControl('', [Validators.required])
     });
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipomedida').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+    });
+  }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    console.log(TipoLista, "sa");
     this.tipomedidaService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoMedidas || [];
-        console.log(this.listaGrilla, "sasass");
       }, error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }

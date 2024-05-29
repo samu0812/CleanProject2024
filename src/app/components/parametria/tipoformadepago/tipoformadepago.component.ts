@@ -3,6 +3,9 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TipoFormaDePago } from '../../../models/parametria/tipoformadepago';
 import { TipoformadepagoService } from './../../../services/parametria/tipoformadepago.service';
+import { Menu } from '../../../models/menu/menu';
+import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipoformadepago',
@@ -19,14 +22,18 @@ export class TipoformadepagoComponent implements OnInit {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
   constructor(
     private tipoformadepagoService: TipoformadepagoService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
+    this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       descripcion: new FormControl('', [Validators.required])
@@ -42,17 +49,23 @@ export class TipoformadepagoComponent implements OnInit {
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
     });
+
   }
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipoformadepago').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+    });
+  }
+
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipoformadepagoService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new TipoFormaDePago();
         this.listaGrilla = response.TipoFormaDePago || [];
       },
       error => {
-        console.error('Error al cargar tipos de forma de pago:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -93,20 +106,22 @@ export class TipoformadepagoComponent implements OnInit {
       this.tipoformadepagoService.agregar(this.itemGrilla, this.Token).subscribe(
         response => {
           this.listar(this.formFiltro.get('idFiltro').value);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         },
         error => {
-          console.error('Error al agregar tipo de forma de pago:', error);
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         }
       );
     } else {
       this.tipoformadepagoService.editar(this.itemGrilla, this.Token).subscribe(
         response => {
           this.listar(this.formFiltro.get('idFiltro').value);
+          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
         },
         error => {
-          console.error('Error al modificar tipo de forma de pago:', error);
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         }
       );
     }
@@ -116,10 +131,11 @@ export class TipoformadepagoComponent implements OnInit {
     this.tipoformadepagoService.inhabilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(this.formFiltro.get('idFiltro').value);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       },
       error => {
-        console.error('Error al inhabilitar tipo de forma de pago:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -128,10 +144,11 @@ export class TipoformadepagoComponent implements OnInit {
     this.tipoformadepagoService.habilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(this.formFiltro.get('idFiltro').value);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       },
       error => {
-        console.error('Error al habilitar tipo de forma de pago:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
