@@ -10,8 +10,8 @@ export class TipomoduloService {
 
   constructor(private http: HttpClient) { }
 
-  listar(): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoModulo`;
+  listar(TipoLista: number): Observable<any> {
+    const url = `${this.apiUrl}/SPL_TipoModulo?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 }

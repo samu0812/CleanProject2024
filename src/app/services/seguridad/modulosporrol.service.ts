@@ -33,15 +33,10 @@ export class ModulosporrolService {
     return this.http.post(url, body);
   }
 
-  inhabilitar(item: ModulosPorRol, Token: string): Observable<any> {
+  inhabilitar(item: number, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPB_RolModulo`;
     const body = {
-      IdTipoRol: item.IdTipoRol,
-      DescripcionTipoRol: item.DescripcionTipoRol,
-      IdTipoModulo: item.IdTipoModulo,
-      DetalleTipoModulo: item.DetalleTipoModulo,
-      IdTipoPermiso: item.IdTipoPermiso,
-      DetalleTipoPermiso: item.DetalleTipoPermiso,
+      IdRolModulo: item,
       Token: Token};
       return this.http.put(url, body);
   }

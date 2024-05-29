@@ -10,6 +10,9 @@ import { TiporolService } from '../../../services/seguridad/tiporol.service';
 import { TipoRol } from '../../../models/seguridad/TipoRol';
 import { TipopermisoService } from '../../../services/parametria/tipopermiso.service';
 import { TipoPermiso } from '../../../models/parametria/tipopermiso';
+import { TipomoduloService } from '../../../services/parametria/tipomodulo.service';
+import { TipoModulo } from '../../../models/parametria/tipoModulo';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-rol',
@@ -29,15 +32,19 @@ export class RolComponent {
   imgSubmenu: Menu;
   lTipoRol: TipoRol[];
   lTipoPermiso: TipoPermiso[];
+  lTipoModulo: TipoModulo[];
 
   constructor(private modulosPorRolService: ModulosporrolService,
     private tipoRolService: TiporolService,
+    private tipoModuloService: TipomoduloService,
     private tipoPermisoService: TipopermisoService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
     private alertasService: AlertasService
   ) {}
+
+  get fItemGrilla() { return this.formItemGrilla.controls; }
 
   ngOnInit(): void {
     this.obtenerImgMenu();
@@ -51,15 +58,26 @@ export class RolComponent {
 
     this.formFiltro = this.formBuilder.group({
       idFiltroMostrar: new FormControl('1', [Validators.required]),
-      idFiltroRoles: new FormControl(null)
+      idFiltroRoles: new FormControl('', [Validators.required])
     });
 
     this.listar(1, null);
-    this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
-      this.listar(value, null);
+    this.formFiltro.get('idFiltroMostrar').valueChanges.subscribe(value => {
+      let rol = this.formFiltro.get('idFiltroRoles').value;
+      this.listar(value, rol);
+    });
+    this.formFiltro.get('idFiltroRoles').valueChanges.subscribe(value => {
+      let filtro = this.formFiltro.get('idFiltroMostrar').value;
+      this.listar(filtro, value);
     });
 
   }
+
+  cambiarFiltro(): void {
+    const filtro = this.formFiltro.get('idFiltroMostrar').value;
+    this.listar(filtro, null);
+  }
+
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/seguridad/rolmodulos').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
@@ -72,12 +90,17 @@ export class RolComponent {
       });
     this.tipoPermisoService.listar().subscribe(data => {
       this.lTipoPermiso = data.TipoPermisos;
-      console.log(this.lTipoPermiso)
+      });
+    this.tipoModuloService.listar(1).subscribe(data => {
+      this.lTipoModulo = data.TipoModulos;
       });
     }
 
-  listar(TipoLista: number, TipoRol): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    this.modulosPorRolService.listar(TipoLista, 0).subscribe(
+  listar(TipoLista: number, TipoRol: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    if (TipoRol == null){
+      TipoRol = 0;
+    }
+    this.modulosPorRolService.listar(TipoLista, TipoRol).subscribe(
       response => {
         this.itemGrilla = new ModulosPorRol();
         this.listaGrilla = response.RolModulo || [];
@@ -86,11 +109,6 @@ export class RolComponent {
         this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
       }
     );
-  }
-
-  cambiarFiltro(): void {
-    const filtro = this.formFiltro.get('idFiltro').value;
-    this.listar(filtro, null);
   }
 
   openAgregar(content) {
@@ -124,7 +142,8 @@ export class RolComponent {
     }
 
   inhabilitar(): void {
-    this.modulosPorRolService.inhabilitar(this.itemGrilla, this.Token)
+    console.log(this.itemGrilla)
+    this.modulosPorRolService.inhabilitar(this.itemGrilla.IdRolModulo, this.Token)
       .subscribe(response => {
         this.listar(1, 0);
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
