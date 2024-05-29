@@ -3,8 +3,6 @@
   justify-content: center; /* Centra horizontalmente */
   align-items: center; /* Centra verticalmente */
 }
-
-/* Estilos para el elemento h4 */
 .centered-rounded-background {
   font-family: 'Roboto', sans-serif;
   text-align: center;
@@ -136,22 +134,21 @@
   .table-responsive {
     border-radius: 10px; /* Redondea los bordes */
     overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
+    min-height: 400px;
   }
   .hide-column {
     display: none;
   }
   .scroll-table {
-    max-width: 100%;
-    overflow-x: auto; /* Permite el desplazamiento horizontal */
-  }
-  
+    max-height: auto; /* Ajusta según sea necesario */
+    overflow-y: auto; /* Agrega desplazamiento vertical si es necesario */
+}
 
 .table {
     min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
-    margin-bottom: 0; /* Elimina el margen inferior de la tabla */
-    width: 100%;
+    margin-bottom: 0; 
+    width: 100%; /* Elimina el margen inferior de la tabla */
 }
-
 /* Estilos adicionales según sea necesario */
 
 .modal-dialog {
@@ -167,9 +164,6 @@
   background-color: rgb(31, 31, 95);
   border-color: rgb(31, 31, 95);
   margin-left: 5px;
-}
-#btnCancelar{
-  background-color: #FF0000;
 }
 
 .modal-header {
