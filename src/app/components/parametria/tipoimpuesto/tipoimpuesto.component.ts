@@ -65,7 +65,7 @@ export class TipoimpuestoComponent {
         this.listaGrilla = response.TipoImpuesto || [];
       },
       error => {
-        console.error('Error al cargar tipos de impuesto:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -109,7 +109,7 @@ export class TipoimpuestoComponent {
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         }, error => {
-          this.alertasService.ErrorAlert('Error', 'Error al Agregar.');
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
@@ -119,7 +119,7 @@ export class TipoimpuestoComponent {
         this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Modificar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
@@ -132,7 +132,7 @@ export class TipoimpuestoComponent {
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Inhabilitarr.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 
@@ -143,11 +143,8 @@ export class TipoimpuestoComponent {
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
-
-
-
 
 }

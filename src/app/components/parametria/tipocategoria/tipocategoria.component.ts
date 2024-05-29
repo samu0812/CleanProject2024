@@ -63,7 +63,7 @@ export class TipocategoriaComponent implements OnInit {
         this.listaGrilla = response.TipoCategoria || [];
       },
       error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
+        this.alertasService.ErrorAlert('Error', error.error.message);
       }
     );
   }
@@ -107,7 +107,7 @@ export class TipocategoriaComponent implements OnInit {
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         }, error => {
-          this.alertasService.ErrorAlert('Error', 'Error al Agregar.');
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
@@ -117,7 +117,7 @@ export class TipocategoriaComponent implements OnInit {
         this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Modificar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
@@ -129,7 +129,7 @@ export class TipocategoriaComponent implements OnInit {
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, response => {
-        this.alertasService.ErrorAlert('Error', 'Error al Inhabilitarr.');
+        this.alertasService.ErrorAlert('Error', response.error.Message);
       });
   }
 
@@ -140,7 +140,7 @@ export class TipocategoriaComponent implements OnInit {
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 

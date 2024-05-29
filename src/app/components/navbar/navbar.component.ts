@@ -42,6 +42,7 @@ export class NavbarComponent implements OnInit {
       if (Token) {
         this.menuService.getMenuItems(Token).subscribe(
           (response) => {
+            console.log(response);
             this.Menues = response.Menues;
           },
           (error) => {

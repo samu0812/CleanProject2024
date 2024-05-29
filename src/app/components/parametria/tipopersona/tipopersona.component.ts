@@ -5,6 +5,7 @@ import { TipoPersonas } from '../../../models/parametria/tipopersona';
 import { TipopersonaService } from '../../../services/parametria/tipopersona.service';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipopersona',
@@ -24,7 +25,8 @@ export class TipopersonaComponent {
     private tipopersonaService: TipopersonaService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +52,7 @@ export class TipopersonaComponent {
       .subscribe(response => {
         this.listaGrilla = response.TipoPersonas || [];
       }, error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }

@@ -5,6 +5,7 @@ import { TiporolService } from '../../../services/seguridad/tiporol.service';
 import { Menu } from '../../../models/menu/menu';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { AlertasService } from '../../../services/alertas/alertas.service';
+import { ImagenService } from '../../../services/imagen/imagen.service';
 
 @Component({
   selector: 'app-tiporoles',
@@ -22,15 +23,18 @@ export class TiporolesComponent {
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
   Token: string;
+  imgSubmenu: Menu;
 
 
   constructor(private TiporolService: TiporolService,
     private modalService: NgbModal,
-    private alertasService: AlertasService,
-    private formBuilder: FormBuilder){
+    private formBuilder: FormBuilder,
+    private imagenService: ImagenService,
+    private alertasService: AlertasService,){
 
   }
   ngOnInit(): void {
+    this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       Descripcion: new FormControl('', [Validators.required])
@@ -47,6 +51,12 @@ export class TiporolesComponent {
       this.listar(value);
     });
   }
+  
+  obtenerImgMenu(){
+    this.imagenService.getImagenSubMenu('/parametria/tipocategoria').subscribe(data => {
+      this.imgSubmenu = data.ImagenSubmenu[0];
+    });
+  }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.TiporolService.listar(TipoLista).subscribe(

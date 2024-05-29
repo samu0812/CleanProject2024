@@ -5,6 +5,7 @@ import { TipoFacturas } from '../../../models/parametria/tipofactura';
 import { TipofacturaService } from '../../../services/parametria/tipofactura.service';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipofactura',
@@ -25,7 +26,8 @@ export class TipofacturaComponent {
     private tipofacturaService: TipofacturaService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +61,7 @@ export class TipofacturaComponent {
       .subscribe(response => {
         this.listaGrilla = response.TipoFacturas || [];
       }, error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }

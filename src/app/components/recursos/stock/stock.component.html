@@ -1,1 +1,185 @@
-<p>stock works!</p>
+<div class="container-fluid main-section">
+    <div class="modal-content">
+      <!-- Filtros de Búsqueda -->
+      <form [formGroup]="formFiltro">
+        <div class="container">
+          <h4 class="title-menu centered-rounded-background">
+              <a>
+                  <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+              </a>
+              <a style="margin-left: 5px;">Productos</a>
+          </h4>
+      </div>
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="form-group col-md-2 mt-3">
+            <label for="idFiltro">Filtrar Por:</label>
+            <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
+              <option value="1">Solo Habilitados</option>
+              <option value="2">Solo Inhabilitados</option>
+            </select>
+          </div>
+          <div class="form-group mt-3">
+            <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
+              <i class="fa-solid fa-circle-plus"></i> <!-- Aplica la clase 'button-icon' al ícono -->
+              Agregar
+            </button>
+          </div>
+        </div>
+      </form>
+      <!-- Grilla -->
+      <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
+        <div class="table-responsive">
+          <div class="scroll-table">
+            <table class="table">
+              <thead class="thead-dark">
+                  <tr>
+                      <th scope="col">Nro</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col">Código</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Marca</th>
+                      <th scope="col">Precio Costo</th>
+                      <th scope="col">Cant. Máxima</th>
+                      <th scope="col">Cant. Mínima</th>
+                      <th scope="col">Fecha Alta</th>
+                      <th scope="col">IdTipoMedida</th>
+                      <th scope="col">Medida</th>
+                      <th scope="col">IdTipoCategoria</th>
+                      <th scope="col">Categoria</th>
+                      <th scope="col">IdTipoProducto</th>
+                      <th scope="col">TipoProducto</th>
+                      <th scope="col">Acción</th>
+                  </tr>
+              </thead>
+              <tbody class="tablaUser">
+                <tr *ngFor="let item of listaGrilla; let i = index">
+                  <td scope="col">{{ item.IdProducto }}</td>
+                  <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                  <td scope="col">{{ item.Codigo }}</td>
+                  <td scope="col">{{ item.Nombre }}</td>
+                  <td scope="col">{{ item.Marca }}</td>
+                  <td scope="col">{{ item.PrecioCosto }}</td>
+                  <td scope="col">{{ item.CantMaxima }}</td>
+                  <td scope="col">{{ item.CantMinima }}</td>
+                  <td scope="col">{{ item.FechaAlta }}</td>
+                  <td scope="col">{{ item.IdTipoMedida}}</td>
+                  <td scope="col">{{ item.TipoMedidaDescripcion}}</td>
+                  <td scope="col">{{ item.IdTipoCategoria }}</td>
+                  <td scope="col">{{ item.CategoriaDescripcion}}</td>
+                  <td scope="col">{{ item.IdTipoProducto }}</td>
+                  <td scope="col">{{ item.TipoProductoDescripcion }}</td>
+                  <td scope="col" class="dropdown">
+                    <!-- Botón de acción con menú desplegable -->
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa-solid fa-gears"></i>
+                    </button>
+                    <!-- Menú desplegable con opciones -->
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <!-- Mostrar solo si FechaBaja no es null -->
+                      <li *ngIf="item.FechaBaja !== null">
+                        <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
+                          <i class="fa-solid fa-check"></i> Habilitar
+                        </a>
+                      </li>
+                      <!-- Mostrar solo si FechaBaja es null -->
+                      <li *ngIf="item.FechaBaja === null">
+                        <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                          <i class="fa-solid fa-xmark"></i> Inhabilitar
+                        </a>
+                      </li>
+                      <!-- Mostrar solo si FechaBaja es null -->
+                      <li *ngIf="item.FechaBaja === null">
+                        <a class="dropdown-item" (click)="openEditar(content, item)">
+                          <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                      </li>
+                    </ul>
+                  </td>              
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <ng-template #noData>
+        <h5>No se encontraron registros...</h5>
+      </ng-template>
+    </div>
+  </div>
+  <!-- AgregarCategoriaModal -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formItemGrilla">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="codigo">Código:</label>
+            <input type="text" formControlName="codigo" class="form-control" id="codigo" placeholder="Código">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="nombre">Nombre:</label>
+            <input type="text" formControlName="nombre" class="form-control" id="nombre" placeholder="Nombre">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="marca">Marca:</label>
+            <input type="text" formControlName="marca" class="form-control" id="marca" placeholder="Marca">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="precioCosto">Precio Costo:</label>
+            <input type="number" formControlName="precioCosto" class="form-control" id="precioCosto" placeholder="Precio Costo">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="cantMaxima">Cantidad Máxima:</label>
+            <input type="number" formControlName="cantMaxima" class="form-control" id="cantMaxima" placeholder="Cantidad Máxima">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="cantMinima">Cantidad Mínima:</label>
+            <input type="number" formControlName="cantMinima" class="form-control" id="cantMinima" placeholder="Cantidad Mínima">
+          </div>
+        </div>
+        <div class="form-group col text-right" style="margin-top: 25px;">
+          <button type="button" class="btn btn-danger" id="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+          <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  
+  
+  
+  <ng-template #contentInhabilitar let-modal>
+    <div class="modal-header">
+      <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+        <a></a><h4 class="">Desea Eliminar?</h4>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
+          </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #contentHabilitar let-modal>
+    <div class="modal-header">
+      <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+        <a></a><h4 class="">Desea Habilitar?</h4>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
+          </div>
+    </div>
+  </ng-template>
+  
+  <footer class="footer">
+    <app-footer></app-footer>
+  </footer>
+  
