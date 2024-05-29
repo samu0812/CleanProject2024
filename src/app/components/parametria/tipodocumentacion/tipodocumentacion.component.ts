@@ -5,6 +5,7 @@ import { TipoDocumentacion } from '../../../models/parametria/tipodocumentacion'
 import { TipodocumentacionService } from '../../../services/parametria/tipodocumentacion.service';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipodocumentacion',
@@ -25,7 +26,8 @@ export class TipodocumentacionComponent {
     private tipodocumentacionService: TipodocumentacionService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
   
   ngOnInit(): void {
@@ -50,8 +52,6 @@ export class TipodocumentacionComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipodocumentacion').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
@@ -60,7 +60,7 @@ export class TipodocumentacionComponent {
       .subscribe(response => {
         this.listaGrilla = response.TipoDocumentacion || [];
       }, error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }

@@ -1,17 +1,22 @@
-
-<div class="col-sm-11 main-section">
+<div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
-    <form>
-      <h1 id="tituloTabla">Usuarios <i class="fa-solid fa-users"></i></h1>
-
+    <form [formGroup]="formFiltro">
+      <!-- <h1 id="tituloTabla">Usuarios <i class="fa-solid fa-users"></i></h1> -->
+      <div class="container">
+        <h4 class="title-menu centered-rounded-background">
+            <a>
+                <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+            </a>
+            <a style="margin-left: 5px;">Usuario</a>
+        </h4>
+      </div>
       <div class="row mt-3">
         <div class="col-md-3">
-          <label for="tipoLista">Filtrar Por:</label>
-          <select formControlName="tipoLista" class="form-control" id="tipoLista">
-            <option value="2" selected>Solo Habilitados</option>
-            <option value="3">Solo Inhabilitados</option>
-            <option value="1">Todos</option>
+          <label for="idFiltro">Filtrar Por:</label>
+          <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
+            <option value="1">Solo Habilitados</option>
+            <option value="2">Solo Inhabilitados</option>
           </select>
         </div>
         <div class="col-md-4">
@@ -26,108 +31,141 @@
         </div>
 
         <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarUsuarioModal" id="AgregarUsuarioModalbtn">
+          <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
             <i class="fa-solid fa-user-plus button-icon"></i>Crear Usuario
           </button>
         </div>
       </div>
     </form>
-    <div class="registros mt-3">
-      <h5>No se encontraron registros...</h5>
+    <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
       <div class="table-responsive">
-        <table class="table">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col"></th> <!-- Ver -->
-              <th scope="col">Usuario</th>
-              <th scope="col">Personal</th>
-              <th scope="col">Fecha de Alta</th>
-              <th scope="col">Fecha de Baja</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
-            </tr>
-          </thead>
-          <tbody class="tablaUser">
-            <tr>
-              <td scope="col"></td> <!-- Ver -->
-              <td scope="col">Usuario</td>
-              <td scope="col">Personal</td>
-              <td scope="col">Fecha de Alta</td>
-              <td scope="col">Fecha de Baja</td>
-              <td scope="col">Estado</td>
-              <td scope="col" class="dropdown">
-                  <!-- Botón de acción con menú desplegable -->
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa-solid fa-user-gear"></i>
-                    </button>
-                    <!-- Menú desplegable con opciones -->
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modificarUsuarioModal">
-                          <i class="fa-solid fa-user-pen"></i>Modificar Usuario
-                        </a>
-                      </li>
+        <div class="scroll-table">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"></th> <!-- Ver -->
+                <th scope="col">Nro</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Documentacion</th>
+                <th scope="col">Fecha de Alta</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
+              </tr>
+            </thead>
+            <tbody class="tablaUser" *ngFor="let item of listaGrilla; let i = index">
+              <tr>
+                <td scope="col"></td> <!-- Ver -->
+                <td scope="col">{{ item.IdUsuario }}</td>
+                <td scope="col">{{ item.Usuario}}</td>
+                <td scope="col">{{ item.Nombre}}</td>
+                <td scope="col">{{ item.Apellido}}</td>
+                <td scope="col">{{ item.Documentacion}}</td>
+                <td scope="col">{{ item.FechaAlta }}</td>
+                <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                <td scope="col" class="dropdown">
+                    <!-- Botón de acción con menú desplegable -->
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-user-gear"></i>
+                      </button>
+                      <!-- Menú desplegable con opciones -->
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <!-- Mostrar solo si FechaBaja no es null -->
+                    <li *ngIf="item.FechaBaja !== null">
+                      <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
+                        <i class="fa-solid fa-check"></i> Habilitar
+                      </a>
+                    </li>
+                    <!-- Mostrar solo si FechaBaja es null -->
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                        <i class="fa-solid fa-xmark"></i> Inhabilitar
+                      </a>
+                    </li>
+                    <!-- Mostrar solo si FechaBaja es null -->
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openEditar(content, item)">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                      </a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ng-template #noData>
+      <h5>No se encontraron registros...</h5>
+    </ng-template>
+  </div>
+</div>
+<!-- AgregarUsuarioModal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formItemGrilla">
+      <div class="form-row">
+        <div class="form-group col-md-10">
+          <div style="margin-bottom: 15px">
+            <label for="Usuario">Usuario:</label>
+          </div>
+          <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control" id="usuario" placeholder="usuario">
+        </div>
+        <div class="form-group col-md-10">
+          <div style="margin-bottom: 15px ; margin-top: 15px">
+            <label for="Clave">Clave:</label>
+          </div>
+          <input [(ngModel)]="itemGrilla.Clave" type="text" formControlName="clave" class="form-control" id="clave" placeholder="clave">
+        </div>
+        <div class="form-group col-md-10">
+          <label for="recipient-name" class="col-form-label">Personal</label>
+          <select [(ngModel)]="itemGrilla.listaPersonal" formControlName="listaPersonal" class="form-control" id="listaPersonal">
+            <option value="" disabled selected hidden>Seleccione...</option>
+            <option *ngFor="let persona of personas" [value]="persona.IdPersona">{{ persona.NombrePersona }}</option>
+          </select>
+        </div>
+        
+      </div>
+      <div class="form-group col text-right" style="margin-top: 25px;">
+        <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="guardar()">{{ tituloBoton }}</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
 
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#gestionarContrasenaModal">
-                          <i class="fa-solid fa-key"></i>Gestionar Contraseña
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#asignarRolModal">
-                          <i class="fa-solid fa-id-badge"></i>Asignar Rol/es
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#asignarSucursalModal">
-                          <i class="fa-solid fa-person-shelter"></i>Asignar Sucursal
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#inhabilitarModal">
-                          <i class="fa-solid fa-user-xmark"></i>Inhabilitar
-                        </a>
-                      </li>
-                    </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<ng-template #contentInhabilitar let-modal>
+  <div class="modal-header">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
-</div>
-<div class="modal fade" id="AgregarUsuarioModal" tabindex="-1" aria-labelledby="AgregarUsuarioModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="AgregarUsuarioModalLabel"><i class="fa-solid fa-user-plus button-icon"></i>Agregar Usuario</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Personal</label>
-            <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
-                <option value="" disabled selected hidden>Seleccione...</option>
-                <option value="opcion1">Opción 1</option>
-                <option value="opcion2">Opción 2</option>
-                <option value="opcion3">Opción 3</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Usuario</label>
-            <input type="text" id="Usuario" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Crear</button>
-      </div>
-    </div>
+  <div class="modal-body">
+      <a></a><h4 class="">Desea Eliminar?</h4>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
+        </div>
   </div>
-</div>
+</ng-template>
+
+<ng-template #contentHabilitar let-modal>
+  <div class="modal-header">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+  </div>
+  <div class="modal-body">
+      <a></a><h4 class="">Desea Habilitar?</h4>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
+        </div>
+  </div>
+</ng-template>
+
+
 <div class="modal fade" id="modificarUsuarioModal" tabindex="-1" aria-labelledby="modificarUsuarioModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

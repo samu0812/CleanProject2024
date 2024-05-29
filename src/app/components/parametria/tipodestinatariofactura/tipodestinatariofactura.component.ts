@@ -5,6 +5,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipodestinatariofactura',
@@ -25,7 +26,8 @@ export class TipodestinatariofacturaComponent implements OnInit {
     private tipodestinatariofacturaService: TipodestinatariofacturaService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
@@ -43,8 +45,6 @@ export class TipodestinatariofacturaComponent implements OnInit {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipodestinatariofactura').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
@@ -53,7 +53,7 @@ export class TipodestinatariofacturaComponent implements OnInit {
       .subscribe(response => {
         this.listaGrilla = response.TipoDestinatarioFacturas || [];
       }, error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }

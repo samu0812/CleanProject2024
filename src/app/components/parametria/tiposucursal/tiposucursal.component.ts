@@ -5,6 +5,7 @@ import { Sucursales } from '../../../models/parametria/tiposucursal';
 import { TiposucursalService } from '../../../services/parametria/tiposucursal.service';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tiposucursal',
@@ -25,7 +26,8 @@ export class TiposucursalComponent {
   constructor(private tiposucursalService: TiposucursalService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
   
   ngOnInit(): void {
@@ -53,19 +55,16 @@ export class TiposucursalComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/sucursal').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tiposucursalService.listar(TipoLista).subscribe(
       response => {
-        console.log('API response:', response);
         this.itemGrilla = new Sucursales();
         this.listaGrilla = response.Sucursales || [];
       },
       error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       }
     );
   }
@@ -106,18 +105,20 @@ export class TiposucursalComponent {
       this.tiposucursalService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
         }, error => {
-          console.error('Error al agregar tipo de categoría:', error);
+          this.alertasService.ErrorAlert('Error', error.error.Message);
         })
       }
     else{
       this.tiposucursalService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al modificar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       })
     };
   }
@@ -126,9 +127,10 @@ export class TiposucursalComponent {
     this.tiposucursalService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al inhabilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 
@@ -136,9 +138,10 @@ export class TiposucursalComponent {
     this.tiposucursalService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(0);
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {
-        console.error('Error al habilitar tipo de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 

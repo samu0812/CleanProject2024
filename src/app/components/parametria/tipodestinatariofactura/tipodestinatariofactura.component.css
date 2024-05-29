@@ -141,9 +141,9 @@
     display: none;
   }
   .scroll-table {
-    max-height: auto; /* Ajusta según sea necesario */
-    overflow-y: auto; /* Agrega desplazamiento vertical si es necesario */
-}
+    max-width: 100%;
+    overflow-x: auto; /* Permite el desplazamiento horizontal */
+  }
 
 .table {
     min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */

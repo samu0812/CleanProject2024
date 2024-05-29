@@ -61,7 +61,7 @@ const routes: Routes = [
   {path: 'parametria/tipopermisodetalle', component: TipopermisodetalleComponent},
   {path: 'parametria/sucursal', component: TiposucursalComponent},
 
-  {path: 'recursos/stock', component:StockComponent},
+  {path: 'recursos/inventario', component:StockComponent},
   {path: 'recursos/proveedores', component: ProveedoresComponent},
   {path: 'recursos/personal', component: PersonalComponent},
   {path: 'recursos/clientes', component:ClientesComponent },

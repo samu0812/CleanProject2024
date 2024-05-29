@@ -5,6 +5,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipomedida',
@@ -24,7 +25,8 @@ export class TipomedidaComponent {
     private tipomedidaService: TipomedidaService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void 
@@ -43,8 +45,6 @@ export class TipomedidaComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipomedida').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
@@ -55,7 +55,7 @@ export class TipomedidaComponent {
         this.listaGrilla = response.TipoMedidas || [];
         console.log(this.listaGrilla, "sasass");
       }, error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }

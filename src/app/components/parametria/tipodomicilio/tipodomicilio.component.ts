@@ -5,6 +5,7 @@ import { TipodomicilioService } from '../../../services/parametria/tipodomicilio
 import { TipoDomicilios } from '../../../models/parametria/tipodomicilio';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { AlertasService } from '../../../services/alertas/alertas.service';
 
 @Component({
   selector: 'app-tipodomicilio',
@@ -26,7 +27,8 @@ export class TipodomicilioComponent {
     private tipodomicilioService: TipodomicilioService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private imagenService: ImagenService
+    private imagenService: ImagenService,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
@@ -51,18 +53,15 @@ export class TipodomicilioComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipodomicilio').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-      console.log(data);
-      console.log(data.ImagenSubmenu[0]);
     });
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipodomicilioService.listar(TipoLista)
       .subscribe(response => {
-        console.log(response)
         this.listaGrilla = response.TipoDomicilios || [];
       }, error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
 }
