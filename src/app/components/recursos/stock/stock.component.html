@@ -42,12 +42,14 @@
                       <th scope="col">Cant. Máxima</th>
                       <th scope="col">Cant. Mínima</th>
                       <th scope="col">Fecha Alta</th>
-                      <th scope="col">IdTipoMedida</th>
+                      <th scope="col" class="hide-column">IdTipoMedida</th>
                       <th scope="col">Medida</th>
-                      <th scope="col">IdTipoCategoria</th>
+                      <th scope="col" class="hide-column">IdTipoCategoria</th>
+                      <th scope="col">Tamaño</th>
                       <th scope="col">Categoria</th>
-                      <th scope="col">IdTipoProducto</th>
-                      <th scope="col">TipoProducto</th>
+                      <th scope="col" class="hide-column">IdTipoProducto</th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col" class="hide-column">IdUsuarioCarga</th>
                       <th scope="col">Acción</th>
                   </tr>
               </thead>
@@ -62,12 +64,14 @@
                   <td scope="col">{{ item.CantMaxima }}</td>
                   <td scope="col">{{ item.CantMinima }}</td>
                   <td scope="col">{{ item.FechaAlta }}</td>
-                  <td scope="col">{{ item.IdTipoMedida}}</td>
+                  <td scope="col" class="hide-column">{{ item.IdTipoMedida}}</td>
                   <td scope="col">{{ item.TipoMedidaDescripcion}}</td>
-                  <td scope="col">{{ item.IdTipoCategoria }}</td>
+                  <td scope="col">{{ item.Tamano}}</td>
+                  <td scope="col" class="hide-column">{{ item.IdTipoCategoria }}</td>
                   <td scope="col">{{ item.CategoriaDescripcion}}</td>
-                  <td scope="col">{{ item.IdTipoProducto }}</td>
+                  <td scope="col" class="hide-column">{{ item.IdTipoProducto }}</td>
                   <td scope="col">{{ item.TipoProductoDescripcion }}</td>
+                  <td scope="col" class="hide-column">{{ item.IdUsuarioCarga }}</td>
                   <td scope="col" class="dropdown">
                     <!-- Botón de acción con menú desplegable -->
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -109,50 +113,96 @@
   <!-- AgregarCategoriaModal -->
   <ng-template #content let-modal>
     <div class="modal-header">
-      <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+      <a>
+        <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+      </a>
+      <a style="margin-left: 5px;"></a>
+      <h4 class="modal-title">{{ tituloModal }}</h4>
     </div>
     <div class="modal-body">
       <form [formGroup]="formItemGrilla">
-        <div class="form-row">
+        <div class="row">
           <div class="form-group col-md-6">
-            <label for="codigo">Código:</label>
-            <input type="text" formControlName="codigo" class="form-control" id="codigo" placeholder="Código">
+            <div style="margin-bottom: 15px;">
+              <label for="Codigo">Código:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Codigo" type="text" formControlName="Codigo" class="form-control" id="Codigo" placeholder="Código">
           </div>
           <div class="form-group col-md-6">
-            <label for="nombre">Nombre:</label>
-            <input type="text" formControlName="nombre" class="form-control" id="nombre" placeholder="Nombre">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="marca">Marca:</label>
-            <input type="text" formControlName="marca" class="form-control" id="marca" placeholder="Marca">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="precioCosto">Precio Costo:</label>
-            <input type="number" formControlName="precioCosto" class="form-control" id="precioCosto" placeholder="Precio Costo">
+            <div style="margin-bottom: 15px;">
+              <label for="Nombre">Nombre:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Nombre" type="text" formControlName="Nombre" class="form-control" id="Nombre" placeholder="Nombre">
           </div>
         </div>
-        <div class="form-row">
+        <div class="row">
           <div class="form-group col-md-6">
-            <label for="cantMaxima">Cantidad Máxima:</label>
-            <input type="number" formControlName="cantMaxima" class="form-control" id="cantMaxima" placeholder="Cantidad Máxima">
+            <div style="margin-bottom: 15px;">
+              <label for="Marca">Marca:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Marca" type="text" formControlName="Marca" class="form-control" id="Marca" placeholder="Marca">
           </div>
           <div class="form-group col-md-6">
-            <label for="cantMinima">Cantidad Mínima:</label>
-            <input type="number" formControlName="cantMinima" class="form-control" id="cantMinima" placeholder="Cantidad Mínima">
+            <div style="margin-bottom: 15px;">
+              <label for="PrecioCosto">Precio Costo:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.PrecioCosto" type="number" formControlName="PrecioCosto" class="form-control" id="PrecioCosto" placeholder="100">
           </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <div style="margin-bottom: 15px;">
+              <label for="CantMaxima">Can. Max.</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.CantMaxima" type="number" formControlName="CantMaxima" class="form-control" id="CantMaxima" placeholder="100">
+          </div>
+          <div class="form-group col-md-6">
+            <div style="margin-bottom: 15px;">
+              <label for="CantMinima">Can. Min.</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.CantMinima" type="number" formControlName="CantMinima" class="form-control" id="CantMinima" placeholder="100">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="tipoMedida">Medida:</label>
+            <select [(ngModel)]="itemGrilla.IdTipoMedida" formControlName="tipoMedida" class="form-control" id="tipoMedida">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lTipoMedidas" [value]="tipo.IdTipoMedida">
+                {{ tipo.Detalle }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+              <label for="Tamano">Tamaño:</label>
+            <input [(ngModel)]="itemGrilla.Tamano" type="number" formControlName="Tamano" class="form-control" id="Tamano" placeholder="100">
+          </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="tipoCategoria">Tipo de Categoría:</label>
+            <select [(ngModel)]="itemGrilla.IdTipoCategoria" formControlName="tipoCategoria" class="form-control">
+              <option [value]="undefined">Seleccione...</option>
+              <option   *ngFor="let categoria of lTipoCategoria" [value]="categoria.IdTipoCategoria">
+                {{ categoria.Descripcion }}
+              </option>
+            </select>
+          </div>
+            <div class="col-md-6">
+              <label for="tipoProducto" style="margin-left: 15px;">Tipo de Producto:</label>
+            <select  [(ngModel)]="itemGrilla.IdTipoProducto" class="form-control" formControlName="tipoProducto" style="margin-left: 15px;">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lTipoProducto" [ngValue]="tipo.IdTipoProducto">{{ tipo.Detalle }}</option>
+            </select>
+          </div>
+      </div>
         </div>
         <div class="form-group col text-right" style="margin-top: 25px;">
-          <button type="button" class="btn btn-danger" id="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+          <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
           <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
         </div>
       </form>
     </div>
   </ng-template>
-  
-  
-  
   <ng-template #contentInhabilitar let-modal>
     <div class="modal-header">
       <a></a><h4 class="modal-title">{{ tituloModal }}</h4>

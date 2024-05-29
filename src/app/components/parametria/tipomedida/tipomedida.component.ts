@@ -49,7 +49,6 @@ export class TipomedidaComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    console.log(TipoLista, "sa");
     this.tipomedidaService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoMedidas || [];

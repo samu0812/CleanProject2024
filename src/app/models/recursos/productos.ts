@@ -10,10 +10,11 @@ export class Productos{
     public Nombre: string;
     public Marca: string;
     public PrecioCosto: number;
-    public Tamaño: number;
+    public Tamano: number;
     public CantMaxima: number;
     public CantMinima: number;
     public IdUsuarioCarga: number;
     public FechaAlta: number;
     public FechaBaja: number;
+
 }
