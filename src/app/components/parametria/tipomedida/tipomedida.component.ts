@@ -52,7 +52,6 @@ export class TipomedidaComponent {
     this.tipomedidaService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoMedidas || [];
-        console.log(this.listaGrilla, "sasass");
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
       });

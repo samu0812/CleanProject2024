@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
         (response) => {
           if (response.Status === 200) {
             localStorage.setItem("Token", response.Token);
-            console.log(response);
             this.authService.setAuthenticated(true, response); // Pasa la información del usuario
             this.router.navigate(['/home']);
           } else {
