@@ -1,8 +1,3 @@
-<!-- Agrega este código dentro del componente donde deseas mostrar la tabla y el modal -->
-
-<!-- Importa NgbModal en tu módulo si aún no lo has hecho -->
-<!-- Agrega el siguiente import en tu archivo de módulo: import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; -->
-
 <div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
@@ -16,6 +11,16 @@
         </h4>
       </div>
     </form>
+    <div class="d-flex justify-content-end mt-3">
+      <button class="btn btn-secondary mr-2" type="button" id="btn1" data-bs-toggle="modal" data-bs-target="#modalInfo">
+        <i class="fa-solid fa-circle-info"></i>
+        Info
+      </button>
+      <button class="btn btn-secondary" type="button" id="btn2" data-bs-toggle="modal" data-bs-target="#modalQuestion">
+        <i class="fa-solid fa-circle-question"></i>
+      </button>
+      
+    </div>
     <!-- Grilla -->
     <div class="registros mt-3" *ngIf="(listaGrilla && listaGrilla.length > 0) || (listaGrilla2 && listaGrilla2.length > 0); else noData">
       <div class="table-responsive">
@@ -25,7 +30,6 @@
               <th scope="col">Nro</th>
               <th scope="col">Permiso</th>
               <th scope="col">Descripción</th>
-              <th scope="col">Acción</th>
             </tr>
           </thead>
           <tbody class="tablaUser">
@@ -34,10 +38,6 @@
               <tr>
                 <td scope="col">{{ item.IdTipoPermiso }}</td>
                 <td scope="col">{{ item.Detalle }}</td>
-                <!-- Agrega un botón para abrir el modal y pasar el detalle del ítem -->
-                <td scope="col">
-                  <button class="btn btn-primary" (click)="openModal(item.Detalle)">Ver Detalle</button>
-                </td>
               </tr>
             </ng-container>
             <ng-container *ngFor="let item of listaGrilla2; let i = index">
@@ -45,12 +45,6 @@
                 <td scope="col">{{ item.IdTipoPermisoDetalle }}</td>
                 <td scope="col">{{ item.TipoPermiso }}</td>
                 <td scope="col">{{ item.Method }}</td>
-                <td scope="col" class="dropdown">
-                  <!-- Botón de acción con menú desplegable -->
-                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton"> ver
-                    <i class="fa-solid fa-eye"></i>
-                  </button>
-                </td>
               </tr>
             </ng-container>
           </tbody>
@@ -60,48 +54,42 @@
     <ng-template #noData>
       <h5>No se encontraron registros...</h5>
     </ng-template>
+    
+  </div>
+</div>
+<!-- Modal Info -->
+<div class="modal fade" id="modalInfo" tabindex="-1" aria-labelledby="modalInfoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="Modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalInfoLabel">Información Permisos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h4>Nivel 1</h4>
+        <p>El Permiso de Nivel 1 otorga acceso para visualizar, agregar, editar, eliminar y habilitar datos dentro del sistema Clean.</p>
+        <h4>Nivel 2</h4>
+        <p>El Permiso de Nivel 2 otorga acceso para visualizar, agregar y editar datos dentro del sistema Clean.</p>
+        <h4>Nivel 3</h4>
+        <p>El Permiso de Nivel 3 otorga acceso para visualizar, agregar, editar, eliminar y habilitar datos dentro del sistema Clean.</p>
+        <h4>Nivel 4</h4>
+        <p>El Permiso de Nivel 4 otorga acceso para visualizar, agregar, editar, eliminar y habilitar datos dentro del sistema Clean.</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Modal -->
-<ng-template #detalleModal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Detalle</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p>{{ modalData }}</p>
-    <!-- Muestra un mensaje si el detalle es "Nivel 1" -->
-    <p *ngIf="modalData === 'Nivel 1'">¡Hola!</p>
-  </div>
-</ng-template>
-
-    <ng-template #content let-modal>
+<!-- Modal Question -->
+<div class="modal fade" id="modalQuestion" tabindex="-1" aria-labelledby="modalQuestionLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" id="Modal">
       <div class="modal-header">
-        <a>
-          <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
-      </a>
-        <a style="margin-left: 5px;"></a><h4 class="modal-title">{{ tituloModal }}</h4>
+        <h5 class="modal-title" id="modalQuestionLabel">Información del Módulo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form [formGroup]="formItemGrilla">
-          <div class="form-row">
-            <div class="form-group col-md-10">
-              <div style="margin-bottom: 15px">
-                <label for="Detalle">Detalle:</label>
-              </div>
-              <input [(ngModel)]="itemGrilla.Detalle" type="text" formControlName="Detalle" class="form-control" id="Detalle" placeholder="Detalle">
-            </div>
-          </div>
-          <div class="form-group col text-right" style="margin-top: 25px;">
-              <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
-          </div>
-        </form>
-      </div>
-    </ng-template>
-    
+    </div>
+  </div>
+</div>
 
 <footer class="footer">
   <app-footer></app-footer>

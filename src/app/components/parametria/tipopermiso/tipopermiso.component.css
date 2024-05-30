@@ -120,12 +120,14 @@
   .button-icon {
     margin-right: 5px; /* Ajusta el margen derecho del ícono */
   }
-  #AgregarModalbtn{
+  .btn{
     margin-top: 18px;
     background-color: rgb(31, 31, 95);
     border-color: rgb(31, 31, 95);
   }
-  
+  #btn2{
+    margin-left: 5px;
+  }
   /* Estilo para el botón de cerrar */
   .btn-close {
     align-self: center; /* Alinea el botón verticalmente en el centro */
@@ -177,6 +179,7 @@
   width: 100%; /* Asegura que ocupe todo el ancho */
   box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
 }
+
 .modal-header .modal-title {
   font-weight: bold; /* Hace que el título esté en negrita */
 }
@@ -203,4 +206,12 @@
 
 .text-right {
   text-align: right; /* Alinea los botones a la derecha */
+}
+#Modal {
+  padding: 0 
+}
+.table td,
+.table th {
+  width: 33.33%; /* Divide el ancho igualmente entre las tres columnas */
+  text-align: center; /* Alinea el contenido al centro */
 }

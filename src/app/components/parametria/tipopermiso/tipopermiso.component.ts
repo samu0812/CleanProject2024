@@ -8,6 +8,7 @@ import { TipopermisoService } from '../../../services/parametria/tipopermiso.ser
 import { TipoPermiso } from '../../../models/parametria/tipopermiso';
 import { TipoPermisoDetalles } from '../../../models/parametria/tipopermisodetalle';
 
+
 @Component({
   selector: 'app-tipopermiso',
   templateUrl: './tipopermiso.component.html',
@@ -26,6 +27,9 @@ export class TipopermisoComponent {
   Token: string;
   imgSubmenu: Menu;
   modalData: string;
+  lTipoPermiso: TipoPermiso[];
+  lTipoPermisoDetalles: TipoPermisoDetalles[];
+
 
   constructor(private tipopermisoService: TipopermisoService,
     private modalService: NgbModal,
@@ -52,12 +56,20 @@ export class TipopermisoComponent {
     this.tipopermisoService.listar().subscribe(
       response => {
         this.itemGrilla = new TipoPermiso();
-        this.listaGrilla = response.TipoCategoria || [];
+        this.listaGrilla = response.TipoPermiso || [];
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.message);
       }
     );
+  }
+  obtenerListas(){
+    this.tipopermisoService.listar().subscribe(data => {
+      this.lTipoPermiso = data.TipoPermiso;
+    });
+    this.tipopermisoService.listarDetalle(1).subscribe(data => {
+      this.lTipoPermisoDetalles = data.TipoPermisoDetalles;
+    });
   }
   listarDetalle(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipopermisoService.listarDetalle(TipoLista).subscribe(
@@ -77,10 +89,5 @@ export class TipopermisoComponent {
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
   
-  openModal(detalle: string) {
-    this.modalData = detalle; // Guarda el detalle del ítem seleccionado
-    this.modalRef = this.modalService.open(this.detalleModal, { centered: true });
-  }
 
-  @ViewChild('detalleModal') detalleModal: any; // ViewChild para acceder al modal desde el HTML
 }
