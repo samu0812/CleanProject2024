@@ -136,7 +136,7 @@ export class TipocategoriaComponent implements OnInit {
   habilitar(): void {
     this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(2);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {

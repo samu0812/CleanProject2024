@@ -135,7 +135,7 @@ export class TipoproductoComponent {
   habilitar(): void {
     this.tipoproductoService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(2);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {

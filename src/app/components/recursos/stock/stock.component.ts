@@ -19,7 +19,6 @@ import { TipoproductoService } from '../../../services/parametria/tipoproducto.s
   styleUrl: './stock.component.css'
 })
 export class StockComponent {
-  
   tituloModal: string;
   tituloBoton: string;
   itemGrilla: Productos; // cada item de la tabla
@@ -29,7 +28,7 @@ export class StockComponent {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
-  lTipoMedidas: TipoMedidas[];
+  lTipoMedida: TipoMedidas[];
   lTipoCategoria: TipoCategoria[];
   lTipoProducto: TipoProducto[];
 
@@ -77,7 +76,7 @@ export class StockComponent {
       this.lTipoCategoria = data.TipoCategoria;
     });
     this.tipomedidaService.listar(1).subscribe(data => {
-      this.lTipoMedidas = data.TipoMedidas;
+      this.lTipoMedida = data.TipoMedidas;
     });
     this.tipoproductoService.listar(1).subscribe(data => {
       this.lTipoProducto = data.TipoProducto;
@@ -113,15 +112,18 @@ export class StockComponent {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Productos());
+    console.log(this.itemGrilla)
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
   }
 
   openEditar(content, item: Productos) {
+    console.log(item)
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
-    this.itemGrilla = Object.assign({}, item); // duplica el item para que no cambie por detras y modifiquemos este para enviar al back
-    this.modalRef = this.modalService.open(content, { size: 'md', centered: true });
+    this.itemGrilla = Object.assign({}, item); // Duplica el item
+    this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
   }
+  
 
   openInhabilitar(contentInhabilitar, item: Productos) {
     this.tituloModal = "Inhabilitar";
@@ -148,6 +150,7 @@ export class StockComponent {
         })
       }
     else{
+      console.log(this.itemGrilla);
       this.stockService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);

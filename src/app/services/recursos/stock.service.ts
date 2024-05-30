@@ -30,7 +30,6 @@ export class StockService {
       Tamano: item.Tamano,
       CantMinima: item.CantMinima,
       CantMaxima: item.CantMaxima,
-      IdUsuarioCarga: item.IdUsuarioCarga,
       Token: Token
     };
     return this.http.post(url, body);
@@ -50,9 +49,9 @@ export class StockService {
       Tamano: item.Tamano,
       CantMinima: item.CantMinima,
       CantMaxima: item.CantMaxima,
-      IdUsuarioCarga: item.IdUsuarioCarga,
       Token: Token
     };
+    console.log(body);
     return this.http.put(url, body);
   }
 
