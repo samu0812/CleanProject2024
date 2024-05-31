@@ -3,10 +3,12 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-loader',
   template: `
-    <div *ngIf="isLoading" class="loader-modal">
-      <div class="loader-modal-content">
-        <i class="fas fa-spinner fa-spin loader-icon"></i>
-      </div>
+    <div class="loader-modal" *ngIf="isLoading">
+        <div class="loader-icon">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
     </div>
   `,
   styleUrls: ['./loader.component.css']
