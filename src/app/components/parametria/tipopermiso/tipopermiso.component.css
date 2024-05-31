@@ -215,3 +215,15 @@
   width: 33.33%; /* Divide el ancho igualmente entre las tres columnas */
   text-align: center; /* Alinea el contenido al centro */
 }
+.modal-body h4 {
+    font-size: 1.5rem;
+    color: orange;
+    font-family: Candara;
+    font-style: italic;
+    font-weight: bolder;
+}
+.divider {
+  border-bottom: 0.5px solid #ccc; /* Puedes cambiar el color y estilo del borde según prefieras */
+  padding-bottom: 10px; /* Esto agrega espacio entre el borde y el contenido del párrafo */
+  margin-bottom: 10px; /* Esto agrega espacio entre el borde y el siguiente elemento */
+}

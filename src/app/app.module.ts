@@ -57,6 +57,9 @@ import { SubmenuComponent } from './components/navbar/submenu/submenu.component'
 import { ItemComponent } from './components/navbar/submenu/item/item.component';
 import { TipodocumentacionComponent } from './components/parametria/tipodocumentacion/tipodocumentacion.component';
 import { TiposucursalComponent } from './components/parametria/tiposucursal/tiposucursal.component';
+import { AccesoComponent } from './components/acceso/acceso.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 @NgModule({
@@ -103,7 +106,9 @@ import { TiposucursalComponent } from './components/parametria/tiposucursal/tipo
     SubmenuComponent,
     ItemComponent,
     TipodocumentacionComponent,
-    TiposucursalComponent
+    TiposucursalComponent,
+    AccesoComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -118,7 +123,8 @@ import { TiposucursalComponent } from './components/parametria/tiposucursal/tipo
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
-    RouterModule
+    RouterModule,
+    NgxPaginationModule
 
   ],
   providers: [

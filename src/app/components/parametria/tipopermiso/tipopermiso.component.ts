@@ -29,6 +29,8 @@ export class TipopermisoComponent {
   modalData: string;
   lTipoPermiso: TipoPermiso[];
   lTipoPermisoDetalles: TipoPermisoDetalles[];
+  paginaActual = 1; // Página actual
+  elementosPorPagina = 10; // Elementos por página
 
 
   constructor(private tipopermisoService: TipopermisoService,
@@ -63,14 +65,6 @@ export class TipopermisoComponent {
       }
     );
   }
-  obtenerListas(){
-    this.tipopermisoService.listar().subscribe(data => {
-      this.lTipoPermiso = data.TipoPermiso;
-    });
-    this.tipopermisoService.listarDetalle(1).subscribe(data => {
-      this.lTipoPermisoDetalles = data.TipoPermisoDetalles;
-    });
-  }
   listarDetalle(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.tipopermisoService.listarDetalle(TipoLista).subscribe(
       response => {
@@ -81,6 +75,9 @@ export class TipopermisoComponent {
         this.alertasService.ErrorAlert('Error', error.error.message);
       }
     );
+  }
+  cambiarPagina(event): void {
+    this.paginaActual = event;
   }
   openEditar(content, item: TipoPermiso) {
     this.tituloModal = "Editar";

@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
+import { LoaderComponent } from '../../loader/loader.component';
 
 @Component({
   selector: 'app-tipocategoria',
@@ -23,6 +24,9 @@ export class TipocategoriaComponent implements OnInit {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
+  paginaActual = 1; // Página actual
+  elementosPorPagina = 10; // Elementos por página
+  loading: boolean = true;
 
   constructor(private tipoCategoriaService: TipoCategoriaService,
     private modalService: NgbModal,
@@ -61,9 +65,11 @@ export class TipocategoriaComponent implements OnInit {
       response => {
         this.itemGrilla = new TipoCategoria();
         this.listaGrilla = response.TipoCategoria || [];
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.message);
+        this.loading = false;
       }
     );
   }
@@ -144,7 +150,8 @@ export class TipocategoriaComponent implements OnInit {
       });
   }
 
-
-
+  cambiarPagina(event): void {
+    this.paginaActual = event;
+  }
 
 }
