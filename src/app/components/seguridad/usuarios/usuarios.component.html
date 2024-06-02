@@ -32,7 +32,7 @@
 
         <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
           <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
-            <i class="fa-solid fa-user-plus button-icon"></i>Crear Usuario
+            <i class="fa-solid fa-user-plus button-icon"></i>Crear
           </button>
         </div>
       </div>
@@ -71,22 +71,24 @@
                       </button>
                       <!-- Menú desplegable con opciones -->
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <!-- Mostrar solo si FechaBaja no es null -->
                     <li *ngIf="item.FechaBaja !== null">
-                      <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
-                        <i class="fa-solid fa-check"></i> Habilitar
-                      </a>
-                    </li>
-                    <!-- Mostrar solo si FechaBaja es null -->
-                    <li *ngIf="item.FechaBaja === null">
                       <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
                         <i class="fa-solid fa-xmark"></i> Inhabilitar
                       </a>
                     </li>
-                    <!-- Mostrar solo si FechaBaja es null -->
-                    <li *ngIf="item.FechaBaja === null">
+                    <li *ngIf="item.FechaBaja !== null">
                       <a class="dropdown-item" (click)="openEditar(content, item)">
                         <i class="fa-solid fa-pen-to-square"></i> Editar
+                      </a>
+                    </li>
+                    <li *ngIf="item.FechaBaja !== null">
+                      <a class="dropdown-item" (click)="openEditar(content, item)">
+                        <i class="fa-solid fa-pen-to-square"></i> Sucursal
+                      </a>
+                    </li>
+                    <li *ngIf="item.FechaBaja !== null">
+                      <a class="dropdown-item" (click)="openEditar(content, item)">
+                        <i class="fa-solid fa-pen-to-square"></i> Rol
                       </a>
                     </li>
                   </ul>
@@ -112,24 +114,23 @@
       <div class="form-row">
         <div class="form-group col-md-10">
           <div style="margin-bottom: 15px">
-            <label for="Usuario">Usuario:</label>
+            <label for="Usuario">Usuario</label>
           </div>
-          <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control" id="usuario" placeholder="usuario">
+          <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control" id="usuario" placeholder="Ingrese un Usuario">
         </div>
         <div class="form-group col-md-10">
           <div style="margin-bottom: 15px ; margin-top: 15px">
-            <label for="Clave">Clave:</label>
+            <label for="Clave">Clave</label>
           </div>
-          <input [(ngModel)]="itemGrilla.Clave" type="text" formControlName="clave" class="form-control" id="clave" placeholder="clave">
+          <input [(ngModel)]="itemGrilla.Clave" type="text" formControlName="clave" class="form-control" id="clave" placeholder="Ingrese una Clave">
         </div>
         <div class="form-group col-md-10">
           <label for="recipient-name" class="col-form-label">Personal</label>
-          <select [(ngModel)]="itemGrilla.listaPersonal" formControlName="listaPersonal" class="form-control" id="listaPersonal">
-            <option value="" disabled selected hidden>Seleccione...</option>
+          <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
+            <option value="" disabled>Seleccione...</option>
             <option *ngFor="let persona of personas" [value]="persona.IdPersona">{{ persona.NombrePersona }}</option>
           </select>
         </div>
-        
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
         <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>

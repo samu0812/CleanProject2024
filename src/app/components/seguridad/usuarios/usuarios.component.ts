@@ -54,23 +54,13 @@ export class UsuariosComponent implements OnInit {
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
     });
-
-
-    //llama a la api y trae la lista de personas
-    this.UsuarioService.listarPersonas().subscribe(
-      data => {
-        this.personas = data.Personas;
-      },
-      error => {
-        console.error('Error fetching personas', error);
-      });
   }
 
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/seguridad/usuarios').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
     });
-  }  
+  }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.UsuarioService.listar(TipoLista).subscribe(
       response => {
@@ -81,115 +71,95 @@ export class UsuariosComponent implements OnInit {
         console.error('Error al cargar tipos de categoría:', error);
       }
     );
+    //llama a la api y trae la lista de personas
+    this.UsuarioService.listarPersonas().subscribe(
+      data => {
+        this.personas = data.Personas;
+      },
+      error => {
+        console.error('Error fetching personas', error);
+      });
   }
-
   cambiarFiltro(): void {
     const filtro = this.formFiltro.get('idFiltro').value;
     this.listar(filtro);
   }
-
-
   openAgregar(content) {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Usuario());
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
   }
-
   openEditar(content, item: Usuario) {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
     this.personas[0].IdPersona = item.IdUsuario
     this.personas[0].NombrePersona = item.Usuario
-    this.itemGrilla = Object.assign({}, item); 
+    this.itemGrilla = Object.assign({}, item);
     this.itemGrilla.listaPersonal = this.personas[0].NombrePersona
     this.formItemGrilla.patchValue({
       listaPersonal: this.itemGrilla.listaPersonal
     });
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
-
   openInhabilitar(contentInhabilitar, item: Usuario) {
     this.tituloModal = "Inhabilitar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentInhabilitar, { size: 'sm', centered: true });
   }
-
   openHabilitar(contentHabilitar, item: Usuario) {
     this.tituloModal = "Habilitar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
   }
+  guardar(): void {
 
-
-guardar(): void {
-
-  if (this.itemGrilla.IdUsuario == null) {
-      const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
-      this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
-      this.UsuarioService.agregar(this.itemGrilla , this.Token)
-        .subscribe(response => {
-          console.log('Usuario guardado exitosamente:', response);
-          this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
-          this.modalRef.close();
-          this.listar(1);
-        }, error => {
-          console.error('Error al agregar usuario:', error);
-          if (error.error && error.error.Message) {
-            this.alertasService.ErrorAlert('Error', error.error.Message);
-          } else {
-            this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
-          }
-        });
-  } else {
-    console.log('editar');
-    // Actualización del usuario existente (código comentado de ejemplo)
-    // this.UsuarioService.editar(this.itemGrilla, this.Token)
+    if (this.itemGrilla.IdUsuario == null) {
+        const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
+        this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
+        this.UsuarioService.agregar(this.itemGrilla , this.Token)
+          .subscribe(response => {
+            console.log('Usuario guardado exitosamente:', response);
+            this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
+            this.modalRef.close();
+            this.listar(1);
+          }, error => {
+            console.error('Error al agregar usuario:', error);
+            if (error.error && error.error.Message) {
+              this.alertasService.ErrorAlert('Error', error.error.Message);
+            } else {
+              this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+            }
+          });
+    } else {
+      console.log('editar');
+      // Actualización del usuario existente (código comentado de ejemplo)
+      // this.UsuarioService.editar(this.itemGrilla, this.Token)
+      //   .subscribe(response => {
+      //     this.listar(1);
+      //     this.modalRef.close();
+      //   }, error => {
+      //     console.error('Error al modificar tipo de categoría:', error);
+      //   });
+    }
+  }
+  inhabilitar(): void {
+    // this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
     //   .subscribe(response => {
     //     this.listar(1);
     //     this.modalRef.close();
     //   }, error => {
-    //     console.error('Error al modificar tipo de categoría:', error);
+    //     console.error('Error al inhabilitar tipo de categoría:', error);
     //   });
   }
-}
 
-
-inhabilitar(): void {
-  // this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
-  //   .subscribe(response => {
-  //     this.listar(1);
-  //     this.modalRef.close();
-  //   }, error => {
-  //     console.error('Error al inhabilitar tipo de categoría:', error);
-  //   });
-}
-
-habilitar(): void {
-  // this.UsuarioService.habilitar(this.itemGrilla, this.Token)
-  //   .subscribe(response => {
-  //     this.listar(1);
-  //     this.modalRef.close();
-  //   }, error => {
-  //     console.error('Error al habilitar tipo de categoría:', error);
-  //   });
-}
-
-
-// fnObtenerUsuDesdeBearer(): Promise<void> {
-//   return new Promise((resolve, reject) => {
-//     this.UsuarioService.fnObtenerUsuDesdeBearer(this.Token).subscribe(
-//       response => {
-//         this.itemGrilla.IdUsuarioCarga = response.IdUsuario;
-//         console.log('fnObtenerUsuDesdeBearer response:', this.itemGrilla.IdUsuarioCarga);
-//         resolve();
-//       },
-//       error => {
-//         console.error('Error al obtener usuario desde Bearer:', error);
-//         reject(error);
-//       }
-//     );
-//   });
-// }
-
+  habilitar(): void {
+    // this.UsuarioService.habilitar(this.itemGrilla, this.Token)
+    //   .subscribe(response => {
+    //     this.listar(1);
+    //     this.modalRef.close();
+    //   }, error => {
+    //     console.error('Error al habilitar tipo de categoría:', error);
+    //   });
+  }
 }
