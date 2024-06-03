@@ -2,18 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import {HomeComponent} from './components/home/home.component';
-import { SeguridadComponent } from './components/seguridad/seguridad.component';
-import { ParametriaComponent } from './components/parametria/parametria.component';
-import { GestionComponent } from './components/gestion/gestion.component';
-import { RecursosComponent } from './components/recursos/recursos.component';
-import { ReportesComponent } from './components/reportes/reportes.component';
 import { UsuariosComponent } from './components/seguridad/usuarios/usuarios.component';
 import { TiporolesComponent } from './components/seguridad/tiporoles/tiporoles.component';
 import { RolComponent } from './components/seguridad/rol/rol.component';
 import { ApisComponent } from './components/seguridad/apis/apis.component';
 import { TipopersonaComponent } from './components/parametria/tipopersona/tipopersona.component';
 import { TiporolComponent } from './components/parametria/tiporol/tiporol.component';
-import { TipodocumentoComponent } from './components/parametria/tipodocumento/tipodocumento.component';
+import { TipodocumentacionComponent } from './components/parametria/tipodocumentacion/tipodocumentacion.component';
 import { TipoproductoComponent } from './components/parametria/tipoproducto/tipoproducto.component';
 import { TipocategoriaComponent } from './components/parametria/tipocategoria/tipocategoria.component';
 import { TipomedidaComponent } from './components/parametria/tipomedida/tipomedida.component';
@@ -24,6 +19,7 @@ import { TipodestinatariofacturaComponent } from './components/parametria/tipode
 import { TipoformadepagoComponent } from './components/parametria/tipoformadepago/tipoformadepago.component';
 import { TipopermisoComponent } from './components/parametria/tipopermiso/tipopermiso.component';
 import { TipopermisodetalleComponent } from './components/parametria/tipopermisodetalle/tipopermisodetalle.component';
+import { TiposucursalComponent } from './components/parametria/tiposucursal/tiposucursal.component';
 import { StockComponent } from './components/recursos/stock/stock.component';
 import { ProveedoresComponent } from './components/recursos/proveedores/proveedores.component';
 import { PersonalComponent } from './components/recursos/personal/personal.component';
@@ -38,21 +34,22 @@ import { InformesfinancierosComponent } from './components/reportes/informesfina
 import { InformesdeabastecimientoComponent } from './components/reportes/informesdeabastecimiento/informesdeabastecimiento.component';
 import { InformesdeclientesComponent } from './components/reportes/informesdeclientes/informesdeclientes.component';
 import { InformesdeproductosComponent } from './components/reportes/informesdeproductos/informesdeproductos.component';
-
+import { SubmenuComponent } from './components/navbar/submenu/submenu.component';
+import { AccesoComponent } from './components/acceso/acceso.component';
+import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
-  //seguridad
-  {path: 'seguridad', component: SeguridadComponent},
+  {path: ':id/submenu', component: SubmenuComponent},
+
   {path: 'seguridad/usuarios', component: UsuariosComponent},
   {path: 'seguridad/tiporoles', component: TiporolesComponent},
-  {path: 'seguridad/rol', component: RolComponent},
+  {path: 'seguridad/rolmodulos', component: RolComponent},
   {path: 'seguridad/apis', component: ApisComponent},
-  //parametria
-  {path: 'parametria', component: ParametriaComponent},
+
   {path: 'parametria/tipopersona', component: TipopersonaComponent},
   {path: 'parametria/tiporol', component: TiporolComponent},
-  {path: 'parametria/tipodocumento', component: TipodocumentoComponent},
+  {path: 'parametria/tipodocumentacion', component: TipodocumentacionComponent},
   {path: 'parametria/tipoproducto', component: TipoproductoComponent},
   {path: 'parametria/tipocategoria', component: TipocategoriaComponent},
   {path: 'parametria/tipomedida', component: TipomedidaComponent},
@@ -63,26 +60,27 @@ const routes: Routes = [
   {path: 'parametria/tipoformadepago', component: TipoformadepagoComponent},
   {path: 'parametria/tipopermiso', component: TipopermisoComponent},
   {path: 'parametria/tipopermisodetalle', component: TipopermisodetalleComponent},
-  //recursos
-  {path: 'recursos', component: RecursosComponent},
-  {path: 'recursos/stock', component:StockComponent},
+  {path: 'parametria/sucursal', component: TiposucursalComponent},
+  {path: 'parametria/tipomodulo', component: TipomoduloComponent},
+
+  {path: 'recursos/inventario', component:StockComponent},
   {path: 'recursos/proveedores', component: ProveedoresComponent},
   {path: 'recursos/personal', component: PersonalComponent},
   {path: 'recursos/clientes', component:ClientesComponent },
-  //gestion
-  {path: 'gestion', component: GestionComponent},
+
   {path: 'gestion/registrodeventas', component:RegistrodeventasComponent},
   {path: 'gestion/realizarpedidos', component:RealizarpedidosComponent },
   {path: 'gestion/enviodeinventario', component: EnviodeinventarioComponent},
   {path: 'gestion/confirmacionderecepcion', component: ConfirmacionderecepcionComponent},
   {path: 'gestion/vizualizarfacturas', component: VizualizarfacturasComponent},
-  //reportes
-  {path: 'reportes', component: ReportesComponent},
+
   {path: 'reportes/informesdeventa', component:InformesdeventaComponent},
   {path: 'reportes/informesfinancieros', component: InformesfinancierosComponent},
   {path: 'reportes/informesdeabastecimiento', component: InformesdeabastecimientoComponent},
   {path: 'reportes/informesdeclientes', component:InformesdeclientesComponent},
   {path: 'reportes/informesdeproductos', component: InformesdeproductosComponent},
+
+  {path: 'acceso', component: AccesoComponent},
 
 ];
 

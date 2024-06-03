@@ -1,0 +1,39 @@
+<div class="container-fluid main-section">
+  <div class="modal-content">
+    <!-- Filtros de Búsqueda -->
+    <div class="container">
+      <h4 class="title-menu centered-rounded-background">
+          <a>
+              <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+          </a>
+          <a style="margin-left: 5px;">Documentaciones</a>
+      </h4>
+  </div>
+    <!-- Grilla -->
+    <div class="registros mt-3" *ngIf="listaGrilla.length > 0; else noData">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Nro</th>
+              <th scope="col">Descripción de la Documentación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listaGrilla; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.Descripcion }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <ng-template #noData>
+      <h5>No se encontraron registros...</h5>
+    </ng-template>
+  </div>
+</div>
+
+<footer class="footer">
+  <app-footer></app-footer>
+</footer>

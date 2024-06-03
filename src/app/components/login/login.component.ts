@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { AlertasService } from '../../services/alertas/alertas.service';
 
 @Component({
-  selector: 'app-login',
+  selector:'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  FormularioLogin: FormGroup = this.formBuilder.group({
-    Usuario: [''],
-    Clave: ['']
-  });
-  Error: string = '';
-
+  FormularioLogin: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
-    private router: Router
+    private authService: AuthService,
+    private router: Router,
+    private alertasService: AlertasService
   ) {}
 
   ngOnInit(): void {
@@ -30,29 +29,25 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.FormularioLogin.valid) {
-      // Obtener valores del formulario
       const formData = this.FormularioLogin.value;
-      // Mostrar usuario y contraseña en la consola
-      console.log(formData);
-      // Llamar al servicio de inicio de sesión
       this.loginService.login(formData).subscribe(
         (response) => {
-          if (response.status === 200) {
-            console.log(response);
-            console.log('Autenticación exitosa');
+          if (response.Status === 200) {
+            localStorage.setItem("Token", response.Token);
+            this.authService.setAuthenticated(true, response); // Pasa la información del usuario
             this.router.navigate(['/home']);
           } else {
-            console.log('Credenciales incorrectas');
-            this.Error = 'Credenciales incorrectas, por favor intenta de nuevo.';
+            this.alertasService.ErrorAlert('Credenciales incorrectas', 'Por favor intenta de nuevo.');
           }
         },
         (error) => {
-          console.error('Error al autenticar:', error);
-          this.Error = 'Error al intentar iniciar sesión, por favor intenta de nuevo más tarde.';
+          this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
         }
       );
     } else {
-      this.Error = 'Por favor ingresa tu usuario y contraseña correctamente.';
+      this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
     }
   }
+
+
 }

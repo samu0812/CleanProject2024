@@ -1,143 +1,39 @@
-<div class="navbar-container">
-  <app-navbar></app-navbar>
-</div>
-
-<div class="col-sm-11 main-section">
+<div class="container-fluid main-section">
   <div class="modal-content">
-    <!-- Filtros de Búsqueda -->
-    <form>
-      <h1 id="tituloTabla"><i class="fa-solid fa-people-arrows"></i></h1>
-      <div class="d-flex align-items-start justify-content-between">
-        <div class="form-group col-md-2 mt-3">
-          <label for="lista">Filtrar Por:</label>
-          <select formControlName="tipoLista" class="form-control" id="tipoLista">
-            <option value="2" selected>Solo Habilitados</option>
-            <option value="3">Solo Inhabilitados</option>
-            <option value="1">Todos</option>
-          </select>
-        </div>
-        <div class="form-group mt-3">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarModal" id="AgregarModalbtn">
-            <i class="fa-solid fa-circle-plus"></i> <!-- Aplica la clase 'button-icon' al ícono -->
-            Agregar
-          </button>
-        </div>
-      </div>
-    </form>
-    <!-- Grilla -->
-    <div class="registros mt-3">
-      <h5>No se encontraron registros...</h5>
+    <div class="container">
+      <h4 class="title-menu centered-rounded-background">
+          <a>
+              <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+          </a>
+          <a style="margin-left: 5px;">Medidas</a>
+      </h4>
+  </div>
+    <div class="registros mt-3" *ngIf="listaGrilla.length > 0; else noData">
       <div class="table-responsive">
         <table class="table">
           <thead class="thead-light">
             <tr>
-              <th scope="col"></th> <!-- Ver -->
-              <th scope="col">Estado</th>
-              <th scope="col">Descripción del </th>
-              <th scope="col">Acción</th>
+              <th scope="col">Nro</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Abreviatura</th>
             </tr>
           </thead>
-          <tbody class="tablaUser">
-            <tr>
-              <td scope="col"></td> <!-- Ver -->
-              <td scope="col">Estado</td>
-              <td scope="col">Descripcion del </td>
-              <td scope="col" class="dropdown">
-                  <!-- Botón de acción con menú desplegable -->
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa-solid fa-gears"></i>
-                    </button>
-                    <!-- Menú desplegable con opciones -->
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditarModal">
-                          <i class="fa-solid fa-pen-to-square"></i>Editar
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#inhabilitarModal">
-                          <i class="fa-solid fa-xmark"></i>Inhabilitar
-                        </a>
-                      </li>
-                    </ul>
-              </td>
+          <tbody>
+            <tr *ngFor="let item of listaGrilla; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.Detalle }}</td>
+              <td>{{ item.Abreviatura }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <ng-template #noData>
+      <h5>No se encontraron registros...</h5>
+    </ng-template>
   </div>
 </div>
-<div class="modal fade" id="AgregarModal" tabindex="-1" aria-labelledby="AgregarModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="AgregarModalLabel"><i class="fa-solid fa-circle-plus"></i> Agregar </h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Descripcion del </label>
-            <input type="text" id="rol" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Crear</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="EditarModal" tabindex="-1" aria-labelledby="EditarModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="EditarModalLabel"><i class="fa-solid fa-pen-to-square"></i>Editar</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label"> </label>
-            <input type="text" id="" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="inhabilitarModal" tabindex="-1" aria-labelledby="inhabilitarModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="inhabilitarModalLabel"><i class="fa-solid fa-xmark"></i>Inhabilitar</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label"></label>
-            <input type="text" id="" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Motivo</label>
-            <input type="text" id="motivo" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 <footer class="footer">
   <app-footer></app-footer>
 </footer>

@@ -1,0 +1,60 @@
+.card:hover {
+  -webkit-box-shadow: 1px 11px 17px -1px rgba(109, 108, 108, 0.75);
+  -moz-box-shadow: 1px 11px 17px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 11px 17px -1px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+  transform: scale(1.05);
+}
+.card-menu {
+  width: 250px; /* Ancho fijo para las tarjetas */
+  height: 200px; /* Altura fija para las tarjetas */
+  overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede la altura de la tarjeta */
+  margin: 0 auto 20px;
+  box-shadow: 1px 4px 8px -1px rgba(0, 0, 0, 0.75);
+}
+
+.card-menu::-webkit-scrollbar {
+  width: 0; /* Oculta la barra de desplazamiento en navegadores WebKit */
+}
+
+.card-menu {
+  scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores no-WebKit */
+}
+
+
+.card-icon{
+  margin-top: 20px;
+  width: 100px;
+  height: 100px;
+}
+
+.card-menu {
+  width: 100%;
+  max-width: 250px; /* Ajusta este valor según tus necesidades */
+  margin: 0 auto 20px;
+  box-shadow: 1px 4px 8px -1px rgba(0, 0, 0, 0.75);
+}
+
+
+@media (min-width: 768px) {
+  .col-md-3 {
+    flex: 0 0 25%; /* Establece el 25% de ancho en pantallas medianas (4 columnas por fila) */
+    max-width: 25%; /* Ajusta el ancho máximo para asegurar 4 columnas por fila */
+  }
+}
+
+.card-menu-disabled{
+  opacity: .5 !important;
+}
+.card {
+  margin-top: 15px; /* Ajusta el margen superior según sea necesario */
+}
+.card h5 {
+  font-family: "Briem Hand", cursive;
+  font-size: 18px;
+
+  max-height: 40px; /* Establece una altura máxima para el contenedor del título */
+  line-height: 20px; /* Ajusta la altura de línea según sea necesario */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poetsen+One&family=Rowdies:wght@300;400;700&display=swap');

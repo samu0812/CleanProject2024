@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'CleanProject';
+
+  constructor(private router: Router) { }
+
+  isLoginPage(): boolean {
+    return this.router.url === '/login';
+  }
 }

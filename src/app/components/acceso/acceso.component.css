@@ -1,0 +1,40 @@
+.div{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.acceso {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.acceso h1 {
+    font-size: 100px;
+    color: #ff0000;
+    margin-left: 20px;
+    font-family: "Bebas Neue", sans-serif;
+    font-style: normal;
+
+
+}
+
+.acceso img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    .acceso h1 {
+        font-size: 2em;
+    }
+}
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poetsen+One&display=swap');
