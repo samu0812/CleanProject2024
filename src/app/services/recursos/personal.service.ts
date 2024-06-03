@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Usuario } from '../../models/seguridad/Usuario';
-
+import { Personal } from '../../models/recursos/personal';
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +18,28 @@ export class PersonalService {
   }
 
 
-  agregar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_Usuarios`;
+  agregarPersonal(personal: Personal): Observable<any> {
+    const url = `${this.apiUrl}/SPA_Personal`;
     const body = {
-      IdPersona: item.IdPersona,
-      Usuario: item.Usuario,
-      Clave: item.Clave,
-      Token: Token};
+      IdTipoPersonaSistema: personal.IdTipoPersonaSistema, // Asegúrate de usar el campo correcto
+      IdTipoPersona: personal.IdTipoPersona,
+      IdTipoDomicilio: personal.IdTipoDomicilio,
+      Calle: personal.Calle,
+      Nro: personal.Nro,
+      Piso: personal.Piso,
+      IdLocalidad: personal.IdLocalidad,
+      IdTipoDocumentacion: personal.IdTipoDocumentacion,
+      Documentacion: personal.Documentacion,
+      Nombre: personal.Nombre,
+      Apellido: personal.Apellido,
+      Mail: personal.Mail,
+      FechaNacimiento: personal.FechaNacimiento,
+      Telefono: personal.Telefono,
+      IdProvincia: personal.IdProvincia,
+    };
     return this.http.post(url, body);
   }
+}
 
 
   // editar(item: Usuario, Token: string): Observable<any> {
@@ -40,9 +52,6 @@ export class PersonalService {
   // }
 
 
-  listarPersonas(): Observable<any> {
-    const url = `${this.apiUrl}/SP_ListaPersonas`;
-    return this.http.get(url);
-  }
 
-}
+
+

@@ -1,4 +1,4 @@
 export class provincia{
-    public idProvincia: number;
+    public IdProvincia: number;
     public Detalle: string;
 }

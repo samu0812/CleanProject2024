@@ -6,7 +6,16 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
-
+import { TipopersonaService } from '../../../services/parametria/tipopersona.service';
+import { TipoPersonas } from '../../../models/parametria/tipopersona';
+import { TipodomicilioService } from '../../../services/parametria/tipodomicilio.service';
+import { TipoDomicilios } from '../../../models/parametria/tipodomicilio';
+import { ProvinciaService } from '../../../services/parametria/provincia.service';
+import { LocalidadService } from '../../../services/recursos/localidad.service';
+import { provincia } from '../../../models/parametria/provincia';
+import { Localidad } from '../../../models/recursos/localidad';
+import { TipoDocumentacion } from '../../../models/parametria/tipodocumentacion';
+import { TipodocumentacionService } from '../../../services/parametria/tipodocumentacion.service';
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
@@ -24,13 +33,23 @@ export class PersonalComponent {
   Token: string;
   imgSubmenu: Menu;
   personas: any[] = []; //para listar las personas
+  lTipoPersona: TipoPersonas[];
+  lTipoDomicilio:TipoDomicilios[];
+  lProvincia: provincia[];
+  lLocalidad: Localidad[];
+  lTipoDocumentacion: TipoDocumentacion[];
 
   constructor(
     private PersonalService: PersonalService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService // agregue las alertas
+    private alertasService: AlertasService, // agregue las alertas
+    private TipopersonaService: TipopersonaService,
+    private TipodomicilioService: TipodomicilioService,
+    private ProvinciaService: ProvinciaService,
+    private LocalidadService: LocalidadService,
+    private TipodocumentacionService: TipodocumentacionService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -39,8 +58,20 @@ export class PersonalComponent {
     this.Token = localStorage.getItem('Token');
 
     this.formItemGrilla = this.formBuilder.group({
-      usuario: new FormControl('', [Validators.required]),
-      clave: new FormControl('', [Validators.required]),
+      Nombre: new FormControl('', [Validators.required]),
+      Apellido: new FormControl('', [Validators.required]),
+      Mail: new FormControl('', [Validators.required]),
+      Telefono: new FormControl('', [Validators.required]),
+      FechaNacimiento: new FormControl('', [Validators.required]),
+      domicilio: new FormControl('', [Validators.required]),
+      tipoPersona: new FormControl('', [Validators.required]),
+      Calle: new FormControl('', [Validators.required]),
+      Nro: new FormControl('', [Validators.required]),
+      Piso: new FormControl('', [Validators.required]),
+      Localidad: new FormControl('', [Validators.required]),
+      TipoDocumentacion: new FormControl('', [Validators.required]),
+      Documentacion: new FormControl('', [Validators.required]),
+      Provincia: new FormControl('', [Validators.required]),
       listaPersonal: new FormControl('', [Validators.required])
     });
 
@@ -57,20 +88,34 @@ export class PersonalComponent {
 
 
     //llama a la api y trae la lista de personas
-    this.PersonalService.listarPersonas().subscribe(
-      data => {
-        this.personas = data.Personas;
-      },
-      error => {
-        console.error('Error fetching personas', error);
-      });
+      this.obtenerListas();
+  }
+
+  obtenerListas(){
+    this.TipopersonaService.listar(1).subscribe(data => {
+      this.lTipoPersona = data.TipoPersonas;
+    });
+    this.TipodomicilioService.listar(1).subscribe(data => {
+      this.lTipoDomicilio = data.TipoDomicilios;
+    });
+    this.LocalidadService.listar(1).subscribe(data => {
+      this.lLocalidad = data.Personas;
+      console.log(data.Personas)
+    });
+    this.ProvinciaService.listar(1).subscribe(data => {
+      console.log(data.Personas)
+      this.lProvincia = data.Personas;
+    });
+    this.TipodocumentacionService.listar(1).subscribe(data => {
+      this.lTipoDocumentacion = data.TipoDocumentacion;
+    });
   }
 
   obtenerImgMenu(){
-    this.imagenService.getImagenSubMenu('/seguridad/usuarios').subscribe(data => {
+    this.imagenService.getImagenSubMenu('/recursos/personal').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-    });
-  }  
+    });
+  }  
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.PersonalService.listar(TipoLista).subscribe(
       response => {
@@ -83,6 +128,40 @@ export class PersonalComponent {
     );
   }
 
+  guardar(): void {
+    // this.loading = true;
+    console.log(this.itemGrilla);
+    if (this.itemGrilla.IdPersona == null) {
+
+      this.PersonalService.agregarPersonal(this.itemGrilla).subscribe(
+        response => {
+          //this.loading = false;
+          this.listar(1);
+          this.modalRef.close();
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+
+        },
+        error => {
+          this.alertasService.ErrorAlert('Error', error.error.Message);
+          //this.loading = false; // Asegúrate de manejar el caso de error
+        }
+      );
+    } else {
+      // this.tipoCategoriaService.editar(this.itemGrilla, this.Token).subscribe(
+      //   response => {
+      //     this.loading = false;
+      //     this.listar(1);
+      //     this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
+      //     this.modalRef.close();
+      //   },
+      //   error => {
+      //     this.alertasService.ErrorAlert('Error', error.error.Message);
+      //     this.loading = false; // Asegúrate de manejar el caso de error
+      //   }
+      // );
+    }
+  }
+
   cambiarFiltro(): void {
     const filtro = this.formFiltro.get('idFiltro').value;
     this.listar(filtro);
@@ -93,7 +172,7 @@ export class PersonalComponent {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Personal());
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
   }
 
     // openEditar(content, item: Personal) {

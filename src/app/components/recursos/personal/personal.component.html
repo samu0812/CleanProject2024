@@ -32,7 +32,7 @@
 
         <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
           <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
-            <i class="fa-solid fa-user-plus button-icon"></i>Crear Usuario
+            <i class="fa-solid fa-user-plus button-icon"></i>Crear Personal
           </button>
         </div>
       </div>
@@ -101,41 +101,138 @@
   </div>
 </div>
 <!-- AgregarUsuarioModal -->
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="formItemGrilla">
-      <div class="form-row">
-        <div class="form-group col-md-10">
-          <div style="margin-bottom: 15px">
-            <label for="Usuario">Usuario:</label>
+  <!-- AgregarCategoriaModal -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <a>
+        <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+      </a>
+      <a style="margin-left: 5px;"></a>
+      <h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formItemGrilla">
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Nombre">Nombre:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Nombre" type="text" formControlName="Nombre" class="form-control" id="Nombre" placeholder="Nombre">
           </div>
-          <input  type="text" formControlName="usuario" class="form-control" id="usuario" placeholder="usuario">
-        </div>
-        <div class="form-group col-md-10">
-          <div style="margin-bottom: 15px ; margin-top: 15px">
-            <label for="Clave">Clave:</label>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Apellido">Apellido:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Apellido" type="text" formControlName="Apellido" class="form-control" id="Apellido" placeholder="Apellido">
           </div>
-          <input  type="text" formControlName="clave" class="form-control" id="clave" placeholder="clave">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Mail">Mail:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Mail" type="text" formControlName="Mail" class="form-control" id="Mail" placeholder="Mail">
+          </div>
         </div>
-        <div class="form-group col-md-10">
-          <label for="recipient-name" class="col-form-label">Personal</label>
-          <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
-            <option value="" disabled selected hidden>Seleccione...</option>
-            <option *ngFor="let persona of personas" [value]="persona.IdPersona">{{ persona.NombrePersona }}</option>
-          </select>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Telefono">Telefono</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Telefono" type="text" formControlName="Telefono" class="form-control" id="Telefono" placeholder="100">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="FechaNacimiento">Fecha Nacimiento</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.FechaNacimiento" type="date" formControlName="FechaNacimiento" class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="TipoDomicilio">Tipo domicilio</label>
+            </div>
+              <select [(ngModel)]="itemGrilla.IdTipoDomicilio" type="text" formControlName="domicilio" class="form-control" id="domicilio" placeholder="100">
+                <option [value]="undefined">Seleccione...</option>
+                <option *ngFor="let tipo of lTipoDomicilio" [value]="tipo.IdTipoDomicilio">
+                  {{ tipo.Descripcion }}
+                </option>
+              </select>
+          </div>
         </div>
-        
-      </div>
-      <div class="form-group col text-right" style="margin-top: 25px;">
-        <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
-        <button type="button" class="btn btn-success" >{{ tituloBoton }}</button>
-      </div>
-    </form>
-  </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="TipoPersona">Tipo Persona:</label>
+            </div>
+            <select [(ngModel)]="itemGrilla.IdTipoPersona" formControlName="tipoPersona" class="form-control" id="tipoPersona">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lTipoPersona" [value]="tipo.IdTipoPersona">
+                {{ tipo.Descripcion }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Calle">Calle:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Calle" type="text" formControlName="Calle" class="form-control" id="Calle" placeholder="Calle">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Nro">Numero Calle:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Nro" type="text" formControlName="Nro" class="form-control" id="Nro" placeholder="Nro">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 8px;">
+              <label for="Piso">Piso:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Piso" type="text" formControlName="Piso" class="form-control" id="Piso" placeholder="Piso">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Provincia">Provincia:</label>
+            </div>
+            <select [(ngModel)]="itemGrilla.IdProvincia" formControlName="Provincia" class="form-control" id="Provincia">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let Provincia of lProvincia" [value]="Provincia.IdProvincia"> {{Provincia.Detalle}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="Localidad">Localidad:</label>
+            <select [(ngModel)]="itemGrilla.IdLocalidad" formControlName="Localidad" class="form-control" id="Localidad">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lLocalidad" [value]="tipo.IdLocalidad">
+                {{ tipo.Detalle }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Documentacion">Numero documentacion:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Documentacion" type="text" formControlName="Documentacion" class="form-control" id="Documentacion" placeholder="Documentacion">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="TipoDocumentacion">Tipo Documentacion:</label>
+            <select [(ngModel)]="itemGrilla.IdTipoDocumentacion" formControlName="TipoDocumentacion" class="form-control" id="TipoDocumentacion">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lTipoDocumentacion" [value]="tipo.IdTipoDocumentacion">
+                {{tipo.Descripcion}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col text-right" style="margin-top: 25px;">
+          <button type="button" class="btn btn-danger" id="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+          <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
+        </div>
+      </form>
+    </div>
 </ng-template>
+
 
 <ng-template #contentInhabilitar let-modal>
   <div class="modal-header">
