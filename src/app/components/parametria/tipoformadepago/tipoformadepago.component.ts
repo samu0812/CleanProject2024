@@ -130,7 +130,7 @@ export class TipoformadepagoComponent implements OnInit {
   inhabilitar(): void {
     this.tipoformadepagoService.inhabilitar(this.itemGrilla, this.Token).subscribe(
       response => {
-        this.listar(this.formFiltro.get('idFiltro').value);
+        this.listar(1);
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       },
@@ -143,7 +143,7 @@ export class TipoformadepagoComponent implements OnInit {
   habilitar(): void {
     this.tipoformadepagoService.habilitar(this.itemGrilla, this.Token).subscribe(
       response => {
-        this.listar(this.formFiltro.get('idFiltro').value);
+        this.listar(2);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       },

@@ -13,7 +13,6 @@ export class Productos{
     public Tamano: number;
     public CantMaxima: number;
     public CantMinima: number;
-    public IdUsuarioCarga: number;
     public FechaAlta: number;
     public FechaBaja: number;
 
