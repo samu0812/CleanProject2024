@@ -71,24 +71,24 @@
                       </button>
                       <!-- Menú desplegable con opciones -->
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li *ngIf="item.FechaBaja !== null">
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openEditar(content, item)">
+                        <i class="fas fa-edit"></i> Editar
+                      </a>
+                    </li>
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openEditarSucursal(content, item)">
+                        <i class="fas fa-landmark"></i> Sucursal
+                      </a>
+                    </li>
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openEditarRol(content, item)">
+                        <i class="fas fa-chalkboard-teacher"></i> Rol
+                      </a>
+                    </li>
+                    <li *ngIf="item.FechaBaja === null">
                       <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
                         <i class="fa-solid fa-xmark"></i> Inhabilitar
-                      </a>
-                    </li>
-                    <li *ngIf="item.FechaBaja !== null">
-                      <a class="dropdown-item" (click)="openEditar(content, item)">
-                        <i class="fa-solid fa-pen-to-square"></i> Editar
-                      </a>
-                    </li>
-                    <li *ngIf="item.FechaBaja !== null">
-                      <a class="dropdown-item" (click)="openEditar(content, item)">
-                        <i class="fa-solid fa-pen-to-square"></i> Sucursal
-                      </a>
-                    </li>
-                    <li *ngIf="item.FechaBaja !== null">
-                      <a class="dropdown-item" (click)="openEditar(content, item)">
-                        <i class="fa-solid fa-pen-to-square"></i> Rol
                       </a>
                     </li>
                   </ul>
@@ -112,23 +112,37 @@
   <div class="modal-body">
     <form [formGroup]="formItemGrilla">
       <div class="form-row">
-        <div class="form-group col-md-10">
+        <div *ngIf="tituloModal == 'Agregar'" class="form-group col-md-10">
           <div style="margin-bottom: 15px">
             <label for="Usuario">Usuario</label>
           </div>
           <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control" id="usuario" placeholder="Ingrese un Usuario">
         </div>
-        <div class="form-group col-md-10">
+        <div *ngIf="tituloModal == 'Agregar'" class="form-group col-md-10">
           <div style="margin-bottom: 15px ; margin-top: 15px">
             <label for="Clave">Clave</label>
           </div>
           <input [(ngModel)]="itemGrilla.Clave" type="text" formControlName="clave" class="form-control" id="clave" placeholder="Ingrese una Clave">
         </div>
-        <div class="form-group col-md-10">
+        <div *ngIf="tituloModal == 'Agregar'" class="form-group col-md-10">
           <label for="recipient-name" class="col-form-label">Personal</label>
           <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
             <option value="" disabled>Seleccione...</option>
-            <option *ngFor="let persona of personas" [value]="persona.IdPersona">{{ persona.NombrePersona }}</option>
+            <option *ngFor="let persona of lPersonas" [value]="persona.IdPersona">{{ persona.NombrePersona }}</option>
+          </select>
+        </div>
+        <div *ngIf="tituloModal == 'Editar Sucursal'" class="form-group col-md-10">
+          <label for="sucursal" class="col-form-label">Sucursal</label>
+          <select formControlName="sucursal" class="form-control" id="sucursal">
+            <option value="" disabled>Seleccione...</option>
+            <option *ngFor="let sucursal of lSucursales" [value]="sucursal.IdSucursal">{{ sucursal.Descripcion }}</option>
+          </select>
+        </div>
+        <div *ngIf="tituloModal == 'Editar Rol'" class="form-group col-md-10">
+          <label for="rol" class="col-form-label">Roles</label>
+          <select formControlName="rol" class="form-control" id="rol">
+            <option value="" disabled>Seleccione...</option>
+            <option *ngFor="let rol of lRoles" [value]="rol.IdTipoRol">{{ rol.Descripcion }}</option>
           </select>
         </div>
       </div>
@@ -147,25 +161,11 @@
   <div class="modal-body">
       <a></a><h4 class="">Desea Eliminar?</h4>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
         </div>
   </div>
 </ng-template>
-
-<ng-template #contentHabilitar let-modal>
-  <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
-  </div>
-  <div class="modal-body">
-      <a></a><h4 class="">Desea Habilitar?</h4>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-      <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
-        </div>
-  </div>
-</ng-template>
-
 
 <div class="modal fade" id="modificarUsuarioModal" tabindex="-1" aria-labelledby="modificarUsuarioModalLabel" aria-hidden="true">
   <div class="modal-dialog">

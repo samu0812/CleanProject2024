@@ -29,17 +29,6 @@ export class UsuarioService {
     return this.http.post(url, body);
   }
 
-
-  // editar(item: Usuario, Token: string): Observable<any> {
-  //   const url = `${this.apiUrl}/SPM_TipoCategoria`;
-  //   const body = {
-  //     IdTipoCategoria: item.IdTipoCategoria,
-  //     Descripcion: item.Descripcion,
-  //     Token: Token};
-  //     return this.http.put(url, body);
-  // }
-
-
   listarPersonas(): Observable<any> {
     const url = `${this.apiUrl}/SP_ListaPersonas`;
     return this.http.get(url);

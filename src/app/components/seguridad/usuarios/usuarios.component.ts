@@ -6,6 +6,10 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
+import { Sucursales } from '../../../models/parametria/tiposucursal';
+import { TiposucursalService } from '../../../services/parametria/tiposucursal.service';
+import { TipoRol } from '../../../models/seguridad/TipoRol';
+import { TiporolService } from '../../../services/seguridad/tiporol.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -23,25 +27,32 @@ export class UsuariosComponent implements OnInit {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
-  personas: any[] = []; //para listar las personas
+  lPersonas: any[] = []; //para listar las personas
+  lSucursales: Sucursales[]; //para listar las personas
+  lRoles: TipoRol[]; //para listar las personas
 
   constructor(
     private UsuarioService: UsuarioService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
+    private tiposucursalService: TiposucursalService,
+    private tiporolService: TiporolService,
     private alertasService: AlertasService // agregue las alertas
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.obtenerImgMenu()
+    this.obtenerImgMenu();
+    this.obtenerListas();
 
     this.Token = localStorage.getItem('Token');
 
     this.formItemGrilla = this.formBuilder.group({
       usuario: new FormControl('', [Validators.required]),
       clave: new FormControl('', [Validators.required]),
-      listaPersonal: new FormControl('', [Validators.required])
+      sucursal: new FormControl(''),
+      rol: new FormControl(''),
+      listaPersonal: new FormControl('')
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -55,6 +66,15 @@ export class UsuariosComponent implements OnInit {
       this.listar(value);
     });
   }
+
+  obtenerListas(){
+    this.tiposucursalService.listar(1).subscribe(data => {
+      this.lSucursales = data.Sucursales;
+      });
+    this.tiporolService.listar(1).subscribe(data => {
+      this.lRoles = data.TiposRol;
+      });
+    }
 
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/seguridad/usuarios').subscribe(data => {
@@ -74,7 +94,7 @@ export class UsuariosComponent implements OnInit {
     //llama a la api y trae la lista de personas
     this.UsuarioService.listarPersonas().subscribe(
       data => {
-        this.personas = data.Personas;
+        this.lPersonas = data.Personas;
       },
       error => {
         console.error('Error fetching personas', error);
@@ -93,13 +113,25 @@ export class UsuariosComponent implements OnInit {
   openEditar(content, item: Usuario) {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
-    this.personas[0].IdPersona = item.IdUsuario
-    this.personas[0].NombrePersona = item.Usuario
+    this.lPersonas[0].IdPersona = item.IdUsuario
+    this.lPersonas[0].NombrePersona = item.Usuario
     this.itemGrilla = Object.assign({}, item);
-    this.itemGrilla.listaPersonal = this.personas[0].NombrePersona
+    this.itemGrilla.listaPersonal = this.lPersonas[0].NombrePersona
     this.formItemGrilla.patchValue({
       listaPersonal: this.itemGrilla.listaPersonal
     });
+    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+  }
+  openEditarSucursal(content, item: Usuario) {
+    this.tituloModal = "Editar Sucursal";
+    this.tituloBoton = "Guardar";
+    this.itemGrilla = Object.assign({}, item);
+    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+  }
+  openEditarRol(content, item: Usuario) {
+    this.tituloModal = "Editar Rol";
+    this.tituloBoton = "Guardar";
+    this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
   openInhabilitar(contentInhabilitar, item: Usuario) {
@@ -150,16 +182,6 @@ export class UsuariosComponent implements OnInit {
     //     this.modalRef.close();
     //   }, error => {
     //     console.error('Error al inhabilitar tipo de categoría:', error);
-    //   });
-  }
-
-  habilitar(): void {
-    // this.UsuarioService.habilitar(this.itemGrilla, this.Token)
-    //   .subscribe(response => {
-    //     this.listar(1);
-    //     this.modalRef.close();
-    //   }, error => {
-    //     console.error('Error al habilitar tipo de categoría:', error);
     //   });
   }
 }
