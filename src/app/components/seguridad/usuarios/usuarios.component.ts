@@ -1,4 +1,4 @@
-import { Component , OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Usuario } from '../../../models/seguridad/Usuario';
 import { UsuarioService } from '../../../services/seguridad/usuario.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -40,7 +40,7 @@ export class UsuariosComponent implements OnInit {
     private tiposucursalService: TiposucursalService,
     private tiporolService: TiporolService,
     private alertasService: AlertasService // agregue las alertas
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.obtenerImgMenu();
@@ -68,20 +68,20 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  obtenerListas(){
+  obtenerListas() {
     this.tiposucursalService.listar(1).subscribe(data => {
       this.lSucursales = data.Sucursales;
-      });
+    });
     this.tiporolService.listar(1).subscribe(data => {
       this.lRoles = data.TiposRol;
-      });
-    }
+    });
+  }
 
-  obtenerImgMenu(){
+  obtenerImgMenu() {
     this.imagenService.getImagenSubMenu('/seguridad/usuarios').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-    });
-  }
+    });
+  }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.UsuarioService.listar(TipoLista).subscribe(
       response => {
@@ -106,7 +106,7 @@ export class UsuariosComponent implements OnInit {
     this.listar(filtro);
   }
 
-  agregarRol(){
+  agregarRol() {
     // this.usuariosService.agregarRol(this.usuario.personal.id,this.rol.id).subscribe(
     //   (data: GenericResp) =>{
     //     if( data.message == 'OK' ){
@@ -122,7 +122,7 @@ export class UsuariosComponent implements OnInit {
     // );
   }
 
-  eliminarRol(item:TipoRol){
+  eliminarRol(item: TipoRol) {
     // this.usuariosService.eliminarRol(this.usuario.personal.id,item).subscribe(
     //   (data: GenericResp) =>{
     //     if( data.message == 'OK' ){
@@ -149,19 +149,31 @@ export class UsuariosComponent implements OnInit {
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
-  openEditarSucursal(content, item: Usuario) {
+  openEditarSucursal(contentSucursal, item: Usuario) {
     this.tituloModal = "Editar Sucursal";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item);
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.modalRef = this.modalService.open(contentSucursal, { size: 'sm', centered: true });
   }
+
+  modUsuarioSucursal(): void {
+    this.UsuarioService.modificarUsuarioSucursal(this.itemGrilla.IdUsuario, this.itemGrilla.IdSucursal, this.Token)
+      .subscribe(response => {
+        this.listar(1);
+        this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+        this.modalRef.close();
+      }, error => {
+        this.alertasService.ErrorAlert('Error', error.error.Message);
+      });
+  }
+
   openEditarRol(contentRol, item: Usuario) {
     this.tituloModal = "Editar Rol";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item);
     this.UsuarioService.listarUsuariosRol(this.itemGrilla.IdUsuario).subscribe(data => {
       this.lRolesUsuario = data.UsuariosPorRol;
-      });
+    });
     this.modalRef = this.modalService.open(contentRol, { size: 'lg', centered: true });
   }
   openInhabilitar(contentInhabilitar, item: Usuario) {
@@ -175,34 +187,38 @@ export class UsuariosComponent implements OnInit {
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
   }
   guardar(): void {
-
+    console.log("ceci")
     if (this.itemGrilla.IdUsuario == null) {
-        const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
-        this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
-        this.UsuarioService.agregar(this.itemGrilla , this.Token)
-          .subscribe(response => {
-            console.log('Usuario guardado exitosamente:', response);
-            this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
-            this.modalRef.close();
-            this.listar(1);
-          }, error => {
-            console.error('Error al agregar usuario:', error);
-            if (error.error && error.error.Message) {
-              this.alertasService.ErrorAlert('Error', error.error.Message);
-            } else {
-              this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
-            }
-          });
+      const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
+      this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
+      this.UsuarioService.agregar(this.itemGrilla, this.Token)
+        .subscribe(response => {
+          console.log('Usuario guardado exitosamente:', response);
+          this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
+          this.modalRef.close();
+          this.listar(1);
+        }, error => {
+          console.error('Error al agregar usuario:', error);
+          if (error.error && error.error.Message) {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+          } else {
+            this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+          }
+        });
     } else {
-      console.log('editar');
-      // Actualización del usuario existente (código comentado de ejemplo)
-      // this.UsuarioService.editar(this.itemGrilla, this.Token)
-      //   .subscribe(response => {
-      //     this.listar(1);
-      //     this.modalRef.close();
-      //   }, error => {
-      //     console.error('Error al modificar tipo de categoría:', error);
-      //   });
+      console.log("ceci2")
+      this.UsuarioService.editar(this.itemGrilla, this.Token)
+        .subscribe(response => {
+          this.listar(1);
+          this.alertasService.OkAlert('Éxito', 'Usuario modificado exitosamente');
+          this.modalRef.close();
+        }, error => {
+          if (error.error && error.error.Message) {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+          } else {
+            this.alertasService.ErrorAlert('Error', 'Ocurrió un error al modificar el usuario');
+          }
+        });
     }
   }
   inhabilitar(): void {

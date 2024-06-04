@@ -29,6 +29,16 @@ export class UsuarioService {
     return this.http.post(url, body);
   }
 
+  editar(item: Usuario, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/SPM_Usuarios`;
+    const body = {
+      IdUsuario: item.IdUsuario,
+      NuevoUsuario: item.Usuario,
+      NuevaClave: item.Clave,
+      Token: Token};
+      return this.http.put(url, body);
+  }
+
   listarPersonas(): Observable<any> {
     const url = `${this.apiUrl}/SP_ListaPersonas`;
     return this.http.get(url);
@@ -56,10 +66,10 @@ export class UsuarioService {
       return this.http.put(url, body);
   }
 
-  modificarUsuarioRol(IdUsuarioRol: number, IdSucursal: number, Token: string): Observable<any> {
+  modificarUsuarioSucursal(IdUsuario: number, IdSucursal: number, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPM_UsuarioPorSucursal`;
     const body = {
-      IdUsuarioRol: IdUsuarioRol,
+      IdUsuario: IdUsuario,
       IdSucursal: IdSucursal,
       Token: Token};
       return this.http.put(url, body);

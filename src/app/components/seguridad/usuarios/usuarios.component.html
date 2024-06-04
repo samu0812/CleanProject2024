@@ -66,7 +66,7 @@
                       </a>
                     </li>
                     <li *ngIf="item.FechaBaja === null">
-                      <a class="dropdown-item" (click)="openEditarSucursal(content, item)">
+                      <a class="dropdown-item" (click)="openEditarSucursal(contentSucursal, item)">
                         <i class="fas fa-landmark"></i> Gestionar Sucursal
                       </a>
                     </li>
@@ -123,18 +123,43 @@
             <option *ngFor="let persona of lPersonas" [value]="persona.IdPersona">{{ persona.NombrePersona }}</option>
           </select>
         </div>
-        <div *ngIf="tituloModal == 'Editar Sucursal'" class="form-group col-md-10">
-          <label for="sucursal" class="col-form-label">Sucursal</label>
-          <select [(ngModel)]="itemGrilla.IdSucursal" formControlName="sucursal" class="form-control" id="sucursal">
-            <option value="" disabled>Seleccione...</option>
-            <option *ngFor="let sucursal of lSucursales" [value]="sucursal.IdSucursal">{{ sucursal.Descripcion }}</option>
-          </select>
+      </div>
+      <div class="form-group col text-right" style="margin-top: 25px;">
+        <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="guardar()">{{ tituloBoton }}</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #contentSucursal let-modal>
+  <div class="modal-header">
+    <a><img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" /></a><h4 class="modal-title">{{tituloModal}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formItemGrilla">
+      <div class="form-row">
+        <div class="form-group col-md-12 d-flex align-items-center">
+          <div style="margin-right: 10px;" class="col-md-10">
+            <label for="usuario">Usuario:</label>
+            <input [(ngModel)]="itemGrilla.Usuario" type="text" class="form-control" formControlName="usuario">
+          </div>
+        </div>
+        <div class="form-group col-md-12 d-flex align-items-center">
+          <div *ngIf="tituloModal == 'Editar Sucursal'" class="form-group col-md-12">
+            <label for="sucursal" class="col-form-label">Sucursal</label>
+            <select [(ngModel)]="itemGrilla.IdSucursal" formControlName="sucursal" class="form-control" id="sucursal">
+              <option value="" disabled>Seleccione...</option>
+              <option *ngFor="let sucursal of lSucursales" [value]="sucursal.IdSucursal">{{ sucursal.Descripcion }}</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
         <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
-        <button type="button" class="btn btn-success" (click)="agregarRol()">{{ tituloBoton }}</button>
+        <button type="button" class="btn btn-success" (click)="modUsuarioSucursal()">{{ tituloBoton }}</button>
       </div>
+
     </form>
   </div>
 </ng-template>
