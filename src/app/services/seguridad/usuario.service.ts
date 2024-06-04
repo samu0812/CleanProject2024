@@ -34,4 +34,43 @@ export class UsuarioService {
     return this.http.get(url);
   }
 
+  agregarRolUsuario(IdUsuario: number, IdRol: number, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/SPA_AgregarRolUsuario`;
+    const body = {
+      IdUsuario: IdUsuario,
+      IdRol: IdRol,
+      Token: Token};
+    return this.http.post(url, body);
+  }
+
+  listarUsuariosRol(IdUsuario: number): Observable<any> {
+    const url = `${this.apiUrl}/SP_ListaUsuariosRol?IdUsuario=${IdUsuario}`;
+    return this.http.get(url);
+  }
+
+  eliminarUsuarioRol(IdUsuarioRol: number, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/SPB_UsuarioRol`;
+    const body = {
+      IdUsuarioRol: IdUsuarioRol,
+      Token: Token};
+      return this.http.put(url, body);
+  }
+
+  modificarUsuarioRol(IdUsuarioRol: number, IdSucursal: number, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/SPM_UsuarioPorSucursal`;
+    const body = {
+      IdUsuarioRol: IdUsuarioRol,
+      IdSucursal: IdSucursal,
+      Token: Token};
+      return this.http.put(url, body);
+  }
+
+  // inhabilitar(item: TipoCategoria, Token: string): Observable<any> {
+  //   const url = `${this.apiUrl}/SPB_TipoCategoria`;
+  //   const body = {
+  //     IdTipoCategoria: item.IdTipoCategoria,
+  //     Token: Token};
+  //     return this.http.put(url, body);
+  // }
+
 }

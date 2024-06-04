@@ -19,18 +19,7 @@
             <option value="2">Solo Inhabilitados</option>
           </select>
         </div>
-        <div class="col-md-4">
-          <label for="equipo">Personal:</label>
-          <div class="input-group">
-            <input type="text" formControlName="equipo" class="form-control" id="equipo" placeholder="Equipo">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button">Buscar</button>
-              <button class="btn btn-outline-secondary" type="button">Limpiar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
+        <div class="col-md-9 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
           <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
             <i class="fa-solid fa-user-plus button-icon"></i>Crear
           </button>
@@ -73,17 +62,17 @@
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li *ngIf="item.FechaBaja === null">
                       <a class="dropdown-item" (click)="openEditar(content, item)">
-                        <i class="fas fa-edit"></i> Editar
+                        <i class="fas fa-edit"></i> Modificar Usuario
                       </a>
                     </li>
                     <li *ngIf="item.FechaBaja === null">
                       <a class="dropdown-item" (click)="openEditarSucursal(content, item)">
-                        <i class="fas fa-landmark"></i> Sucursal
+                        <i class="fas fa-landmark"></i> Gestionar Sucursal
                       </a>
                     </li>
                     <li *ngIf="item.FechaBaja === null">
-                      <a class="dropdown-item" (click)="openEditarRol(content, item)">
-                        <i class="fas fa-chalkboard-teacher"></i> Rol
+                      <a class="dropdown-item" (click)="openEditarRol(contentRol, item)">
+                        <i class="fas fa-chalkboard-teacher"></i> Asignar Rol/es
                       </a>
                     </li>
                     <li *ngIf="item.FechaBaja === null">
@@ -107,18 +96,21 @@
 <!-- AgregarUsuarioModal -->
 <ng-template #content let-modal>
   <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a>
+      <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+    </a>
+    <a style="margin-left: 5px;"></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="formItemGrilla">
       <div class="form-row">
-        <div *ngIf="tituloModal == 'Agregar'" class="form-group col-md-10">
+        <div *ngIf="tituloModal == 'Agregar' || tituloModal == 'Editar'" class="form-group col-md-10">
           <div style="margin-bottom: 15px">
             <label for="Usuario">Usuario</label>
           </div>
           <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control" id="usuario" placeholder="Ingrese un Usuario">
         </div>
-        <div *ngIf="tituloModal == 'Agregar'" class="form-group col-md-10">
+        <div *ngIf="tituloModal == 'Agregar' || tituloModal == 'Editar'" class="form-group col-md-10">
           <div style="margin-bottom: 15px ; margin-top: 15px">
             <label for="Clave">Clave</label>
           </div>
@@ -133,23 +125,80 @@
         </div>
         <div *ngIf="tituloModal == 'Editar Sucursal'" class="form-group col-md-10">
           <label for="sucursal" class="col-form-label">Sucursal</label>
-          <select formControlName="sucursal" class="form-control" id="sucursal">
+          <select [(ngModel)]="itemGrilla.IdSucursal" formControlName="sucursal" class="form-control" id="sucursal">
             <option value="" disabled>Seleccione...</option>
             <option *ngFor="let sucursal of lSucursales" [value]="sucursal.IdSucursal">{{ sucursal.Descripcion }}</option>
-          </select>
-        </div>
-        <div *ngIf="tituloModal == 'Editar Rol'" class="form-group col-md-10">
-          <label for="rol" class="col-form-label">Roles</label>
-          <select formControlName="rol" class="form-control" id="rol">
-            <option value="" disabled>Seleccione...</option>
-            <option *ngFor="let rol of lRoles" [value]="rol.IdTipoRol">{{ rol.Descripcion }}</option>
           </select>
         </div>
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
         <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
-        <button type="button" class="btn btn-success" (click)="guardar()">{{ tituloBoton }}</button>
+        <button type="button" class="btn btn-success" (click)="agregarRol()">{{ tituloBoton }}</button>
       </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #contentRol let-modal>
+  <div class="modal-header">
+    <a><img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" /></a><h4 class="modal-title">{{tituloModal}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formItemGrilla">
+      <div class="form-row">
+        <div class="form-group col-md-12 d-flex align-items-center">
+          <div style="margin-right: 10px;" class="col-md-3">
+            <label for="usuario">Usuario:</label>
+            <input [(ngModel)]="itemGrilla.Usuario" type="text" class="form-control" formControlName="usuario">
+          </div>
+
+          <div style="margin-right: 5px;" class="col-md-6">
+            <label for="rol">Roles:</label>
+            <select [(ngModel)]="itemGrilla.IdTipoRol" class="form-control" id="rol" formControlName="rol">
+              <option [value]="undefined">Seleccione...</option>
+              <option [value]="rolSelect.IdTipoRol" *ngFor="let rolSelect of lRoles">{{rolSelect.Descripcion}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <button type="button" class="btn btn-success mt-4" (click)="agregarRol()">Agregar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-10">
+
+          <div *ngIf="lRoles == undefined || lRoles.length == undefined || lRoles.length == 0">
+            <h5>No se encontraron roles para el usuario...</h5>
+          </div>
+
+          <div *ngIf="lRoles != undefined && lRoles.length > 0">
+            <table class="table table-sm table-hover col-md-10">
+              <thead class="table-warning table-crud">
+                <tr class="d-flex">
+                  <th scope="col" class="col">Rol</th> <!-- Opciones -->
+                  <th scope="col" class="col-2"></th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr class="d-flex" *ngFor="let itemRol of lRolesUsuario">
+                <td  class="col" scope="row">{{itemRol.Descripcion}}</td>
+                <td class="col-2" scope="row">
+                  <button class="btn btn-outline-danger btn-sm" (click)="eliminarRol(itemRol)">Eliminar</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group col text-right">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+      </div>
+
     </form>
   </div>
 </ng-template>
@@ -167,154 +216,6 @@
   </div>
 </ng-template>
 
-<div class="modal fade" id="modificarUsuarioModal" tabindex="-1" aria-labelledby="modificarUsuarioModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="modificarUsuarioModalLabel"><i class="fa-solid fa-user-pen"></i>Modificar Usuario</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Personal</label>
-            <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
-                <option value="" disabled selected hidden>Seleccione...</option>
-                <option value="opcion1">Opción 1</option>
-                <option value="opcion2">Opción 2</option>
-                <option value="opcion3">Opción 3</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Usuario</label>
-            <input type="text" id="Usuario" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="gestionarContrasenaModal" tabindex="-1" aria-labelledby="gestionarContrasenaModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="gestionarContrasenaModalLabel"><i class="fa-solid fa-key"></i>Gestionar Contraseña</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Usuario</label>
-            <input type="text" id="Usuario" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Contraseña</label>
-            <input type="text" id="Clave" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Por favor repita la contraseña</label>
-            <input type="text" id="ClaveRepetida" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="asignarRolModal" tabindex="-1" aria-labelledby="asignarRolModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="asignarRolModalLabel"><i class="fa-solid fa-id-badge"></i>Asignar Rol/Roles</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Usuario</label>
-            <input type="text" id="Usuario" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Seleccione el Rol</label>
-            <select formControlName="listaRoles" class="form-control" id="listaRoles">
-              <option value="" disabled selected hidden>Seleccione...</option>
-              <option value="opcion1">Opción 1</option>
-              <option value="opcion2">Opción 2</option>
-              <option value="opcion3">Opción 3</option>
-            </select>
-          </div>
-          <div class="text-end"> <!-- Estilo para alinear a la derecha -->
-            <button type="button" class="btn btn-primary" id="asignarBtn">Asignar</button>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="asignarSucursalModal" tabindex="-1" aria-labelledby="asignarSucursalModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="asignarSucursalModalLabel">Asignar Sucursal</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Sucursal</label>
-            <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
-                <option value="" disabled selected hidden>Seleccione la Sucursal</option>
-                <option value="opcion1">Opción 1</option>
-                <option value="opcion2">Opción 2</option>
-                <option value="opcion3">Opción 3</option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="inhabilitarModal" tabindex="-1" aria-labelledby="inhabilitarModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="inhabilitarModalLabel"><i class="fa-solid fa-user-xmark"></i>Inhabilitar Usuario</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Usuario</label>
-            <input type="text" id="Usuario" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Motivo</label>
-            <input type="text" id="motivo" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
 <footer class="footer">
   <app-footer></app-footer>
 </footer>

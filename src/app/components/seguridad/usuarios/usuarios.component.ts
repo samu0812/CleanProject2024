@@ -30,6 +30,7 @@ export class UsuariosComponent implements OnInit {
   lPersonas: any[] = []; //para listar las personas
   lSucursales: Sucursales[]; //para listar las personas
   lRoles: TipoRol[]; //para listar las personas
+  lRolesUsuario: any[] = [];
 
   constructor(
     private UsuarioService: UsuarioService,
@@ -104,6 +105,38 @@ export class UsuariosComponent implements OnInit {
     const filtro = this.formFiltro.get('idFiltro').value;
     this.listar(filtro);
   }
+
+  agregarRol(){
+    // this.usuariosService.agregarRol(this.usuario.personal.id,this.rol.id).subscribe(
+    //   (data: GenericResp) =>{
+    //     if( data.message == 'OK' ){
+    //       this.rTablaRoles(false);
+    //       this.showSuccess();
+    //     }else{
+    //       this.showMessageBackEnd(data.message);
+    //     }
+    //   },
+    //   error => {
+    //     this.showError();
+    //   }
+    // );
+  }
+
+  eliminarRol(item:TipoRol){
+    // this.usuariosService.eliminarRol(this.usuario.personal.id,item).subscribe(
+    //   (data: GenericResp) =>{
+    //     if( data.message == 'OK' ){
+    //       this.rTablaRoles(false);
+    //       this.showSuccess();
+    //     }else{
+    //       this.showMessageBackEnd(data.message);
+    //     }
+    //   },
+    //   error => {
+    //     this.showError();
+    //   }
+    // );
+  }
   openAgregar(content) {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
@@ -113,13 +146,7 @@ export class UsuariosComponent implements OnInit {
   openEditar(content, item: Usuario) {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
-    this.lPersonas[0].IdPersona = item.IdUsuario
-    this.lPersonas[0].NombrePersona = item.Usuario
     this.itemGrilla = Object.assign({}, item);
-    this.itemGrilla.listaPersonal = this.lPersonas[0].NombrePersona
-    this.formItemGrilla.patchValue({
-      listaPersonal: this.itemGrilla.listaPersonal
-    });
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
   openEditarSucursal(content, item: Usuario) {
@@ -128,11 +155,14 @@ export class UsuariosComponent implements OnInit {
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
   }
-  openEditarRol(content, item: Usuario) {
+  openEditarRol(contentRol, item: Usuario) {
     this.tituloModal = "Editar Rol";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item);
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    this.UsuarioService.listarUsuariosRol(this.itemGrilla.IdUsuario).subscribe(data => {
+      this.lRolesUsuario = data.UsuariosPorRol;
+      });
+    this.modalRef = this.modalService.open(contentRol, { size: 'lg', centered: true });
   }
   openInhabilitar(contentInhabilitar, item: Usuario) {
     this.tituloModal = "Inhabilitar";
