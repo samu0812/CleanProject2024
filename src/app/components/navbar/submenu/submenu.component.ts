@@ -23,9 +23,7 @@ export class SubmenuComponent implements OnInit {
         this.menuService.getSubMenuItems(Token, IdMenu).subscribe( data=>{
           this.respuesta = data.Menus;
           this.Menues = this.respuesta;
-        }
-
-        );
+        });
       } else {
         console.error('Token no encontrado en localStorage');
       }

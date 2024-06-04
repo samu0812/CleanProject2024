@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* Cambia este valor alfa según sea necesario */
+  background-color:white;
   z-index: 2000;
 }
 

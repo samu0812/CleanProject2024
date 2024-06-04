@@ -227,3 +227,10 @@
   padding-bottom: 10px; /* Esto agrega espacio entre el borde y el contenido del párrafo */
   margin-bottom: 10px; /* Esto agrega espacio entre el borde y el siguiente elemento */
 }
+
+
+/* Opcional: Estilo adicional para resaltar el texto de los botones */
+.ngx-pagination .current{
+  background-color: #FF8C00;
+  color:#FF8C00 ;
+}

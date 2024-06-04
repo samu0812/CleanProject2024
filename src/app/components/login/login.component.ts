@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     private loginService: LoginService,
     private authService: AuthService,
     private router: Router,
-    private alertasService: AlertasService
+    private alertasService: AlertasService,
   ) {}
 
   ngOnInit(): void {
