@@ -44,11 +44,11 @@ export class UsuarioService {
     return this.http.get(url);
   }
 
-  agregarRolUsuario(IdUsuario: number, IdRol: number, Token: string): Observable<any> {
+  agregarRolUsuario(item: Usuario, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPA_AgregarRolUsuario`;
     const body = {
-      IdUsuario: IdUsuario,
-      IdRol: IdRol,
+      IdUsuario: item.IdUsuario,
+      IdRol: item.IdTipoRol,
       Token: Token};
     return this.http.post(url, body);
   }
@@ -58,10 +58,10 @@ export class UsuarioService {
     return this.http.get(url);
   }
 
-  eliminarUsuarioRol(IdUsuarioRol: number, Token: string): Observable<any> {
+  eliminarUsuarioRol(item: any, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPB_UsuarioRol`;
     const body = {
-      IdUsuarioRol: IdUsuarioRol,
+      IdUsuarioRol: item.IdTipoRol,
       Token: Token};
       return this.http.put(url, body);
   }

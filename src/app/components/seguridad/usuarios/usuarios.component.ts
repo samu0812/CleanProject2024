@@ -24,6 +24,7 @@ export class UsuariosComponent implements OnInit {
   listaGrilla: Usuario[]; // tabla completa en donde se cargan los datos
   modalRef: NgbModalRef;
   formItemGrilla: FormGroup;
+  formItemRol: FormGroup;
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
@@ -31,6 +32,8 @@ export class UsuariosComponent implements OnInit {
   lSucursales: Sucursales[]; //para listar las personas
   lRoles: TipoRol[]; //para listar las personas
   lRolesUsuario: any[] = [];
+  rolesUsuario: Usuario;
+  rol:TipoRol;
 
   constructor(
     private UsuarioService: UsuarioService,
@@ -44,8 +47,6 @@ export class UsuariosComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.obtenerImgMenu();
-    this.obtenerListas();
-
     this.Token = localStorage.getItem('Token');
 
     this.formItemGrilla = this.formBuilder.group({
@@ -54,6 +55,11 @@ export class UsuariosComponent implements OnInit {
       sucursal: new FormControl(''),
       rol: new FormControl(''),
       listaPersonal: new FormControl('')
+    });
+
+    this.formItemRol = this.formBuilder.group({
+      usuario: new FormControl('', [Validators.required]),
+      rol: new FormControl('', [Validators.required])
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -65,15 +71,6 @@ export class UsuariosComponent implements OnInit {
     // Listen for changes in the filter and update the list accordingly
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
-    });
-  }
-
-  obtenerListas() {
-    this.tiposucursalService.listar(1).subscribe(data => {
-      this.lSucursales = data.Sucursales;
-    });
-    this.tiporolService.listar(1).subscribe(data => {
-      this.lRoles = data.TiposRol;
     });
   }
 
@@ -100,6 +97,12 @@ export class UsuariosComponent implements OnInit {
       error => {
         console.error('Error fetching personas', error);
       });
+    this.tiposucursalService.listar(1).subscribe(data => {
+      this.lSucursales = data.Sucursales;
+    });
+    this.tiporolService.listar(1).subscribe(data => {
+      this.lRoles = data.TiposRol;
+    });
   }
   cambiarFiltro(): void {
     const filtro = this.formFiltro.get('idFiltro').value;
@@ -107,35 +110,35 @@ export class UsuariosComponent implements OnInit {
   }
 
   agregarRol() {
-    // this.usuariosService.agregarRol(this.usuario.personal.id,this.rol.id).subscribe(
-    //   (data: GenericResp) =>{
-    //     if( data.message == 'OK' ){
-    //       this.rTablaRoles(false);
-    //       this.showSuccess();
-    //     }else{
-    //       this.showMessageBackEnd(data.message);
-    //     }
-    //   },
-    //   error => {
-    //     this.showError();
-    //   }
-    // );
+    const rolSeleccionado = this.formItemRol.get('rol').value;
+    this.rolesUsuario.IdTipoRol = rolSeleccionado;
+    this.UsuarioService.agregarRolUsuario(this.rolesUsuario, this.Token)
+    .subscribe(response => {
+      this.alertasService.OkAlert('Éxito', 'Rol agregado exitosamente');
+      this.getListaRoles(this.rolesUsuario.IdUsuario);
+    }, error => {
+      console.error('Error al agregar usuario:', error);
+      if (error.error && error.error.Message) {
+        this.alertasService.ErrorAlert('Error', error.error.Message);
+      } else {
+        this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+      }
+    });
   }
 
-  eliminarRol(item: TipoRol) {
-    // this.usuariosService.eliminarRol(this.usuario.personal.id,item).subscribe(
-    //   (data: GenericResp) =>{
-    //     if( data.message == 'OK' ){
-    //       this.rTablaRoles(false);
-    //       this.showSuccess();
-    //     }else{
-    //       this.showMessageBackEnd(data.message);
-    //     }
-    //   },
-    //   error => {
-    //     this.showError();
-    //   }
-    // );
+  eliminarRol(item: any) {
+    this.UsuarioService.eliminarUsuarioRol(item.IdUsuarioRol, this.Token)
+    .subscribe(response => {
+      this.alertasService.OkAlert('Éxito', 'Rol agregado exitosamente');
+      this.getListaRoles(this.rolesUsuario.IdUsuario);
+    }, error => {
+      console.error('Error al agregar usuario:', error);
+      if (error.error && error.error.Message) {
+        this.alertasService.ErrorAlert('Error', error.error.Message);
+      } else {
+        this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+      }
+    });
   }
   openAgregar(content) {
     this.tituloModal = "Agregar";
@@ -167,13 +170,18 @@ export class UsuariosComponent implements OnInit {
       });
   }
 
+  getListaRoles(IdUsuario: number){
+    this.UsuarioService.listarUsuariosRol(IdUsuario).subscribe(data => {
+      this.lRolesUsuario = data.UsuariosPorRol;
+    });
+  }
+
   openEditarRol(contentRol, item: Usuario) {
     this.tituloModal = "Editar Rol";
     this.tituloBoton = "Guardar";
-    this.itemGrilla = Object.assign({}, item);
-    this.UsuarioService.listarUsuariosRol(this.itemGrilla.IdUsuario).subscribe(data => {
-      this.lRolesUsuario = data.UsuariosPorRol;
-    });
+    this.rolesUsuario = Object.assign({}, item);
+    this.rol = Object.assign({}, new TipoRol());
+    this.getListaRoles(this.rolesUsuario.IdUsuario);
     this.modalRef = this.modalService.open(contentRol, { size: 'lg', centered: true });
   }
   openInhabilitar(contentInhabilitar, item: Usuario) {
@@ -181,13 +189,8 @@ export class UsuariosComponent implements OnInit {
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentInhabilitar, { size: 'sm', centered: true });
   }
-  openHabilitar(contentHabilitar, item: Usuario) {
-    this.tituloModal = "Habilitar";
-    this.itemGrilla = Object.assign({}, item);
-    this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
-  }
+
   guardar(): void {
-    console.log("ceci")
     if (this.itemGrilla.IdUsuario == null) {
       const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
       this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
@@ -206,15 +209,16 @@ export class UsuariosComponent implements OnInit {
           }
         });
     } else {
-      console.log("ceci2")
       this.UsuarioService.editar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
           this.alertasService.OkAlert('Éxito', 'Usuario modificado exitosamente');
           this.modalRef.close();
         }, error => {
-          if (error.error && error.error.Message) {
-            this.alertasService.ErrorAlert('Error', error.error.Message);
+          if (error.error.Errors.NuevoUsuario) {
+            this.alertasService.ErrorAlert('Error', error.error.Errors.NuevoUsuario);
+          }if (error.error.Errors.NuevaClave) {
+            this.alertasService.ErrorAlert('Error', error.error.Errors.NuevaClave);
           } else {
             this.alertasService.ErrorAlert('Error', 'Ocurrió un error al modificar el usuario');
           }

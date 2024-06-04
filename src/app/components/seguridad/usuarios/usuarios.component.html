@@ -146,7 +146,7 @@
           </div>
         </div>
         <div class="form-group col-md-12 d-flex align-items-center">
-          <div *ngIf="tituloModal == 'Editar Sucursal'" class="form-group col-md-12">
+          <div *ngIf="tituloModal == 'Editar Sucursal'"   class="form-group col-md-12">
             <label for="sucursal" class="col-form-label">Sucursal</label>
             <select [(ngModel)]="itemGrilla.IdSucursal" formControlName="sucursal" class="form-control" id="sucursal">
               <option value="" disabled>Seleccione...</option>
@@ -169,19 +169,19 @@
     <a><img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" /></a><h4 class="modal-title">{{tituloModal}}</h4>
   </div>
   <div class="modal-body">
-    <form [formGroup]="formItemGrilla">
+    <form [formGroup]="formItemRol">
       <div class="form-row">
         <div class="form-group col-md-12 d-flex align-items-center">
-          <div style="margin-right: 10px;" class="col-md-3">
+          <div style="margin-right: 10px; margin-top: 15px;" class="col-md-3">
             <label for="usuario">Usuario:</label>
-            <input [(ngModel)]="itemGrilla.Usuario" type="text" class="form-control" formControlName="usuario">
+            <input [(ngModel)]="rolesUsuario.Usuario" type="text" class="form-control" formControlName="usuario">
           </div>
 
-          <div style="margin-right: 5px;" class="col-md-6">
-            <label for="rol">Roles:</label>
-            <select [(ngModel)]="itemGrilla.IdTipoRol" class="form-control" id="rol" formControlName="rol">
-              <option [value]="undefined">Seleccione...</option>
-              <option [value]="rolSelect.IdTipoRol" *ngFor="let rolSelect of lRoles">{{rolSelect.Descripcion}}</option>
+          <div style="margin-right: 10px;" class="form-group col-md-6">
+            <label for="rol" class="col-form-label">Roles</label>
+            <select formControlName="rol" class="form-control" id="rol">
+              <option value="" disabled>Seleccione...</option>
+              <option *ngFor="let rol of lRoles" [value]="rol.IdTipoRol">{{ rol.Descripcion }}</option>
             </select>
           </div>
 
@@ -200,19 +200,19 @@
 
           <div *ngIf="lRoles != undefined && lRoles.length > 0">
             <table class="table table-sm table-hover col-md-10">
-              <thead class="table-warning table-crud">
+              <thead class="tablaUser">
                 <tr class="d-flex">
                   <th scope="col" class="col">Rol</th> <!-- Opciones -->
                   <th scope="col" class="col-2"></th>
                 </tr>
               </thead>
               <tbody>
-              <tr class="d-flex" *ngFor="let itemRol of lRolesUsuario">
-                <td  class="col" scope="row">{{itemRol.Descripcion}}</td>
-                <td class="col-2" scope="row">
-                  <button class="btn btn-outline-danger btn-sm" (click)="eliminarRol(itemRol)">Eliminar</button>
-                </td>
-              </tr>
+                <tr class="d-flex" *ngFor="let itemRol of lRolesUsuario">
+                  <td  class="col" scope="row">{{itemRol.Descripcion}}</td>
+                  <td class="col-2" scope="row">
+                    <button class="btn btn-outline-danger btn-sm" (click)="eliminarRol(itemRol)">Eliminar</button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
