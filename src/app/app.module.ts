@@ -60,6 +60,7 @@ import { TiposucursalComponent } from './components/parametria/tiposucursal/tipo
 import { AccesoComponent } from './components/acceso/acceso.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoaderComponent } from './components/loader/loader.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -124,7 +125,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     MatFormFieldModule,
     MatInputModule,
     RouterModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgbModule,
 
   ],
   providers: [

@@ -172,6 +172,7 @@ export class ClientesComponent implements OnInit {
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
         },
         error => {
+          console.log('Error', error.error.Message);
           this.alertasService.ErrorAlert('Error', error.error.Message);
           this.loading = false; // Asegúrate de manejar el caso de error
         }
