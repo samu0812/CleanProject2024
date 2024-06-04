@@ -21,9 +21,15 @@ export class SubmenuComponent implements OnInit {
       const Token = localStorage.getItem('Token');
       if (Token !== null) {
         this.menuService.getSubMenuItems(Token, IdMenu).subscribe( data=>{
+          console.log(data.Menus , 'menuessssss');
           this.respuesta = data.Menus;
           this.Menues = this.respuesta;
-        });
+          this.Menues.forEach(menu => {
+            console.log(menu.PoseePermiso);
+          });
+        }
+
+        );
       } else {
         console.error('Token no encontrado en localStorage');
       }

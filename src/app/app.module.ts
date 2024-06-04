@@ -60,8 +60,8 @@ import { TiposucursalComponent } from './components/parametria/tiposucursal/tipo
 import { AccesoComponent } from './components/acceso/acceso.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoaderComponent } from './components/loader/loader.component';
-import { AuthService } from './services/auth/auth.service';
-import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -110,7 +110,6 @@ import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
     TiposucursalComponent,
     AccesoComponent,
     LoaderComponent,
-    BusquedaPipe
   ],
   imports: [
     BrowserModule,
@@ -127,12 +126,12 @@ import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
     MatInputModule,
     RouterModule,
     NgxPaginationModule,
+    NgbModule,
+
   ],
-  exports:[BusquedaPipe],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync(),
-    AuthService
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

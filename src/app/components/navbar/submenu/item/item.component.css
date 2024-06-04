@@ -1,10 +1,4 @@
-.card:hover {
-  -webkit-box-shadow: 1px 11px 17px -1px rgba(109, 108, 108, 0.75);
-  -moz-box-shadow: 1px 11px 17px -1px rgba(0, 0, 0, 0.75);
-  box-shadow: 1px 11px 17px -1px rgba(0, 0, 0, 0.75);
-  cursor: pointer;
-  transform: scale(1.05);
-}
+
 .card-menu {
   width: 250px; /* Ancho fijo para las tarjetas */
   height: 200px; /* Altura fija para las tarjetas */
@@ -56,5 +50,23 @@
   max-height: 40px; /* Establece una altura máxima para el contenedor del título */
   line-height: 20px; /* Ajusta la altura de línea según sea necesario */
 }
+
+
+.card-menu-disabled{
+  opacity: .5 !important;
+}
+
+.card:hover {
+  -webkit-box-shadow: 1px 11px 17px -1px rgba(109, 108, 108, 0.75);
+  -moz-box-shadow: 1px 11px 17px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 11px 17px -1px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+}
+
+
+.card-menu-disabled{
+  opacity: .5 !important;
+}
+
 
 @import url('https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poetsen+One&family=Rowdies:wght@300;400;700&display=swap');
