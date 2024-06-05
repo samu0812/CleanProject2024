@@ -19,6 +19,8 @@ export class BusquedausuariosPipe implements PipeTransform {
       const apellido = item[Apellido]?.toLowerCase() || '';
       const documentacion = item[Documentacion]?.toLowerCase() || '';
 
+
+      
       return id.includes(busquedausuarios) || usuario.includes(busquedausuarios)
         || nombre.includes(busquedausuarios)
         || apellido.includes(busquedausuarios)
