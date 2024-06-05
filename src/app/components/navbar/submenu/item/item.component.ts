@@ -11,7 +11,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ItemComponent implements OnInit {
   @Input('data') menu: Menu;
-  @Input() isDisabled: boolean = false;
+  @Input() isDisabled: boolean = false;z
   constructor() {}
 
   ngOnInit(): void {

@@ -12,6 +12,7 @@ export class AuthService {
   private usuarioActual: Usuario | null = null; // Añade esta línea para almacenar el usuario actual
   private temporizadorInactividad: any;
   private TIEMPO_INACTIVIDAD_MS: number = 3600000; // 1 hora en milisegundos
+  loading: boolean = true;
 
   constructor(
     private router: Router,
@@ -62,5 +63,12 @@ export class AuthService {
     clearTimeout(this.temporizadorInactividad);
     this.inicializarTemporizadorInactividad();
   }
-
+  logout() {
+    localStorage.removeItem('Token'); // Elimina el token del almacenamiento local
+    this.setAuthenticated(false);
+    this.usuarioActual = null;
+    this.detenerSeguimientoInactividad();
+    this.router.navigate(['/login']);
+    this.loading = false;
+  }
 }
