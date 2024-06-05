@@ -61,8 +61,8 @@ import { AccesoComponent } from './components/acceso/acceso.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoaderComponent } from './components/loader/loader.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -110,6 +110,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TiposucursalComponent,
     AccesoComponent,
     LoaderComponent,
+    BusquedaPipe
   ],
   imports: [
     BrowserModule,
@@ -127,7 +128,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule,
     NgxPaginationModule,
     NgbModule,
-
+    NgbTooltipModule
   ],
   providers: [
     provideClientHydration(),

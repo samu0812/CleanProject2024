@@ -1,7 +1,8 @@
 // item.component.ts
 import { Component, Input, OnInit } from '@angular/core';
 import { Menu } from '../../../../models/menu/menu';
-import { TooltipModule } from 'ng-bootstrap/tooltip';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-item',

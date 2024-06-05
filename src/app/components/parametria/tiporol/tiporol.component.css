@@ -12,11 +12,12 @@
   letter-spacing: 1px;
   margin-bottom: 0%;
   display: inline-flex; /* Ajusta el tamaño al contenido */
-  background-color: #FF8C00; /* Color de fondo */
+  background: #FF8C00; /* Color de fondo */
   border-radius: 10px; /* Bordes redondeados */
   padding: 5px 50px; /* Espacio interno reducido */
   align-items: center; /* Alinea los elementos hijos verticalmente */
 }
+
 
 .title-menu {
   display: inline-flex;
@@ -90,9 +91,9 @@
     right: 0; /* Alinea el menú a la derecha del botón */
     top: 100%; /* Coloca el menú debajo del botón */
     z-index: 10;
-    position: absolute;
+    position: fixed; /* Cambia la posición a fixed */
     color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
-  }
+  }  
   
   .dropdown button{
     background-color: rgb(31, 31, 95);
@@ -135,6 +136,7 @@
     border-radius: 10px; /* Redondea los bordes */
     overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
     min-height: 400px;
+    display: grid;
   }
   .hide-column {
     display: none;
@@ -203,4 +205,14 @@
 
 .text-right {
   text-align: right; /* Alinea los botones a la derecha */
+}
+
+#btnBusqueda{
+  background: #FF8C00;
+  border-color: #FF8C00;
+}
+#alerta{
+  background: #ffd690;
+  border-color: #ffd690;
+
 }

@@ -91,9 +91,9 @@
     right: 0; /* Alinea el menú a la derecha del botón */
     top: 100%; /* Coloca el menú debajo del botón */
     z-index: 10;
-    position: absolute;
+    position: fixed; /* Cambia la posición a fixed */
     color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
-  }
+  }  
   
   .dropdown button{
     background-color: rgb(31, 31, 95);
@@ -136,6 +136,7 @@
     border-radius: 10px; /* Redondea los bordes */
     overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
     min-height: 400px;
+    display: grid;
   }
   .hide-column {
     display: none;
@@ -209,4 +210,9 @@
 #btnBusqueda{
   background: #FF8C00;
   border-color: #FF8C00;
+}
+#alerta{
+  background: #ffd690;
+  border-color: #ffd690;
+
 }

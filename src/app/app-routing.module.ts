@@ -46,7 +46,7 @@ const routes: Routes = [
   {path: 'seguridad/usuarios', component: UsuariosComponent , canActivate: [AuthGuard]},
   {path: 'seguridad/tiporoles', component: TiporolesComponent, canActivate: [AuthGuard]},
   {path: 'seguridad/rolmodulos', component: RolComponent, canActivate: [AuthGuard]},
-  {path: 'seguridad/apis', component: ApisComponent, canActivate: [AuthGuard]},
+  {path: 'seguridad/apispormodulo', component: ApisComponent, canActivate: [AuthGuard]},
 
   {path: 'parametria/tipopersona', component: TipopersonaComponent, canActivate: [AuthGuard]},
   {path: 'parametria/tiporol', component: TiporolComponent, canActivate: [AuthGuard]},

@@ -1,4 +1,4 @@
-import { Component , OnInit, Input } from '@angular/core';
+import { Component , OnInit, Input, TemplateRef } from '@angular/core';
 import { Usuario } from '../../../models/seguridad/Usuario';
 import { UsuarioService } from '../../../services/seguridad/usuario.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
-
+import { NgIfContext } from '@angular/common';
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -24,6 +24,11 @@ export class UsuariosComponent implements OnInit {
   Token: string;
   imgSubmenu: Menu;
   personas: any[] = []; //para listar las personas
+  paginaActual = 1;
+  elementosPorPagina = 10;
+  loading: boolean = true;
+  Busqueda = "";
+  noData: TemplateRef<NgIfContext<boolean>>;
 
   constructor(
     private UsuarioService: UsuarioService,
@@ -50,11 +55,20 @@ export class UsuariosComponent implements OnInit {
 
     this.listar(1); // Initially list only enabled items
 
-    // Listen for changes in the filter and update the list accordingly
+    this.formFiltro = this.formBuilder.group({
+      idFiltro: new FormControl('1', [Validators.required]),
+      busqueda: new FormControl('') // Control de búsqueda
+    });
+
+    this.listar(1);
+
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
     });
 
+    this.formFiltro.get('busqueda').valueChanges.subscribe(value => {
+      this.Busqueda = value;
+    });
 
     //llama a la api y trae la lista de personas
     this.UsuarioService.listarPersonas().subscribe(
@@ -72,13 +86,16 @@ export class UsuariosComponent implements OnInit {
     });
   }  
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.UsuarioService.listar(TipoLista).subscribe(
       response => {
         this.itemGrilla = new Usuario();
         this.listaGrilla = response.Usuarios;
+        this.loading = false;
       },
       error => {
         console.error('Error al cargar tipos de categoría:', error);
+        this.loading = false;
       }
     );
   }
@@ -125,6 +142,7 @@ export class UsuariosComponent implements OnInit {
 guardar(): void {
 
   if (this.itemGrilla.IdUsuario == null) {
+    this.loading = true;
       const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
       this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
       this.UsuarioService.agregar(this.itemGrilla , this.Token)
@@ -133,8 +151,10 @@ guardar(): void {
           this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
           this.modalRef.close();
           this.listar(1);
+          this.loading = false;
         }, error => {
           console.error('Error al agregar usuario:', error);
+          this.loading = false;
           if (error.error && error.error.Message) {
             this.alertasService.ErrorAlert('Error', error.error.Message);
           } else {
@@ -191,5 +211,11 @@ habilitar(): void {
 //     );
 //   });
 // }
+  limpiarBusqueda(): void {
+    this.formFiltro.get('busqueda').setValue('');
+  }
+  cambiarPagina(event): void {
+    this.paginaActual = event;
+  }
 
 }

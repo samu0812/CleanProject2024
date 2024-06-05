@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TipoFormaDePago } from '../../../models/parametria/tipoformadepago';
@@ -6,6 +6,7 @@ import { TipoformadepagoService } from './../../../services/parametria/tipoforma
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
+import { NgIfContext } from '@angular/common';
 
 @Component({
   selector: 'app-tipoformadepago',
@@ -24,6 +25,12 @@ export class TipoformadepagoComponent implements OnInit {
   Token: string;
   imgSubmenu: Menu;
 
+  paginaActual = 1;
+  elementosPorPagina = 10;
+  loading: boolean = true;
+  Busqueda = "";
+  noData: TemplateRef<NgIfContext<boolean>>;
+
   constructor(
     private tipoformadepagoService: TipoformadepagoService,
     private modalService: NgbModal,
@@ -40,16 +47,19 @@ export class TipoformadepagoComponent implements OnInit {
     });
 
     this.formFiltro = this.formBuilder.group({
-      idFiltro: new FormControl('1', [Validators.required]) // Default value set to 1
+      idFiltro: new FormControl('1', [Validators.required]),
+      busqueda: new FormControl('') // Control de búsqueda
     });
 
-    this.listar(1); // Initially list only enabled items
+    this.listar(1);
 
-    // Listen for changes in the filter and update the list accordingly
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
     });
 
+    this.formFiltro.get('busqueda').valueChanges.subscribe(value => {
+      this.Busqueda = value;
+    });
   }
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/parametria/tipoformadepago').subscribe(data => {
@@ -59,13 +69,16 @@ export class TipoformadepagoComponent implements OnInit {
 
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipoformadepagoService.listar(TipoLista).subscribe(
       response => {
         this.itemGrilla = new TipoFormaDePago();
         this.listaGrilla = response.TipoFormaDePago || [];
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       }
     );
   }
@@ -102,54 +115,73 @@ export class TipoformadepagoComponent implements OnInit {
   }
 
   guardar(): void {
+    this.loading = true;
     if (this.itemGrilla.IdTipoFormaDePago == null) {
       this.tipoformadepagoService.agregar(this.itemGrilla, this.Token).subscribe(
         response => {
           this.listar(this.formFiltro.get('idFiltro').value);
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
+          this.loading = false;
         },
         error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
+          this.loading = false;
         }
       );
     } else {
+      this.loading = true;
       this.tipoformadepagoService.editar(this.itemGrilla, this.Token).subscribe(
         response => {
           this.listar(this.formFiltro.get('idFiltro').value);
           this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
+          this.loading = false;
         },
         error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
+          this.loading = false;
         }
       );
     }
   }
 
   inhabilitar(): void {
+    this.loading = true;
     this.tipoformadepagoService.inhabilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(1);
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       }
     );
   }
 
   habilitar(): void {
+    this.loading = true;
     this.tipoformadepagoService.habilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(2);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       }
     );
+  }
+
+  limpiarBusqueda(): void {
+    this.formFiltro.get('busqueda').setValue('');
+  }
+  cambiarPagina(event): void {
+    this.paginaActual = event;
   }
 }
