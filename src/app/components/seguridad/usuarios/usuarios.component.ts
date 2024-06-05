@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Usuario } from '../../../models/seguridad/Usuario';
 import { UsuarioService } from '../../../services/seguridad/usuario.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,6 @@ import { Sucursales } from '../../../models/parametria/tiposucursal';
 import { TiposucursalService } from '../../../services/parametria/tiposucursal.service';
 import { TipoRol } from '../../../models/seguridad/TipoRol';
 import { TiporolService } from '../../../services/seguridad/tiporol.service';
-import { NgIfContext } from '@angular/common';
 
 @Component({
   selector: 'app-usuarios',
@@ -35,11 +34,6 @@ export class UsuariosComponent implements OnInit {
   lRolesUsuario: any[] = [];
   rolesUsuario: Usuario;
   rol:TipoRol;
-  paginaActual = 1;
-  elementosPorPagina = 10;
-  loading: boolean = true;
-  busquedausuarios = "";
-  noData: TemplateRef<NgIfContext<boolean>>;
 
   constructor(
     private UsuarioService: UsuarioService,
@@ -69,18 +63,14 @@ export class UsuariosComponent implements OnInit {
     });
 
     this.formFiltro = this.formBuilder.group({
-      idFiltro: new FormControl('1', [Validators.required]),
-      busquedausuarios: new FormControl('') // Control de búsqueda
+      idFiltro: new FormControl('1', [Validators.required]) // Default value set to 1
     });
 
-    this.listar(1);
+    this.listar(1); // Initially list only enabled items
 
+    // Listen for changes in the filter and update the list accordingly
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
-    });
-
-    this.formFiltro.get('busquedausuarios').valueChanges.subscribe(value => {
-      this.busquedausuarios = value;
     });
   }
 
@@ -90,16 +80,13 @@ export class UsuariosComponent implements OnInit {
     });
   }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    this.loading = true;
     this.UsuarioService.listar(TipoLista).subscribe(
       response => {
         this.itemGrilla = new Usuario();
         this.listaGrilla = response.Usuarios;
-        this.loading = false;
       },
       error => {
         console.error('Error al cargar tipos de categoría:', error);
-        this.loading = false;
       }
     );
     //llama a la api y trae la lista de personas
@@ -140,12 +127,11 @@ export class UsuariosComponent implements OnInit {
   }
 
   eliminarRol(item: any) {
-    this.UsuarioService.eliminarUsuarioRol(item.IdUsuarioRol, this.Token)
+    this.UsuarioService.eliminarUsuarioRol(item, this.Token)
     .subscribe(response => {
-      this.alertasService.OkAlert('Éxito', 'Rol agregado exitosamente');
+      this.alertasService.OkAlert('Éxito', 'Rol eliminado exitosamente');
       this.getListaRoles(this.rolesUsuario.IdUsuario);
     }, error => {
-      console.error('Error al agregar usuario:', error);
       if (error.error && error.error.Message) {
         this.alertasService.ErrorAlert('Error', error.error.Message);
       } else {
@@ -204,28 +190,22 @@ export class UsuariosComponent implements OnInit {
   }
 
   guardar(): void {
-    this.loading = true;
     if (this.itemGrilla.IdUsuario == null) {
       const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
       this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
       this.UsuarioService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
-          console.log('Usuario guardado exitosamente:', response);
           this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
           this.modalRef.close();
           this.listar(1);
         }, error => {
-          console.error('Error al agregar usuario:', error);
           if (error.error && error.error.Message) {
             this.alertasService.ErrorAlert('Error', error.error.Message);
-            this.loading = false;
           } else {
             this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
-            this.loading = false;
           }
         });
     } else {
-      this.loading = true;
       this.UsuarioService.editar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
@@ -234,33 +214,27 @@ export class UsuariosComponent implements OnInit {
         }, error => {
           if (error.error.Errors.NuevoUsuario) {
             this.alertasService.ErrorAlert('Error', error.error.Errors.NuevoUsuario);
-            this.loading = false;
           }if (error.error.Errors.NuevaClave) {
             this.alertasService.ErrorAlert('Error', error.error.Errors.NuevaClave);
-            this.loading = false;
           } else {
             this.alertasService.ErrorAlert('Error', 'Ocurrió un error al modificar el usuario');
-            this.loading = false;
           }
         });
     }
   }
+
   inhabilitar(): void {
-    // this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
-    //   .subscribe(response => {
-    //     this.listar(1);
-    //     this.modalRef.close();
-    //   }, error => {
-    //     console.error('Error al inhabilitar tipo de categoría:', error);
-    //   });
-  }
-
-
-
-  limpiarBusqueda(): void {
-    this.formFiltro.get('busquedausuarios').setValue('');
-  }
-  cambiarPagina(event): void {
-    this.paginaActual = event;
+    this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
+      .subscribe(response => {
+        this.alertasService.OkAlert('Éxito', 'Usuario eliminado exitosamente');
+          this.modalRef.close();
+          this.listar(1);
+      }, error => {
+        if (error.error && error.error.Message) {
+          this.alertasService.ErrorAlert('Error', error.error.Message);
+        } else {
+          this.alertasService.ErrorAlert('Error', 'Ocurrió un error al eliminar el usuario');
+        }
+      });
   }
 }
