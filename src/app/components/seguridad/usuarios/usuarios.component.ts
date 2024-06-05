@@ -127,12 +127,11 @@ export class UsuariosComponent implements OnInit {
   }
 
   eliminarRol(item: any) {
-    this.UsuarioService.eliminarUsuarioRol(item.IdUsuarioRol, this.Token)
+    this.UsuarioService.eliminarUsuarioRol(item, this.Token)
     .subscribe(response => {
-      this.alertasService.OkAlert('Éxito', 'Rol agregado exitosamente');
+      this.alertasService.OkAlert('Éxito', 'Rol eliminado exitosamente');
       this.getListaRoles(this.rolesUsuario.IdUsuario);
     }, error => {
-      console.error('Error al agregar usuario:', error);
       if (error.error && error.error.Message) {
         this.alertasService.ErrorAlert('Error', error.error.Message);
       } else {
@@ -196,12 +195,10 @@ export class UsuariosComponent implements OnInit {
       this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
       this.UsuarioService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
-          console.log('Usuario guardado exitosamente:', response);
           this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
           this.modalRef.close();
           this.listar(1);
         }, error => {
-          console.error('Error al agregar usuario:', error);
           if (error.error && error.error.Message) {
             this.alertasService.ErrorAlert('Error', error.error.Message);
           } else {
@@ -225,13 +222,19 @@ export class UsuariosComponent implements OnInit {
         });
     }
   }
+
   inhabilitar(): void {
-    // this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
-    //   .subscribe(response => {
-    //     this.listar(1);
-    //     this.modalRef.close();
-    //   }, error => {
-    //     console.error('Error al inhabilitar tipo de categoría:', error);
-    //   });
+    this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
+      .subscribe(response => {
+        this.alertasService.OkAlert('Éxito', 'Usuario eliminado exitosamente');
+          this.modalRef.close();
+          this.listar(1);
+      }, error => {
+        if (error.error && error.error.Message) {
+          this.alertasService.ErrorAlert('Error', error.error.Message);
+        } else {
+          this.alertasService.ErrorAlert('Error', 'Ocurrió un error al eliminar el usuario');
+        }
+      });
   }
 }

@@ -59,9 +59,10 @@ export class UsuarioService {
   }
 
   eliminarUsuarioRol(item: any, Token: string): Observable<any> {
+    console.log(item);
     const url = `${this.apiUrl}/SPB_UsuarioRol`;
     const body = {
-      IdUsuarioRol: item.IdTipoRol,
+      IdUsuarioRol: item.IdUsuarioRol,
       Token: Token};
       return this.http.put(url, body);
   }
@@ -75,12 +76,12 @@ export class UsuarioService {
       return this.http.put(url, body);
   }
 
-  // inhabilitar(item: TipoCategoria, Token: string): Observable<any> {
-  //   const url = `${this.apiUrl}/SPB_TipoCategoria`;
-  //   const body = {
-  //     IdTipoCategoria: item.IdTipoCategoria,
-  //     Token: Token};
-  //     return this.http.put(url, body);
-  // }
+  inhabilitar(item: Usuario, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/SPB_Usuarios`;
+    const body = {
+      IdUsuario: item.IdUsuario,
+      Token: Token};
+      return this.http.put(url, body);
+  }
 
 }

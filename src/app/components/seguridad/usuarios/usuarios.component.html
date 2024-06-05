@@ -230,14 +230,16 @@
 
 <ng-template #contentInhabilitar let-modal>
   <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a></a>
+    <h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
-      <a></a><h4 class="">Desea Eliminar?</h4>
+    <a></a>
+    <h4 class="">Desea Eliminar?</h4>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
-        </div>
+    </div>
   </div>
 </ng-template>
 
