@@ -66,7 +66,6 @@ export class StockComponent {
        tipoMedida: new FormControl('', [Validators.required]),
        tipoCategoria:new FormControl('', [Validators.required]),
        tipoProducto: new FormControl('', [Validators.required])
-       proveedor: new FormControl('', [Validators.required])
     });
 
     this.formFiltro = this.formBuilder.group({
