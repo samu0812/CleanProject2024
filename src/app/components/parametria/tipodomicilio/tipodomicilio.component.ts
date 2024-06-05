@@ -21,6 +21,7 @@ export class TipodomicilioComponent {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
+  loading: boolean = true;
 
 
   constructor(
@@ -57,11 +58,14 @@ export class TipodomicilioComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipodomicilioService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoDomicilios || [];
+        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
@@ -12,6 +12,9 @@ import { TipoCategoria } from '../../../models/parametria/tipoCategoria';
 import { TipoCategoriaService } from '../../../services/parametria/tipocategoria.service';
 import { TipoProducto } from '../../../models/parametria/tipoproducto';
 import { TipoproductoService } from '../../../services/parametria/tipoproducto.service';
+import { Proveedor } from '../../../models/recursos/proveedor';
+import { ProveedorService } from '../../../services/recursos/proveedor.service';
+import { NgIfContext } from '@angular/common';
 
 @Component({
   selector: 'app-stock',
@@ -31,6 +34,12 @@ export class StockComponent {
   lTipoMedida: TipoMedidas[];
   lTipoCategoria: TipoCategoria[];
   lTipoProducto: TipoProducto[];
+  lProveedor: Proveedor[];
+  paginaActual = 1;
+  elementosPorPagina = 10;
+  loading: boolean = true;
+  busquedastock = "";
+  noData: TemplateRef<NgIfContext<boolean>>;
 
   constructor(private stockService: StockService,
     private modalService: NgbModal,
@@ -39,7 +48,8 @@ export class StockComponent {
     private alertasService: AlertasService,
     private tipomedidaService: TipomedidaService,
     private tipoCategoriaService: TipoCategoriaService,
-    private tipoproductoService: TipoproductoService
+    private tipoproductoService: TipoproductoService,
+    private proveedorService: ProveedorService
   ) {}
   
   ngOnInit(): void {
@@ -59,14 +69,18 @@ export class StockComponent {
     });
 
     this.formFiltro = this.formBuilder.group({
-      idFiltro: new FormControl('1', [Validators.required]) // Default value set to 1
+      idFiltro: new FormControl('1', [Validators.required]),
+      busquedastock: new FormControl('') // Control de búsqueda
     });
 
-    this.listar(1); // Initially list only enabled items
+    this.listar(1);
 
-    // Listen for changes in the filter and update the list accordingly
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
+    });
+
+    this.formFiltro.get('busquedastock').valueChanges.subscribe(value => {
+      this.busquedastock = value;
     });
 
     this.obtenerListas();
@@ -90,15 +104,18 @@ export class StockComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.stockService.listar(TipoLista).subscribe(
       response => {
         this.itemGrilla = new Productos();
         this.listaGrilla = response.Productos || [];
         console.log(response.Productos);
         console.log(response);
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.message);
+        this.loading = false;
       }
     );
   }
@@ -138,6 +155,7 @@ export class StockComponent {
   }
 
   guardar(): void {
+    this.loading = true;
     if (this.itemGrilla.IdProducto == null) {
       this.stockService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
@@ -145,48 +163,62 @@ export class StockComponent {
           this.listar(1);
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
+          this.loading = false;
         }, error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
+          this.loading = false;
         })
       }
     else{
+      this.loading = true;
       console.log(this.itemGrilla);
       this.stockService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
         this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
         this.modalRef.close();
+        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       })
     };
   }
   
 
   inhabilitar(): void {
+    this.loading = true;
     this.stockService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(0);
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
+        this.loading = false;
       }, response => {
         this.alertasService.ErrorAlert('Error', response.error.Message);
+        this.loading = false;
       });
   }
 
   habilitar(): void {
+    this.loading = true;
     this.stockService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
+        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
-
-
-
+  limpiarBusqueda(): void {
+    this.formFiltro.get('busquedastock').setValue('');
+  }
+  cambiarPagina(event): void {
+    this.paginaActual = event;
+  }
 
 }
 

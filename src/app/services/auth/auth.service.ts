@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from './../../models/usuario/usuario'; // Asegúrate de importar tu modelo de usuario
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,12 @@ export class AuthService {
   private usuarioActual: Usuario | null = null; // Añade esta línea para almacenar el usuario actual
   private temporizadorInactividad: any;
   private TIEMPO_INACTIVIDAD_MS: number = 3600000; // 1 hora en milisegundos
+  loading: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   // Método para establecer el estado de autenticación y el usuario actual
   setAuthenticated(status: boolean, usuario?: Usuario) {
@@ -56,5 +62,13 @@ export class AuthService {
   private resetearTemporizadorInactividad() {
     clearTimeout(this.temporizadorInactividad);
     this.inicializarTemporizadorInactividad();
+  }
+  logout() {
+    localStorage.removeItem('Token'); // Elimina el token del almacenamiento local
+    this.setAuthenticated(false);
+    this.usuarioActual = null;
+    this.detenerSeguimientoInactividad();
+    this.router.navigate(['/login']);
+    this.loading = false;
   }
 }
