@@ -61,6 +61,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
 import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
+import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -109,7 +111,9 @@ import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
     AccesoComponent,
     LoaderComponent,
     BusquedaPipe,
-    BusquedastockPipe
+    BusquedastockPipe,
+    BusquedausuariosPipe,
+    BusquedausuariosPipe
   ],
   imports: [
     BrowserModule,
