@@ -12,6 +12,8 @@ import { TipoCategoria } from '../../../models/parametria/tipoCategoria';
 import { TipoCategoriaService } from '../../../services/parametria/tipocategoria.service';
 import { TipoProducto } from '../../../models/parametria/tipoproducto';
 import { TipoproductoService } from '../../../services/parametria/tipoproducto.service';
+import { Proveedor } from '../../../models/recursos/proveedor';
+import { ProveedorService } from '../../../services/recursos/proveedor.service';
 import { NgIfContext } from '@angular/common';
 
 @Component({
@@ -32,6 +34,7 @@ export class StockComponent {
   lTipoMedida: TipoMedidas[];
   lTipoCategoria: TipoCategoria[];
   lTipoProducto: TipoProducto[];
+  lProveedor: Proveedor[];
   paginaActual = 1;
   elementosPorPagina = 10;
   loading: boolean = true;
@@ -45,7 +48,8 @@ export class StockComponent {
     private alertasService: AlertasService,
     private tipomedidaService: TipomedidaService,
     private tipoCategoriaService: TipoCategoriaService,
-    private tipoproductoService: TipoproductoService
+    private tipoproductoService: TipoproductoService,
+    private proveedorService: ProveedorService
   ) {}
   
   ngOnInit(): void {
@@ -62,6 +66,7 @@ export class StockComponent {
        tipoMedida: new FormControl('', [Validators.required]),
        tipoCategoria:new FormControl('', [Validators.required]),
        tipoProducto: new FormControl('', [Validators.required])
+       proveedor: new FormControl('', [Validators.required])
     });
 
     this.formFiltro = this.formBuilder.group({

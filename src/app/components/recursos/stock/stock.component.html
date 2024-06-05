@@ -222,6 +222,13 @@
             <option *ngFor="let tipo of lTipoProducto" [ngValue]="tipo.IdTipoProducto">{{ tipo.Detalle }}</option>
           </select>
         </div>
+        <div class="form-group col-md-4">
+          <label for="proveedor">Proveedor:</label>
+          <select [(ngModel)]="itemGrilla.IdTipoProducto" class="form-control" formControlName="proveedor">
+            <option [value]="undefined">Seleccione...</option>
+            <option *ngFor="let tipo of lTipoProducto" [ngValue]="tipo.IdTipoProducto">{{ tipo.Detalle }}</option>
+          </select>
+        </div>
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
         <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
