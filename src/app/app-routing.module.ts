@@ -35,7 +35,8 @@ import { InformesdeabastecimientoComponent } from './components/reportes/informe
 import { InformesdeclientesComponent } from './components/reportes/informesdeclientes/informesdeclientes.component';
 import { InformesdeproductosComponent } from './components/reportes/informesdeproductos/informesdeproductos.component';
 import { SubmenuComponent } from './components/navbar/submenu/submenu.component';
-
+import { AccesoComponent } from './components/acceso/acceso.component';
+import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
@@ -60,6 +61,7 @@ const routes: Routes = [
   {path: 'parametria/tipopermiso', component: TipopermisoComponent},
   {path: 'parametria/tipopermisodetalle', component: TipopermisodetalleComponent},
   {path: 'parametria/sucursal', component: TiposucursalComponent},
+  {path: 'parametria/tipomodulo', component: TipomoduloComponent},
 
   {path: 'recursos/inventario', component:StockComponent},
   {path: 'recursos/proveedores', component: ProveedoresComponent},
@@ -77,6 +79,8 @@ const routes: Routes = [
   {path: 'reportes/informesdeabastecimiento', component: InformesdeabastecimientoComponent},
   {path: 'reportes/informesdeclientes', component:InformesdeclientesComponent},
   {path: 'reportes/informesdeproductos', component: InformesdeproductosComponent},
+
+  {path: 'acceso', component: AccesoComponent},
 
 ];
 

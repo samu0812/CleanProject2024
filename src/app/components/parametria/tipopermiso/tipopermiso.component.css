@@ -3,8 +3,6 @@
   justify-content: center; /* Centra horizontalmente */
   align-items: center; /* Centra verticalmente */
 }
-
-/* Estilos para el elemento h4 */
 .centered-rounded-background {
   font-family: 'Roboto', sans-serif;
   text-align: center;
@@ -122,12 +120,14 @@
   .button-icon {
     margin-right: 5px; /* Ajusta el margen derecho del ícono */
   }
-  #AgregarModalbtn{
+  .btn{
     margin-top: 18px;
     background-color: rgb(31, 31, 95);
     border-color: rgb(31, 31, 95);
   }
-  
+  #btn2{
+    margin-left: 5px;
+  }
   /* Estilo para el botón de cerrar */
   .btn-close {
     align-self: center; /* Alinea el botón verticalmente en el centro */
@@ -136,6 +136,7 @@
   .table-responsive {
     border-radius: 10px; /* Redondea los bordes */
     overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
+    min-height: 400px;
   }
   .hide-column {
     display: none;
@@ -147,9 +148,9 @@
 
 .table {
     min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
-    margin-bottom: 0; /* Elimina el margen inferior de la tabla */
+    margin-bottom: 0; 
+    width: 100%; /* Elimina el margen inferior de la tabla */
 }
-
 /* Estilos adicionales según sea necesario */
 
 .modal-dialog {
@@ -166,9 +167,6 @@
   border-color: rgb(31, 31, 95);
   margin-left: 5px;
 }
-#btnCancelar{
-  background-color: #FF0000;
-}
 
 .modal-header {
   border-bottom: 2px solid #f0f0f0; /* Borde inferior */
@@ -181,6 +179,7 @@
   width: 100%; /* Asegura que ocupe todo el ancho */
   box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
 }
+
 .modal-header .modal-title {
   font-weight: bold; /* Hace que el título esté en negrita */
 }
@@ -207,4 +206,24 @@
 
 .text-right {
   text-align: right; /* Alinea los botones a la derecha */
+}
+#Modal {
+  padding: 0 
+}
+.table td,
+.table th {
+  width: 33.33%; /* Divide el ancho igualmente entre las tres columnas */
+  text-align: center; /* Alinea el contenido al centro */
+}
+.modal-body h4 {
+    font-size: 1.5rem;
+    color: orange;
+    font-family: Candara;
+    font-style: italic;
+    font-weight: bolder;
+}
+.divider {
+  border-bottom: 0.5px solid #ccc; /* Puedes cambiar el color y estilo del borde según prefieras */
+  padding-bottom: 10px; /* Esto agrega espacio entre el borde y el contenido del párrafo */
+  margin-bottom: 10px; /* Esto agrega espacio entre el borde y el siguiente elemento */
 }

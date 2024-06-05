@@ -1,5 +1,5 @@
 export class TipoMedidas{
-    public IdTipoMedidas: number;
+    public IdTipoMedida: number;
     public Detalle: string;
     public Abreviatura: string;
     public FechaBaja: string;
