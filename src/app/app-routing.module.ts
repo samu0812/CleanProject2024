@@ -22,11 +22,9 @@ import { StockComponent } from './components/recursos/stock/stock.component';
 import { ProveedoresComponent } from './components/recursos/proveedores/proveedores.component';
 import { PersonalComponent } from './components/recursos/personal/personal.component';
 import { ClientesComponent } from './components/recursos/clientes/clientes.component';
-import { RegistrodeventasComponent } from './components/gestion/registrodeventas/registrodeventas.component';
 import { RealizarpedidosComponent } from './components/gestion/realizarpedidos/realizarpedidos.component';
 import { EnviodeinventarioComponent } from './components/gestion/enviodeinventario/enviodeinventario.component';
 import { ConfirmacionderecepcionComponent } from './components/gestion/confirmacionderecepcion/confirmacionderecepcion.component';
-import { VizualizarfacturasComponent } from './components/gestion/vizualizarfacturas/vizualizarfacturas.component';
 import { InformesdeventaComponent } from './components/reportes/informesdeventas/informesdeventa.component';
 import { InformesfinancierosComponent } from './components/reportes/informesfinancieros/informesfinancieros.component';
 import { InformesdeabastecimientoComponent } from './components/reportes/informesdeabastecimiento/informesdeabastecimiento.component';
@@ -36,12 +34,13 @@ import { SubmenuComponent } from './components/navbar/submenu/submenu.component'
 import { AccesoComponent } from './components/acceso/acceso.component';
 import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
 import { AuthGuard } from './services/auth/auth.guard';
+import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa/realizarventa.component';
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: ':id/submenu', component: SubmenuComponent},
 
-  {path: 'seguridad/usuarios', component: UsuariosComponent , canActivate: [AuthGuard]},
+  {path: 'seguridad/usuarios', component: UsuariosComponent },
   {path: 'seguridad/tiporoles', component: TiporolesComponent, canActivate: [AuthGuard]},
   {path: 'seguridad/rolmodulos', component: RolComponent, canActivate: [AuthGuard]},
   {path: 'seguridad/apispormodulo', component: ApisComponent, canActivate: [AuthGuard]},
@@ -66,11 +65,10 @@ const routes: Routes = [
   {path: 'recursos/personal', component: PersonalComponent, canActivate: [AuthGuard]},
   {path: 'recursos/clientes', component:ClientesComponent , canActivate: [AuthGuard]},
 
-  {path: 'gestion/registrodeventas', component:RegistrodeventasComponent, canActivate: [AuthGuard]},
+  {path: 'gestion/realizarventa', component:RealizarventaComponent , canActivate: [AuthGuard]},
   {path: 'gestion/realizarpedidos', component:RealizarpedidosComponent , canActivate: [AuthGuard]},
   {path: 'gestion/enviodeinventario', component: EnviodeinventarioComponent, canActivate: [AuthGuard]},
   {path: 'gestion/confirmacionderecepcion', component: ConfirmacionderecepcionComponent, canActivate: [AuthGuard]},
-  {path: 'gestion/vizualizarfacturas', component: VizualizarfacturasComponent, canActivate: [AuthGuard]},
 
   {path: 'reportes/informesdeventa', component:InformesdeventaComponent, canActivate: [AuthGuard]},
   {path: 'reportes/informesfinancieros', component: InformesfinancierosComponent, canActivate: [AuthGuard]},

@@ -118,6 +118,7 @@ export class UsuariosComponent implements OnInit {
     });
     this.tiporolService.listar(1).subscribe(data => {
       this.lRoles = data.TiposRol;
+      console.log(this.lRoles)
       this.loading = false;
     });
   }
@@ -133,12 +134,15 @@ export class UsuariosComponent implements OnInit {
     .subscribe(response => {
       this.alertasService.OkAlert('Éxito', 'Rol agregado exitosamente');
       this.getListaRoles(this.rolesUsuario.IdUsuario);
+      this.loading = false;
     }, error => {
       console.error('Error al agregar usuario:', error);
       if (error.error && error.error.Message) {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       } else {
         this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+        this.loading = false;
       }
     });
   }
@@ -149,6 +153,7 @@ export class UsuariosComponent implements OnInit {
     .subscribe(response => {
       this.alertasService.OkAlert('Éxito', 'Rol eliminado exitosamente');
       this.getListaRoles(this.rolesUsuario.IdUsuario);
+      this.loading = false;
     }, error => {
       if (error.error && error.error.Message) {
         this.alertasService.ErrorAlert('Error', error.error.Message);

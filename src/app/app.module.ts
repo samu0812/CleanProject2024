@@ -7,7 +7,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
-import { GestionComponent } from './components/gestion/gestion.component';
+
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { UsuariosComponent } from './components/seguridad/usuarios/usuarios.component';
 import { TiporolesComponent } from './components/seguridad/tiporoles/tiporoles.component';
@@ -27,11 +27,11 @@ import { StockComponent } from './components/recursos/stock/stock.component';
 import { ProveedoresComponent } from './components/recursos/proveedores/proveedores.component';
 import { PersonalComponent } from './components/recursos/personal/personal.component';
 import { ClientesComponent } from './components/recursos/clientes/clientes.component';
-import { RegistrodeventasComponent } from './components/gestion/registrodeventas/registrodeventas.component';
+
 import { RealizarpedidosComponent } from './components/gestion/realizarpedidos/realizarpedidos.component';
 import { EnviodeinventarioComponent } from './components/gestion/enviodeinventario/enviodeinventario.component';
 import { ConfirmacionderecepcionComponent } from './components/gestion/confirmacionderecepcion/confirmacionderecepcion.component';
-import { VizualizarfacturasComponent } from './components/gestion/vizualizarfacturas/vizualizarfacturas.component';
+
 import { InformesdeventaComponent } from './components/reportes/informesdeventas/informesdeventa.component';
 import { InformesfinancierosComponent } from './components/reportes/informesfinancieros/informesfinancieros.component';
 import { InformesdeabastecimientoComponent } from './components/reportes/informesdeabastecimiento/informesdeabastecimiento.component';
@@ -62,6 +62,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
 import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
 import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
+import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa/realizarventa.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,6 @@ import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pip
     LoginComponent,
     FooterComponent,
     HomeComponent,
-    GestionComponent,
     ReportesComponent,
     UsuariosComponent,
     TiporolesComponent,
@@ -92,11 +92,10 @@ import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pip
     ProveedoresComponent,
     PersonalComponent,
     ClientesComponent,
-    RegistrodeventasComponent,
     RealizarpedidosComponent,
     EnviodeinventarioComponent,
     ConfirmacionderecepcionComponent,
-    VizualizarfacturasComponent,
+
     InformesdeventaComponent,
     InformesfinancierosComponent,
     InformesdeabastecimientoComponent,
@@ -113,7 +112,8 @@ import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pip
     BusquedaPipe,
     BusquedastockPipe,
     BusquedausuariosPipe,
-    BusquedausuariosPipe
+    BusquedausuariosPipe,
+    RealizarventaComponent
   ],
   imports: [
     BrowserModule,

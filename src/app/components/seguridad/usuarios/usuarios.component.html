@@ -220,7 +220,9 @@
         <div class="form-group col-md-12">
 
           <div *ngIf="lRoles == undefined || lRoles.length == undefined || lRoles.length == 0">
-            <h5>No se encontraron roles para el usuario...</h5>
+            <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
+              No hay datos disponibles.
+            </div>
           </div>
 
           <div *ngIf="lRoles != undefined && lRoles.length > 0">
@@ -244,12 +246,11 @@
 
         </div>
       </div>
-
-      <div class="form-group col text-right">
+    </form>
+          <div class="modal-footer" id="footerRol">
         <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
       </div>
 
-    </form>
   </div>
 </ng-template>
 
