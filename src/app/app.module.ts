@@ -14,7 +14,6 @@ import { TiporolesComponent } from './components/seguridad/tiporoles/tiporoles.c
 import { RolComponent } from './components/seguridad/rol/rol.component';
 import { ApisComponent } from './components/seguridad/apis/apis.component';
 import { TipopersonaComponent } from './components/parametria/tipopersona/tipopersona.component';
-import { TiporolComponent } from './components/parametria/tiporol/tiporol.component';
 import { TipoproductoComponent } from './components/parametria/tipoproducto/tipoproducto.component';
 import { TipocategoriaComponent } from './components/parametria/tipocategoria/tipocategoria.component';
 import { TipomedidaComponent } from './components/parametria/tipomedida/tipomedida.component';
@@ -24,7 +23,6 @@ import { TipofacturaComponent } from './components/parametria/tipofactura/tipofa
 import { TipodestinatariofacturaComponent } from './components/parametria/tipodestinatariofactura/tipodestinatariofactura.component';
 import { TipoformadepagoComponent } from './components/parametria/tipoformadepago/tipoformadepago.component';
 import { TipopermisoComponent } from './components/parametria/tipopermiso/tipopermiso.component';
-import { TipopermisodetalleComponent } from './components/parametria/tipopermisodetalle/tipopermisodetalle.component';
 import { StockComponent } from './components/recursos/stock/stock.component';
 import { ProveedoresComponent } from './components/recursos/proveedores/proveedores.component';
 import { PersonalComponent } from './components/recursos/personal/personal.component';
@@ -52,7 +50,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
-import { TipopersonasistemaComponent } from './components/parametria/tipopersonasistema/tipopersonasistema.component';
 import { SubmenuComponent } from './components/navbar/submenu/submenu.component';
 import { ItemComponent } from './components/navbar/submenu/item/item.component';
 import { TipodocumentacionComponent } from './components/parametria/tipodocumentacion/tipodocumentacion.component';
@@ -63,6 +60,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
+import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,7 +75,7 @@ import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
     RolComponent,
     ApisComponent,
     TipopersonaComponent,
-    TiporolComponent,
+
     TipoproductoComponent,
     TipocategoriaComponent,
     TipomedidaComponent,
@@ -87,7 +85,7 @@ import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
     TipodestinatariofacturaComponent,
     TipoformadepagoComponent,
     TipopermisoComponent,
-    TipopermisodetalleComponent,
+
     StockComponent,
     ProveedoresComponent,
     PersonalComponent,
@@ -103,14 +101,15 @@ import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
     InformesdeclientesComponent,
     InformesdeproductosComponent,
     TipomoduloComponent,
-    TipopersonasistemaComponent,
+
     SubmenuComponent,
     ItemComponent,
     TipodocumentacionComponent,
     TiposucursalComponent,
     AccesoComponent,
     LoaderComponent,
-    BusquedaPipe
+    BusquedaPipe,
+    BusquedastockPipe
   ],
   imports: [
     BrowserModule,

@@ -122,7 +122,6 @@ export class TipoformadepagoComponent implements OnInit {
           this.listar(this.formFiltro.get('idFiltro').value);
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.modalRef.close();
-          this.loading = false;
         },
         error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
@@ -136,7 +135,6 @@ export class TipoformadepagoComponent implements OnInit {
           this.listar(this.formFiltro.get('idFiltro').value);
           this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
-          this.loading = false;
         },
         error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
@@ -153,7 +151,6 @@ export class TipoformadepagoComponent implements OnInit {
         this.listar(1);
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
-        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
@@ -169,7 +166,6 @@ export class TipoformadepagoComponent implements OnInit {
         this.listar(2);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
-        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);

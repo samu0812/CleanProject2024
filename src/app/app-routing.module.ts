@@ -7,7 +7,6 @@ import { TiporolesComponent } from './components/seguridad/tiporoles/tiporoles.c
 import { RolComponent } from './components/seguridad/rol/rol.component';
 import { ApisComponent } from './components/seguridad/apis/apis.component';
 import { TipopersonaComponent } from './components/parametria/tipopersona/tipopersona.component';
-import { TiporolComponent } from './components/parametria/tiporol/tiporol.component';
 import { TipodocumentacionComponent } from './components/parametria/tipodocumentacion/tipodocumentacion.component';
 import { TipoproductoComponent } from './components/parametria/tipoproducto/tipoproducto.component';
 import { TipocategoriaComponent } from './components/parametria/tipocategoria/tipocategoria.component';
@@ -18,7 +17,6 @@ import { TipofacturaComponent } from './components/parametria/tipofactura/tipofa
 import { TipodestinatariofacturaComponent } from './components/parametria/tipodestinatariofactura/tipodestinatariofactura.component';
 import { TipoformadepagoComponent } from './components/parametria/tipoformadepago/tipoformadepago.component';
 import { TipopermisoComponent } from './components/parametria/tipopermiso/tipopermiso.component';
-import { TipopermisodetalleComponent } from './components/parametria/tipopermisodetalle/tipopermisodetalle.component';
 import { TiposucursalComponent } from './components/parametria/tiposucursal/tiposucursal.component';
 import { StockComponent } from './components/recursos/stock/stock.component';
 import { ProveedoresComponent } from './components/recursos/proveedores/proveedores.component';
@@ -49,7 +47,7 @@ const routes: Routes = [
   {path: 'seguridad/apispormodulo', component: ApisComponent, canActivate: [AuthGuard]},
 
   {path: 'parametria/tipopersona', component: TipopersonaComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tiporol', component: TiporolComponent, canActivate: [AuthGuard]},
+
   {path: 'parametria/tipodocumentacion', component: TipodocumentacionComponent, canActivate: [AuthGuard]},
   {path: 'parametria/tipoproducto', component: TipoproductoComponent, canActivate: [AuthGuard]},
   {path: 'parametria/tipocategoria', component: TipocategoriaComponent, canActivate: [AuthGuard]},
@@ -60,11 +58,10 @@ const routes: Routes = [
   {path: 'parametria/tipodestinatariofactura', component: TipodestinatariofacturaComponent, canActivate: [AuthGuard]},
   {path: 'parametria/tipoformadepago', component: TipoformadepagoComponent, canActivate: [AuthGuard]},
   {path: 'parametria/tipopermiso', component: TipopermisoComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipopermisodetalle', component: TipopermisodetalleComponent, canActivate: [AuthGuard]},
   {path: 'parametria/sucursal', component: TiposucursalComponent, canActivate: [AuthGuard]},
   {path: 'parametria/tipomodulo', component: TipomoduloComponent, canActivate: [AuthGuard]},
 
-  {path: 'recursos/inventario', component:StockComponent, canActivate: [AuthGuard]},
+  {path: 'recursos/inventario', component:StockComponent , canActivate: [AuthGuard]},
   {path: 'recursos/proveedores', component: ProveedoresComponent, canActivate: [AuthGuard]},
   {path: 'recursos/personal', component: PersonalComponent, canActivate: [AuthGuard]},
   {path: 'recursos/clientes', component:ClientesComponent , canActivate: [AuthGuard]},

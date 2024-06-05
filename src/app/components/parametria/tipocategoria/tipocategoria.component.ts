@@ -118,7 +118,6 @@ export class TipocategoriaComponent implements OnInit {
     if (this.itemGrilla.IdTipoCategoria == null) {
       this.tipoCategoriaService.agregar(this.itemGrilla, this.Token).subscribe(
         response => {
-          this.loading = false;
           this.listar(1);
           this.modalRef.close();
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
@@ -131,7 +130,6 @@ export class TipocategoriaComponent implements OnInit {
     } else {
       this.tipoCategoriaService.editar(this.itemGrilla, this.Token).subscribe(
         response => {
-          this.loading = false;
           this.listar(1);
           this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
@@ -149,7 +147,6 @@ export class TipocategoriaComponent implements OnInit {
     this.tipoCategoriaService.inhabilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(1);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       },
@@ -165,7 +162,6 @@ export class TipocategoriaComponent implements OnInit {
     this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(2);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       },

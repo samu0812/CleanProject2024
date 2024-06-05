@@ -161,10 +161,8 @@ export class TiposucursalComponent {
         this.listar(2);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
-        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
-        this.loading = false;
       });
   }
   limpiarBusqueda(): void {

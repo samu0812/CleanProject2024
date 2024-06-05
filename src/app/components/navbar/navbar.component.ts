@@ -13,6 +13,7 @@ import { Usuario } from './../../models/usuario/usuario';
 export class NavbarComponent implements OnInit {
   Menues: Menu[] = [];
   usuarioActual: Usuario | null = null;
+  loading: boolean = true;
 
   constructor(
     private router: Router, // Inyecta el Router
@@ -25,15 +26,18 @@ export class NavbarComponent implements OnInit {
   }
 
   loadMenus() {
+    this.loading = true;
     this.usuarioActual = this.authService.getUsuarioActual();
       const Token = localStorage.getItem('Token');
       if (Token) {
         this.menuService.getMenuItems(Token).subscribe(
           (response) => {
             this.Menues = response.Menues;
+            this.loading = false;
           },
           (error) => {
             console.error('Error', error);
+            this.loading = false;
           }
         );
       }

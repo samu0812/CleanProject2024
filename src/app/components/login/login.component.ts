@@ -12,6 +12,7 @@ import { AlertasService } from '../../services/alertas/alertas.service';
 })
 export class LoginComponent implements OnInit {
   FormularioLogin: FormGroup;
+  loading: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
@@ -28,7 +29,9 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    
     if (this.FormularioLogin.valid) {
+      this.loading = true;
       const formData = this.FormularioLogin.value;
       this.loginService.login(formData).subscribe(
         (response) => {
@@ -36,16 +39,20 @@ export class LoginComponent implements OnInit {
             localStorage.setItem("Token", response.Token);
             this.authService.setAuthenticated(true, response); // Pasa la información del usuario
             this.router.navigate(['/home']);
+            this.loading = false;
           } else {
             this.alertasService.ErrorAlert('Credenciales incorrectas', 'Por favor intenta de nuevo.');
+            this.loading = false;
           }
         },
         (error) => {
           this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
+          this.loading = false;
         }
       );
     } else {
       this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
+    
     }
   }
 
