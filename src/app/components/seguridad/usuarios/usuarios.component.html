@@ -7,7 +7,7 @@
           <a>
             <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
           </a>
-          <a style="margin-left: 5px;">Categoría</a>
+          <a style="margin-left: 5px;">Usuarios</a>
         </h4>
       </div>
       <div class="row mt-3">
@@ -265,7 +265,20 @@
         </div>
   </div>
 </ng-template>
-
+<ng-template #contentInhabilitar let-modal>
+  <div class="modal-header">
+    <a></a>
+    <h4 class="modal-title">{{ tituloModal }}</h4>
+  </div>
+  <div class="modal-body">
+    <a></a>
+    <h4 class="">Desea Eliminar?</h4>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
+    </div>
+  </div>
+</ng-template>
 <footer class="footer">
   <app-footer></app-footer>
 </footer>
