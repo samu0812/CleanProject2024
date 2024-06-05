@@ -63,6 +63,7 @@ import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
 import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
 import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
 import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa/realizarventa.component';
+import { BusquedaNombreApellidoDniPipe } from './components/busqueda/busquedaPersonal.pipe';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import { RealizarventaComponent } from './components/gestion/realizarventa/reali
     BusquedastockPipe,
     BusquedausuariosPipe,
     BusquedausuariosPipe,
-    RealizarventaComponent
+    RealizarventaComponent,
+    BusquedaNombreApellidoDniPipe
   ],
   imports: [
     BrowserModule,
@@ -131,7 +133,8 @@ import { RealizarventaComponent } from './components/gestion/realizarventa/reali
     RouterModule,
     NgxPaginationModule,
     NgbModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    BusquedaNombreApellidoDniPipe
   ],
   providers: [
     provideClientHydration(),
@@ -140,4 +143,5 @@ import { RealizarventaComponent } from './components/gestion/realizarventa/reali
   bootstrap: [AppComponent]
 })
 
-export class AppModule { }
+export class AppModule {
+}

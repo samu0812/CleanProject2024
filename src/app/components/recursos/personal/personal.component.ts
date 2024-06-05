@@ -1,4 +1,4 @@
-import { Component , OnInit, Input } from '@angular/core';
+import { Component , OnInit, Input, TemplateRef } from '@angular/core';
 import { Personal } from '../../../models/recursos/personal';
 import { PersonalService } from '../../../services/recursos/personal.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,7 @@ import { provincia } from '../../../models/parametria/provincia';
 import { Localidad } from '../../../models/recursos/localidad';
 import { TipoDocumentacion } from '../../../models/parametria/tipodocumentacion';
 import { TipodocumentacionService } from '../../../services/parametria/tipodocumentacion.service';
+import { NgIfContext } from '@angular/common';
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
@@ -41,6 +42,9 @@ export class PersonalComponent {
   lProvincia: provincia[];
   lLocalidad: Localidad[];
   lTipoDocumentacion: TipoDocumentacion[];
+  Busqueda = "";
+  noData: TemplateRef<NgIfContext<boolean>>;
+  
 
   constructor(
     private PersonalService: PersonalService,
@@ -123,7 +127,7 @@ export class PersonalComponent {
       response => {
         console.log(response.Personal)
         this.itemGrilla = new Personal();
-        this.listaGrilla = response.Personal;
+        this.listaGrilla = response.Personal || [];
         this.loading = false;
       },
       error => {
@@ -234,6 +238,9 @@ export class PersonalComponent {
     this.tituloModal = 'Habilitar';
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
+  }
+  limpiarBusqueda(): void {
+    this.formFiltro.get('busqueda').setValue('');
   }
 
   cambiarPagina(event): void {
