@@ -32,6 +32,9 @@ export class PersonalComponent {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
+  paginaActual = 1;
+  elementosPorPagina = 10;
+  loading: boolean = true;
   personas: any[] = []; //para listar las personas
   lTipoPersona: TipoPersonas[];
   lTipoDomicilio:TipoDomicilios[];
@@ -99,12 +102,10 @@ export class PersonalComponent {
       this.lTipoDomicilio = data.TipoDomicilios;
     });
     this.LocalidadService.listar(1).subscribe(data => {
-      this.lLocalidad = data.Personas;
-      console.log(data.Personas)
+      this.lLocalidad = data.Localidades;
     });
     this.ProvinciaService.listar(1).subscribe(data => {
-      console.log(data.Personas)
-      this.lProvincia = data.Personas;
+      this.lProvincia = data.Provincias;
     });
     this.TipodocumentacionService.listar(1).subscribe(data => {
       this.lTipoDocumentacion = data.TipoDocumentacion;
@@ -117,25 +118,31 @@ export class PersonalComponent {
     });
   }  
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.PersonalService.listar(TipoLista).subscribe(
       response => {
+        console.log(response.Personal)
         this.itemGrilla = new Personal();
         this.listaGrilla = response.Personal;
+        this.loading = false;
       },
       error => {
         console.error('Error al cargar personal:', error);
+        this.loading = false;
       }
+
     );
+    this.obtenerListas();
   }
 
   guardar(): void {
-    // this.loading = true;
+    this.loading = true;
     console.log(this.itemGrilla);
     if (this.itemGrilla.IdPersona == null) {
 
-      this.PersonalService.agregarPersonal(this.itemGrilla).subscribe(
+      this.PersonalService.agregarPersonal(this.itemGrilla,this.Token).subscribe(
         response => {
-          //this.loading = false;
+          this.loading = false;
           this.listar(1);
           this.modalRef.close();
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
@@ -143,24 +150,57 @@ export class PersonalComponent {
         },
         error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
-          //this.loading = false; // Asegúrate de manejar el caso de error
+          this.loading = false; // Asegúrate de manejar el caso de error
         }
       );
     } else {
-      // this.tipoCategoriaService.editar(this.itemGrilla, this.Token).subscribe(
-      //   response => {
-      //     this.loading = false;
-      //     this.listar(1);
-      //     this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-      //     this.modalRef.close();
-      //   },
-      //   error => {
-      //     this.alertasService.ErrorAlert('Error', error.error.Message);
-      //     this.loading = false; // Asegúrate de manejar el caso de error
-      //   }
-      // );
-    }
-  }
+       this.PersonalService.editar(this.itemGrilla, this.Token).subscribe(
+         response => {
+           this.loading = false;
+           this.listar(1);
+           this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
+           this.modalRef.close();
+         },
+         error => {
+           this.alertasService.ErrorAlert('Error', error.error.Message);
+           this.loading = false; // Asegúrate de manejar el caso de error
+         }
+      );
+    }
+  }
+
+  inhabilitar(): void {
+    console.log(this.itemGrilla,'------' ,this.Token);
+    this.loading = true;
+    this.PersonalService.inhabilitar(this.itemGrilla , this.Token).subscribe(
+      response => {
+        this.listar(1);
+        this.loading = false;
+        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
+        this.modalRef.close();
+      },
+      response => {
+        this.loading = false;
+        this.alertasService.ErrorAlert('Error', response.error.Message);
+      }
+    );
+  }
+  habilitar(): void {
+     console.log(this.itemGrilla,'------' ,this.Token);
+    this.loading = true;
+    this.PersonalService.habilitar(this.itemGrilla,this.Token).subscribe(
+      response => {
+        this.listar(2);
+        this.loading = false;
+        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
+        this.modalRef.close();
+      },
+      error => {
+        this.loading = false;
+        this.alertasService.ErrorAlert('Error', error.error.Message);
+      }
+    );
+  }
 
   cambiarFiltro(): void {
     const filtro = this.formFiltro.get('idFiltro').value;
@@ -175,100 +215,29 @@ export class PersonalComponent {
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
   }
 
-    // openEditar(content, item: Personal) {
-    // this.tituloModal = "Editar";
-    // this.tituloBoton = "Guardar";
-    // this.personas[0].IdPersona = item.IdPersona
-    // this.personas[0].NombrePersona = item.Nombre
-    // this.itemGrilla = Object.assign({}, item); 
-    // this.itemGrilla.listaPersonal = this.personas[0].NombrePersona
-    // this.formItemGrilla.patchValue({
-    // listaPersonal: this.itemGrilla.listaPersonal
-    // });
-    // this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
-    // }
+  openEditar(content, item: Personal) {
+    console.log(item, 'editarsadsad');
+    this.tituloModal = 'Editar';
+    this.tituloBoton = 'Guardar';
+    this.itemGrilla = Object.assign({}, item);
+    this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+  }
 
   openInhabilitar(contentInhabilitar, item: Personal) {
-    this.tituloModal = "Inhabilitar";
+    this.tituloModal = 'Inhabilitar';
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentInhabilitar, { size: 'sm', centered: true });
   }
 
   openHabilitar(contentHabilitar, item: Personal) {
-    this.tituloModal = "Habilitar";
+    console.log(item);
+    this.tituloModal = 'Habilitar';
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
   }
 
+  cambiarPagina(event): void {
+    this.paginaActual = event;
+  }
 
-// guardar(): void {
-
-//   if (this.itemGrilla.IdPersona == null) {
-//       const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
-//       this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
-//       this.PersonalService.agregar(this.itemGrilla , this.Token)
-//         .subscribe(response => {
-//           console.log('Usuario guardado exitosamente:', response);
-//           this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
-//           this.modalRef.close();
-//           this.listar(1);
-//         }, error => {
-//           console.error('Error al agregar usuario:', error);
-//           if (error.error && error.error.Message) {
-//             this.alertasService.ErrorAlert('Error', error.error.Message);
-//           } else {
-//             this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
-//           }
-//         });
-//   } else {
-//     console.log('editar');
-    // Actualización del usuario existente (código comentado de ejemplo)
-    // this.UsuarioService.editar(this.itemGrilla, this.Token)
-    //   .subscribe(response => {
-    //     this.listar(1);
-    //     this.modalRef.close();
-    //   }, error => {
-    //     console.error('Error al modificar tipo de categoría:', error);
-    //   });
-//  }
 }
-
-
-// inhabilitar(): void {
-//   // this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
-//   //   .subscribe(response => {
-//   //     this.listar(1);
-//   //     this.modalRef.close();
-//   //   }, error => {
-//   //     console.error('Error al inhabilitar tipo de categoría:', error);
-//   //   });
-// }
-
-// habilitar(): void {
-//   // this.UsuarioService.habilitar(this.itemGrilla, this.Token)
-//   //   .subscribe(response => {
-//   //     this.listar(1);
-//   //     this.modalRef.close();
-//   //   }, error => {
-//   //     console.error('Error al habilitar tipo de categoría:', error);
-//   //   });
-// }
-
-
-// // fnObtenerUsuDesdeBearer(): Promise<void> {
-// //   return new Promise((resolve, reject) => {
-// //     this.UsuarioService.fnObtenerUsuDesdeBearer(this.Token).subscribe(
-// //       response => {
-// //         this.itemGrilla.IdUsuarioCarga = response.IdUsuario;
-// //         console.log('fnObtenerUsuDesdeBearer response:', this.itemGrilla.IdUsuarioCarga);
-// //         resolve();
-// //       },
-// //       error => {
-// //         console.error('Error al obtener usuario desde Bearer:', error);
-// //         reject(error);
-// //       }
-// //     );
-// //   });
-// // }
-
-// }
