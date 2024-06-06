@@ -42,7 +42,7 @@ export class PersonalComponent {
   lProvincia: provincia[];
   lLocalidad: Localidad[];
   lTipoDocumentacion: TipoDocumentacion[];
-  Busqueda = "";
+  busquedaPersonal = "";
   noData: TemplateRef<NgIfContext<boolean>>;
   
 
@@ -114,7 +114,17 @@ export class PersonalComponent {
     this.TipodocumentacionService.listar(1).subscribe(data => {
       this.lTipoDocumentacion = data.TipoDocumentacion;
     });
+
+    this.formFiltro = this.formBuilder.group({
+      idFiltro: new FormControl('1', [Validators.required]),
+      busquedaPersonal: new FormControl('') // Control de búsqueda
+    });
+
+    this.formFiltro.get('busquedaPersonal').valueChanges.subscribe(value => {
+      this.busquedaPersonal = value;
+    });
   }
+  
 
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/recursos/personal').subscribe(data => {
@@ -240,7 +250,7 @@ export class PersonalComponent {
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
   }
   limpiarBusqueda(): void {
-    this.formFiltro.get('busqueda').setValue('');
+    this.formFiltro.get('busquedaPersonal').setValue('');
   }
 
   cambiarPagina(event): void {

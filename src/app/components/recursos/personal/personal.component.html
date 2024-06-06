@@ -18,9 +18,9 @@
         </select>
       </div>
       <div class="col-md-4">
-        <label for="busqueda">Buscar:</label>
+        <label for="busquedaPersonal">Buscar:</label>
         <div class="input-group">
-          <input type="text" formControlName="busqueda" class="form-control" id="busqueda" placeholder="Buscar...">
+          <input type="text" formControlName="busquedaPersonal" class="form-control" id="busquedaPersonal" placeholder="Buscar...">
           <div class="input-group-append">
             <button type="button" class="btn btn-secondary" (click)="limpiarBusqueda()" style="margin-left: 5px;"
               id="btnBusqueda"><i class="fa-solid fa-eraser"></i></button>
@@ -41,7 +41,7 @@
     <div class="table-responsive">
       <div class="scroll-table">
         <ng-container
-          *ngIf="(listaGrilla | busquedaNombreApellidoDni:Busqueda:'Nombre':'Apellido').length > 0; else noResults">
+          *ngIf="(listaGrilla | busquedaPersonal:formFiltro.get('busquedaPersonal').value:'Nombre':'Apellido').length > 0; else noResults">
           <table class="table">
             <thead class="thead-dark">
               <tr>
@@ -62,7 +62,7 @@
             </thead>
             <tbody class="tablaUser">
               <tr
-                *ngFor="let item of listaGrilla | busquedaNombreApellidoDni:busqueda:'Nombre':'Apellido' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
+                *ngFor="let item of listaGrilla | busquedaPersonal:formFiltro.get('busquedaPersonal').value:'Nombre':'Apellido' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
                 <td scope="col">{{ item.IdPersona }}</td>
                 <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
                 <td scope="col">{{ item.Documentacion }}</td>
