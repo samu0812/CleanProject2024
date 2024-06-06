@@ -11,10 +11,10 @@ export class MenuService {
   constructor(private http: HttpClient) {}
 
   getMenuItems(Token: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}SP_GetMenu/?Token=${Token}`);
+    return this.http.get<any>(`${this.apiUrl}/utils/menu/?Token=${Token}`);
   }
 
   getSubMenuItems(Token: string, IdMenu: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}SP_GetSubMenu/?Token=${Token}&IdMenu=${IdMenu}`);
+    return this.http.get<any>(`${this.apiUrl}/utils/menu/**/submenu/?Token=${Token}&IdMenu=${IdMenu}`);
   }
 }

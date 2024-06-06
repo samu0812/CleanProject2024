@@ -20,7 +20,7 @@ export class UsuarioService {
 
 
   agregar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_Usuarios`;
+    const url = `${this.apiUrl}/seguridad/usuario`;
     const body = {
       IdPersona: item.IdPersona,
       Usuario: item.Usuario,
@@ -30,7 +30,7 @@ export class UsuarioService {
   }
 
   editar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_Usuarios`;
+    const url = `${this.apiUrl}/seguridad/usuario`;
     const body = {
       IdUsuario: item.IdUsuario,
       NuevoUsuario: item.Usuario,
