@@ -63,6 +63,7 @@ import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
 import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
 import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
 import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
+import { BusquedaNombreApellidoDniPipe } from './components/busqueda/busquedaPersonal.pipe';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import { RealizarventaComponent } from './components/gestion/realizarventa/reali
     BusquedastockPipe,
     BusquedausuariosPipe,
     BusquedausuariosPipe,
-    RealizarventaComponent
+    RealizarventaComponent,
+    BusquedaNombreApellidoDniPipe
   ],
   imports: [
     BrowserModule,
