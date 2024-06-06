@@ -137,7 +137,7 @@ export class TiposucursalComponent {
   habilitar(): void {
     this.tiposucursalService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(2);
+        this.listar(0);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       }, error => {

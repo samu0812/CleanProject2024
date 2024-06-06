@@ -148,6 +148,7 @@
     min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
     margin-bottom: 0; 
     width: 100%; /* Elimina el margen inferior de la tabla */
+    min-height: 400px;
 }
 /* Estilos adicionales según sea necesario */
 
