@@ -21,6 +21,7 @@ export class TipodocumentacionComponent {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
+  loading: boolean = true;
 
   constructor(
     private tipodocumentacionService: TipodocumentacionService,
@@ -56,11 +57,14 @@ export class TipodocumentacionComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipodocumentacionService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoDocumentacion || [];
+        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 }

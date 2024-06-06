@@ -21,6 +21,7 @@ export class TipofacturaComponent {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
+  loading: boolean = true;
 
   constructor(
     private tipofacturaService: TipofacturaService,
@@ -57,11 +58,14 @@ export class TipofacturaComponent {
 
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipofacturaService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoFacturas || [];
+        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 }

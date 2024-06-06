@@ -1,0 +1,7 @@
+.swal2-container {
+    z-index: 3000; /* Ajusta este valor según sea necesario para que esté por encima del loader */
+  }
+.ngx-pagination li.current {
+    background: #FF8C00 !important; /* Cambia el color de fondo aquí */
+}
+  

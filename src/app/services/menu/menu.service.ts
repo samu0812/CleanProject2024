@@ -15,7 +15,6 @@ export class MenuService {
   }
 
   getSubMenuItems(Token: string, IdMenu: number): Observable<any> {
-    console.log(Token, IdMenu)
     return this.http.get<any>(`${this.apiUrl}SP_GetSubMenu/?Token=${Token}&IdMenu=${IdMenu}`);
   }
 }

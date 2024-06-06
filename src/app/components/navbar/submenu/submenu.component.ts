@@ -12,28 +12,36 @@ import { Menu } from '../../../models/menu/menu';
 export class SubmenuComponent implements OnInit {
   Menues: Menu[] = [];
   respuesta: Menu[] = [];
+  loading: boolean = true;
 
   constructor(private route: ActivatedRoute, private menuService: MenuService) {}
 
   ngOnInit(): void {
-    console.log("hola")
-    this.route.params.subscribe(params => {
-      const IdMenu = +params['id'];
-      const Token = localStorage.getItem('Token');
-      console.log(Token, "ceci 2");
-      if (Token !== null) {
-        this.menuService.getSubMenuItems(Token, IdMenu).subscribe( data=>{
-          this.respuesta = data.Menus;
-          console.log(data)
-          this.Menues = this.respuesta;
-          console.log(this.Menues, "ceci");
-        }
-
-        );
-      } else {
-        console.error('Token no encontrado en localStorage');
-      }
-    });
-  }
+    this.listarSubMenu();
 }
 
+listarSubMenu(){
+  this.loading=true;
+  this.route.params.subscribe(params => {
+    const IdMenu = +params['id'];
+    const Token = localStorage.getItem('Token');
+    if (Token !== null) {
+      this.menuService.getSubMenuItems(Token, IdMenu).subscribe( data=>{
+        console.log(data.Menus , 'menuessssss');
+        this.respuesta = data.Menus;
+        this.Menues = this.respuesta;
+        this.Menues.forEach(menu => {
+          console.log(menu.PoseePermiso);
+        });
+        this.loading=false;
+      }
+
+      );
+    } else {
+      console.error('Token no encontrado en localStorage');
+      this.loading=false;
+    }
+  });
+}
+
+}
