@@ -62,7 +62,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
 import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
 import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
-import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa/realizarventa.component';
+import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
 
 @NgModule({
   declarations: [
@@ -131,7 +131,8 @@ import { RealizarventaComponent } from './components/gestion/realizarventa/reali
     RouterModule,
     NgxPaginationModule,
     NgbModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    
   ],
   providers: [
     provideClientHydration(),

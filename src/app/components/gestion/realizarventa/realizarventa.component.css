@@ -1,0 +1,306 @@
+.container {
+    display: flex; /* Utiliza flexbox para el contenedor */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+  }
+  .centered-rounded-background {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    color: #ffffff;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    margin-bottom: 0%;
+    display: flex;/* Ajusta el tamaño al contenido */
+    background: #FF8C00; /* Color de fondo */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 5px 50px; /* Espacio interno reducido */
+    align-items: center; /* Alinea los elementos hijos verticalmente */
+    border-radius: 50px;
+    justify-content: center;
+  }
+  
+  .title-menu {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Espacio entre los elementos internos */
+  }
+  .img-crud{
+    width: 40px;
+    vertical-align: middle;
+  }
+    .main-section {
+      margin: 0 auto;
+      margin-top: 5%;
+      margin-bottom: 20px;
+      padding: 20px;
+      min-height: 100vh;
+      margin-top: 0%;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Agrega una sombra suave */
+    }
+    
+    .modal-content {
+      background-color: white;
+      padding: 0 20px;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Agrega una sombra suave */
+      border-radius: 10px;
+    }
+    
+    .footer {
+      margin-top: 20px;
+      background-color: #f8f8f8;
+      padding: 20px;
+      text-align: center;
+      color: #666;
+    }
+    
+    
+    .form-group {
+      margin-bottom: 0;
+    }
+    
+
+    
+    .btn-add-right{
+      position: absolute;
+      right: 0;
+      margin-right: 10px;
+    }
+    .registros {
+      overflow-y: auto; /* Agrega desplazamiento vertical si los registros son demasiado largos */
+     /* Ocupa todo el espacio disponible dentro del contenedor modal-content */
+    
+    }
+    .thead, th{
+      background-color:#464343;
+      text-align: center;
+      color: rgb(255, 255, 255);
+    }
+    /* Estilos CSS para el menú desplegable */
+    .dropdown {
+      position: relative; /* Establece la posición relativa para posicionar el menú */
+    }
+    
+    .dropdown-menu {
+      right: 0; /* Alinea el menú a la derecha del botón */
+      top: 100%; /* Coloca el menú debajo del botón */
+      z-index: 10;
+      position: fixed; /* Cambia la posición a fixed */
+      color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
+    }  
+    
+    .dropdown button{
+      background-color: rgb(31, 31, 95);
+      border-color: rgb(31, 31, 95);
+      width: 50px;
+      height: 30px;
+      font-size: 12px;
+      padding: 5px; /* Relleno */
+    }
+    
+    
+    tbody td {
+      text-align: center;
+      margin-top: auto;
+    }
+    .dropdown-item i {
+      margin-right: 10px; /* Adjust the value for desired spacing */
+      color: rgb(31, 31, 95);
+    }
+    .dropdown-item {
+      color: rgb(31, 31, 95);
+    }
+    
+  
+    .button-icon {
+      margin-right: 5px; /* Ajusta el margen derecho del ícono */
+    }
+    #AgregarModalbtn{
+      margin-top: 18px;
+      background-color: rgb(31, 31, 95);
+      border-color: rgb(31, 31, 95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Estilo para el botón de cerrar */
+    .btn-close {
+      align-self: center; /* Alinea el botón verticalmente en el centro */
+    }
+    
+    .table-responsive {
+      border-radius: 10px; /* Redondea los bordes */
+      overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
+      min-height: 400px;
+      display: grid;
+      border-color: #464343;
+    }
+    .hide-column {
+      display: none;
+    }
+    .scroll-table {
+        overflow-y: auto;
+        max-height: 450px;
+    }
+    
+  .table {
+      min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
+      margin-bottom: 0; 
+      width: 100%; /* Elimina el margen inferior de la tabla */
+  }
+  /* Estilos adicionales según sea necesario */
+  
+  .modal-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100% - 60px); /* Altura mínima que cubre toda la pantalla menos el espacio del footer */
+  }
+  
+  
+  /*modalessss*/
+  #btnGuardar{
+    background-color: rgb(31, 31, 95);
+    border-color: rgb(31, 31, 95);
+    margin-left: 5px;
+  }
+  
+  .modal-header {
+    border-bottom: 2px solid #f0f0f0; /* Borde inferior */
+    margin: 0; /* Elimina márgenes */
+    padding: 15px; /* Agrega padding para un espaciado uniforme */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    background-color: #FF8C00; /* Color de fondo */
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
+  }
+  .modal-header .modal-title {
+    font-weight: bold; /* Hace que el título esté en negrita */
+  }
+  
+  .modal-body .form-group {
+    margin-bottom: 15px; /* Espacio entre grupos de formularios */
+  }
+  
+  .modal-body .form-group:last-child {
+    margin-bottom: 0; /* Elimina el margen inferior del último grupo */
+  }
+  .modal-body label {
+    margin-bottom: 5px; /* Espacio entre el label y el input */
+    display: block; /* Asegura que el label esté alineado con su input */
+  }
+  
+  .modal-body input {
+    margin-bottom: 15px; /* Espacio inferior para los inputs */
+  }
+  
+  .modal-footer {
+    border-top: none; /* Quita el borde superior del pie de página del modal */
+  }
+  
+  .text-right {
+    text-align: right; /* Alinea los botones a la derecha */
+  }
+  
+  #btnLimpiar{
+    background: #FF8C00;
+    border-color: #FF8C00;
+  }
+  #alerta{
+    background: #ffd690;
+    border-color: #ffd690;
+  
+  }
+  .input-group .input-group-append .btn {
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+
+  .card-body p {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+  .card-long {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .card-header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+  }
+  
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  #datosVenta{
+    margin-bottom: 20px;
+  }
+  .scroll-table::-webkit-scrollbar {
+    width: 10px; /* Ancho del scrollbar */
+  }
+  
+  .scroll-table::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color del track del scrollbar */
+    border-radius: 10px; /* Bordes redondeados del track */
+  }
+  
+  .scroll-table::-webkit-scrollbar-thumb {
+    background: #464343; /* Color del thumb del scrollbar */
+    border-radius: 10px; /* Bordes redondeados del thumb */
+  }
+  
+  .scroll-table::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color del thumb del scrollbar al pasar el mouse */
+  }
+  
+  .scroll-table::-webkit-scrollbar-thumb:active {
+    background: #333; /* Color del thumb del scrollbar al hacer clic */
+  }
+#btnGenerarVenta  {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-sizing: border-box; /* Incluye el padding y el borde en el tamaño total del botón */
+}
+.input-group .input-group-append .btn {
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+  
+  .input-group-append .btn + .btn {
+    margin-left: 5px; /* Espacio entre los botones "Limpiar" y "Borrar Todo" */
+  }
+  
+  .btn {
+    white-space: nowrap; /* Asegura que el texto del botón no se envuelva */
+  }
+  
+  .total-venta {
+    display: inline-block;
+    background: #FF8C00; /* Color de fondo */
+    padding: 5px 20px; /* Espacio interno reducido */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.total-venta h3 {
+    margin-bottom: 0; /* Elimina el margen inferior */
+    color: white; /* Color de texto */
+}
+
+  
+  #btnImprimir{
+    margin-top: 18px;
+    background-color: rgb(31, 31, 95);
+    border-color: rgb(31, 31, 95);
+    align-items: center;
+    justify-content: center;
+  }
