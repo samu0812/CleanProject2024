@@ -1,46 +1,47 @@
 <app-loader [isLoading]="loading"></app-loader>
-<div class="container-fluid main-section">
-  <div class="modal-content">
-    <!-- Filtros de Búsqueda -->
-    <form [formGroup]="formFiltro">
-      <!-- <h1 id="tituloTabla">Usuarios <i class="fa-solid fa-users"></i></h1> -->
-      <div class="container">
-        <h4 class="title-menu centered-rounded-background">
-            <a>
-                <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
-            </a>
-            <a style="margin-left: 5px;">Personal</a>
-        </h4>
+<div class="modal-content">
+  <form [formGroup]="formFiltro">
+    <div class="container">
+      <h4 class="title-menu centered-rounded-background">
+        <a>
+          <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+        </a>
+        <a style="margin-left: 5px;">Categoría</a>
+      </h4>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-3">
+        <label for="idFiltro">Filtrar Por:</label>
+        <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
+          <option value="1">Solo Habilitados</option>
+          <option value="2">Solo Inhabilitados</option>
+        </select>
       </div>
-      <div class="row mt-3">
-        <div class="col-md-3">
-          <label for="idFiltro">Filtrar Por:</label>
-          <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
-            <option value="1">Solo Habilitados</option>
-            <option value="2">Solo Inhabilitados</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="equipo">Personal:</label>
-          <div class="input-group">
-            <input type="text" formControlName="equipo" class="form-control" id="equipo" placeholder="Equipo">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button">Buscar</button>
-              <button class="btn btn-outline-secondary" type="button">Limpiar</button>
-            </div>
+      <div class="col-md-4">
+        <label for="busquedaPersonal">Buscar:</label>
+        <div class="input-group">
+          <input type="text" formControlName="busquedaPersonal" class="form-control" id="busquedaPersonal" placeholder="Buscar...">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-secondary" (click)="limpiarBusqueda()" style="margin-left: 5px;"
+              id="btnBusqueda"><i class="fa-solid fa-eraser"></i></button>
           </div>
         </div>
-
-        <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
-          <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
-            <i class="fa-solid fa-user-plus button-icon"></i>Crear Personal
-          </button>
-        </div>
       </div>
-    </form>
-    <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
-      <div class="table-responsive">
-        <div class="scroll-table">
+
+      <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
+        <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
+          <i class="fa-solid fa-circle-plus"></i>
+          Agregar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
+    <div class="table-responsive">
+      <div class="scroll-table">
+        <ng-container
+          *ngIf="(listaGrilla | busquedaPersonal:formFiltro.get('busquedaPersonal').value:'Nombre':'Apellido').length > 0; else noResults">
           <table class="table">
             <thead class="thead-dark">
               <tr>
@@ -60,26 +61,27 @@
               </tr>
             </thead>
             <tbody class="tablaUser">
-              <tr 
-              *ngFor="let item of listaGrilla | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
-              <td scope="col"></td> <!-- Ver -->
-              <td scope="col">{{ item.IdPersona }}</td>
-              <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
-              <td scope="col">{{ item.Documentacion }}</td>
-              <td scope="col">{{ item.Nombre }}</td>
-              <td scope="col">{{ item.Apellido }}</td>
-              <td scope="col">{{ item.Mail }}</td>
-              <td scope="col">{{ item.FechaNacimiento }}</td>
-              <td scope="col">{{ item.Telefono }}</td>
-              <td scope="col">{{ item.Calle }}</td>
-              <td scope="col">{{ item.Nro }}</td>
-              <td scope="col">{{ item.Piso }}</td>
+              <tr
+                *ngFor="let item of listaGrilla | busquedaPersonal:formFiltro.get('busquedaPersonal').value:'Nombre':'Apellido' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
+                <td scope="col">{{ item.IdPersona }}</td>
+                <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                <td scope="col">{{ item.Documentacion }}</td>
+                <td scope="col">{{ item.Nombre }}</td>
+                <td scope="col">{{ item.Apellido }}</td>
+                <td scope="col">{{ item.Mail }}</td>
+                <td scope="col">{{ item.FechaNacimiento }}</td>
+                <td scope="col">{{ item.Telefono }}</td>
+                <td scope="col">{{ item.Calle }}</td>
+                <td scope="col">{{ item.Nro }}</td>
+                <td scope="col">{{ item.Piso }}</td>
+
                 <td scope="col" class="dropdown">
-                    <!-- Botón de acción con menú desplegable -->
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-user-gear"></i>
-                      </button>
-                      <!-- Menú desplegable con opciones -->
+                  <!-- Botón de acción con menú desplegable -->
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-gears"></i>
+                  </button>
+                  <!-- Menú desplegable con opciones -->
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <!-- Mostrar solo si FechaBaja no es null -->
                     <li *ngIf="item.FechaBaja !== null">
@@ -104,15 +106,24 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </ng-container>
+
+        <ng-template #noResults>
+          <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
+            No se encontraron resultados.
+          </div>
+        </ng-template>
       </div>
     </div>
     <div class="mt-3"></div>
-    <pagination-controls (pageChange)="cambiarPagina($event)" class="my-pagination"previousLabel="Anterior"nextLabel="Siguiente"></pagination-controls>
-    <ng-template #noData>
-      <h5>No se encontraron registros...</h5>
-    </ng-template>
+    <pagination-controls (pageChange)="cambiarPagina($event)" class="my-pagination" previousLabel="Anterior"
+      nextLabel="Siguiente"></pagination-controls>
   </div>
+  <ng-template #noData>
+    <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
+      No hay datos disponibles.
+    </div>
+  </ng-template>
 </div>
 <!-- AgregarUsuarioModal -->
   <!-- AgregarCategoriaModal -->
