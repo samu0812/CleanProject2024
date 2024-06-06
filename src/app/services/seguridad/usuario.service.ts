@@ -14,7 +14,7 @@ export class UsuarioService {
 
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_Usuarios?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/seguridad/usuario?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
@@ -40,12 +40,12 @@ export class UsuarioService {
   }
 
   listarPersonas(): Observable<any> {
-    const url = `${this.apiUrl}/SP_ListaPersonas`;
+    const url = `${this.apiUrl}/lista/personas`;
     return this.http.get(url);
   }
 
   agregarRolUsuario(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_AgregarRolUsuario`;
+    const url = `${this.apiUrl}/seguridad/usuario/rol`;
     const body = {
       IdUsuario: item.IdUsuario,
       IdRol: item.IdTipoRol,
@@ -54,13 +54,13 @@ export class UsuarioService {
   }
 
   listarUsuariosRol(IdUsuario: number): Observable<any> {
-    const url = `${this.apiUrl}/SP_ListaUsuariosRol?IdUsuario=${IdUsuario}`;
+    const url = `${this.apiUrl}/seguridad/usuario/rol?IdUsuario=${IdUsuario}`;
     return this.http.get(url);
   }
 
   eliminarUsuarioRol(item: any, Token: string): Observable<any> {
     console.log(item);
-    const url = `${this.apiUrl}/SPB_UsuarioRol`;
+    const url = `${this.apiUrl}/seguridad/usuario/rol`;
     const body = {
       IdUsuarioRol: item.IdUsuarioRol,
       Token: Token};
@@ -68,7 +68,7 @@ export class UsuarioService {
   }
 
   modificarUsuarioSucursal(IdUsuario: number, IdSucursal: number, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_UsuarioPorSucursal`;
+    const url = `${this.apiUrl}/seguridad/usuario/sucursal`;
     const body = {
       IdUsuario: IdUsuario,
       IdSucursal: IdSucursal,
@@ -77,7 +77,7 @@ export class UsuarioService {
   }
 
   inhabilitar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_Usuarios`;
+    const url = `${this.apiUrl}/seguridad/usuario`;
     const body = {
       IdUsuario: item.IdUsuario,
       Token: Token};

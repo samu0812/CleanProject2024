@@ -12,7 +12,7 @@ export class ProvinciaService {
   constructor(private http: HttpClient) { }
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_Provincia?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/lista/provincia?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 }

@@ -12,12 +12,12 @@ export class TiporolService {
   constructor(private http: HttpClient) { }
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoRol?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/seguridad/tiporol?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
   agregar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_TipoRol`;
+    const url = `${this.apiUrl}/seguridad/tiporol`;
     const body = {
       Descripcion: item.Descripcion,
       Token: Token};
@@ -25,7 +25,7 @@ export class TiporolService {
   }
 
   editar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_TipoRol`;
+    const url = `${this.apiUrl}/seguridad/tiporol`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       Descripcion: item.Descripcion,
@@ -34,14 +34,14 @@ export class TiporolService {
   }
 
   inhabilitar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_TipoRol`;
+    const url = `${this.apiUrl}/seguridad/tiporol`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       Token: Token};
       return this.http.put(url, body);
   }
   habilitar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_TipoRol`;
+    const url = `${this.apiUrl}/seguridad/tiporol`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       Token: Token};

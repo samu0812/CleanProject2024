@@ -13,12 +13,12 @@ export class TipoformadepagoService {
   constructor(private http: HttpClient) {}
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoFormaDePago?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/parametria/tipoformadepago?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
   agregar(item: TipoFormaDePago, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_TipoFormaDePago`;
+    const url = `${this.apiUrl}/parametria/tipoformadepago`;
     const body = {
       Descripcion: item.Descripcion,
       Token: Token};
@@ -26,7 +26,7 @@ export class TipoformadepagoService {
   }
 
   editar(item: TipoFormaDePago, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_TipoFormaDePago`;
+    const url = `${this.apiUrl}/parametria/tipoformadepago`;
     const body = {
       IdTipoFormaDePago: item.IdTipoFormaDePago,
       Descripcion: item.Descripcion,
@@ -35,7 +35,7 @@ export class TipoformadepagoService {
   }
 
   inhabilitar(item: TipoFormaDePago, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_TipoFormaDePago`;
+    const url = `${this.apiUrl}/parametria/tipoformadepago`;
     const body = {
       IdTipoFormaDePago: item.IdTipoFormaDePago,
       Token: Token};
@@ -43,7 +43,7 @@ export class TipoformadepagoService {
   }
 
   habilitar(item: TipoFormaDePago, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_TipoFormaDePago`;
+    const url = `${this.apiUrl}/parametria/tipoformadepago`;
     const body = {
       IdTipoFormaDePago: item.IdTipoFormaDePago,
       Token: Token};

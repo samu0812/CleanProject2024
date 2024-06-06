@@ -12,12 +12,12 @@ export class TipopermisoService {
   constructor(private http: HttpClient) { }
 
   listar(): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoPermiso`;
+    const url = `${this.apiUrl}/parametria/tipopermiso`;
     return this.http.get(url);
   }
 
   listarDetalle(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoPermisoDetalle?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/parametria/tipopermisodetalle?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 }

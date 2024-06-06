@@ -12,12 +12,12 @@ export class TipoproductoService {
   constructor(private http: HttpClient) {}
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoProducto?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/parametria/tipoproducto?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
   agregar(item: TipoProducto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_TipoProducto`;
+    const url = `${this.apiUrl}/parametria/tipoproducto`;
     const body = {
       Detalle: item.Detalle,
       Token: Token};
@@ -25,7 +25,7 @@ export class TipoproductoService {
   }
 
   editar(item: TipoProducto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_TipoProducto`;
+    const url = `${this.apiUrl}/parametria/tipoproducto`;
     const body = {
       IdTipoProducto: item.IdTipoProducto,
       Detalle: item.Detalle,
@@ -34,7 +34,7 @@ export class TipoproductoService {
   }
 
   inhabilitar(item: TipoProducto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_TipoProducto`;
+    const url = `${this.apiUrl}/parametria/tipoproducto`;
     const body = {
       IdTipoProducto: item.IdTipoProducto,
       Token: Token};
@@ -42,7 +42,7 @@ export class TipoproductoService {
   }
 
   habilitar(item: TipoProducto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_TipoProducto`;
+    const url = `${this.apiUrl}/parametria/tipoproducto`;
     const body = {
       IdTipoProducto: item.IdTipoProducto,
       Token: Token};

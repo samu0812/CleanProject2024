@@ -14,13 +14,13 @@ export class PersonalService {
 
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_Personal?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/recursos/personal?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
 
   agregarPersonal(personal: Personal, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_Personal`;
+    const url = `${this.apiUrl}/recursos/personal`;
     const body = {
       IdTipoPersonaSistema: personal.IdTipoPersonaSistema, // Asegúrate de usar el campo correcto
       IdTipoPersona: personal.IdTipoPersona,
@@ -43,7 +43,7 @@ export class PersonalService {
   }
 
   editar(personal: Personal,Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_Personal`;
+    const url = `${this.apiUrl}/recursos/personal`;
     const body = {
       IdTipoPersona: personal.IdTipoPersona,
       IdPersona: personal.IdPersona,
@@ -67,7 +67,7 @@ export class PersonalService {
   }
 
   inhabilitar(item: Personal , Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_Personal`;
+    const url = `${this.apiUrl}/recursos/personal`;
     const body = {
       IdPersona: item.IdPersona,
       Token: Token
@@ -76,7 +76,7 @@ export class PersonalService {
   }
 
   habilitar(item: Personal,Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_Personal`;
+    const url = `${this.apiUrl}/recursos/personal`;
     const body = {
       IdPersona: item.IdPersona,
       Token: Token

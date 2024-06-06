@@ -12,12 +12,12 @@ export class TipoCategoriaService {
   constructor(private http: HttpClient) {}
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoCategoria?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/parametria/tipocategoria?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
   agregar(item: TipoCategoria, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_TipoCategoria`;
+    const url = `${this.apiUrl}/parametria/tipocategoria`;
     const body = {
       Descripcion: item.Descripcion,
       Token: Token};
@@ -25,7 +25,7 @@ export class TipoCategoriaService {
   }
 
   editar(item: TipoCategoria, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_TipoCategoria`;
+    const url = `${this.apiUrl}/parametria/tipocategoria`;
     const body = {
       IdTipoCategoria: item.IdTipoCategoria,
       Descripcion: item.Descripcion,
@@ -34,7 +34,7 @@ export class TipoCategoriaService {
   }
 
   inhabilitar(item: TipoCategoria, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_TipoCategoria`;
+    const url = `${this.apiUrl}/parametria/tipocategoria`;
     const body = {
       IdTipoCategoria: item.IdTipoCategoria,
       Token: Token};
@@ -42,7 +42,7 @@ export class TipoCategoriaService {
   }
 
   habilitar(item: TipoCategoria, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_TipoCategoria`;
+    const url = `${this.apiUrl}/parametria/tipocategoria`;
     const body = {
       IdTipoCategoria: item.IdTipoCategoria,
       Token: Token};

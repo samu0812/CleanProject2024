@@ -12,12 +12,12 @@ export class TiposucursalService {
   constructor(private http: HttpClient) { }
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_Sucursal?TipoLista=${TipoLista}`; // Ajusta la ruta según el endpoint correspondiente
+    const url = `${this.apiUrl}/parametria/sucursal?TipoLista=${TipoLista}`; // Ajusta la ruta según el endpoint correspondiente
     return this.http.get(url);
   }
 
   agregar(item: Sucursales, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_Sucursal`;
+    const url = `${this.apiUrl}/parametria/sucursal`;
     const body = {
       IdTipoDomicilio: item.IdTipoDomicilio,
       Descripcion: item.Descripcion,
@@ -30,7 +30,7 @@ export class TiposucursalService {
   }
 
   editar(item: Sucursales, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_Sucursal`;
+    const url = `${this.apiUrl}/parametria/sucursal`;
     const body = {
       IdSucursal: item.IdSucursal,
       IdDomicilio: item.IdDomicilio, // Ajusta según la estructura de tu modelo
@@ -45,7 +45,7 @@ export class TiposucursalService {
   }
 
   inhabilitar(item: Sucursales, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_Sucursal`;
+    const url = `${this.apiUrl}/parametria/sucursal`;
     const body = {
       IdSucursal: item.IdSucursal,
       Token: Token
@@ -54,7 +54,7 @@ export class TiposucursalService {
   }
 
   habilitar(item: Sucursales, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_Sucursal`;
+    const url = `${this.apiUrl}/parametria/sucursal`;
     const body = {
       IdSucursal: item.IdSucursal,
       Token: Token

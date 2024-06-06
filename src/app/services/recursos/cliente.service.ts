@@ -12,12 +12,12 @@ export class ClienteService {
 
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_Cliente?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/recursos/clientes?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
   agregar(item: cliente): Observable<any> {
-    const url = `${this.apiUrl}/SPA_Clientes`;
+    const url = `${this.apiUrl}/recursos/clientes`;
     const body = {
       IdTipoPersona: item.IdTipoPersona,
       IdTipoDomicilio: item.IdTipoDomicilio,
@@ -39,7 +39,7 @@ export class ClienteService {
   }
 
   editar(item: cliente): Observable<any> {
-    const url = `${this.apiUrl}/SPM_Cliente`;
+    const url = `${this.apiUrl}/recursos/clientes`;
     const body = {
       IdCliente: item.IdCliente,
       IdTipoPersona: item.IdTipoPersona,
@@ -63,7 +63,7 @@ export class ClienteService {
   }
 
   inhabilitar(item: cliente , Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_Cliente`;
+    const url = `${this.apiUrl}/recursos/clientes`;
     const body = {
       IdCliente: item.IdCliente,
       Token: Token
@@ -72,7 +72,7 @@ export class ClienteService {
   }
 
   habilitar(item: cliente): Observable<any> {
-    const url = `${this.apiUrl}/SPH_Cliente`;
+    const url = `${this.apiUrl}/recursos/clientes`;
     const body = {
       IdCliente: item.IdCliente,
     };
