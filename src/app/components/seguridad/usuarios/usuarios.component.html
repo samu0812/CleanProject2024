@@ -38,6 +38,7 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellido</th>
                 <th scope="col">Documentacion</th>
+                <th scope="col">Sucursal</th>
                 <th scope="col">Fecha de Alta</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
@@ -51,6 +52,7 @@
                 <td scope="col">{{ item.Nombre}}</td>
                 <td scope="col">{{ item.Apellido}}</td>
                 <td scope="col">{{ item.Documentacion}}</td>
+                <td scope="col">{{ item.Descripcion }}</td>
                 <td scope="col">{{ item.FechaAlta }}</td>
                 <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
                 <td scope="col" class="dropdown">
@@ -59,7 +61,7 @@
                         <i class="fa-solid fa-user-gear"></i>
                       </button>
                       <!-- Menú desplegable con opciones -->
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <ul *ngIf="item.FechaBaja === null" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li *ngIf="item.FechaBaja === null">
                       <a class="dropdown-item" (click)="openEditar(content, item)">
                         <i class="fas fa-edit"></i> Modificar Usuario
