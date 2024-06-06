@@ -1,20 +1,23 @@
-<div class="navbar-container">
-  <app-navbar></app-navbar>
-</div>
-
-<div class="col-sm-11 main-section">
+<app-loader [isLoading]="loading"></app-loader>
+<div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
-    <form>
-      <h1 id="tituloTabla">Usuarios <i class="fa-solid fa-users"></i></h1>
-
+    <form [formGroup]="formFiltro">
+      <!-- <h1 id="tituloTabla">Usuarios <i class="fa-solid fa-users"></i></h1> -->
+      <div class="container">
+        <h4 class="title-menu centered-rounded-background">
+            <a>
+                <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+            </a>
+            <a style="margin-left: 5px;">Personal</a>
+        </h4>
+      </div>
       <div class="row mt-3">
         <div class="col-md-3">
-          <label for="tipoLista">Filtrar Por:</label>
-          <select formControlName="tipoLista" class="form-control" id="tipoLista">
-            <option value="2" selected>Solo Habilitados</option>
-            <option value="3">Solo Inhabilitados</option>
-            <option value="1">Todos</option>
+          <label for="idFiltro">Filtrar Por:</label>
+          <select formControlName="idFiltro" class="form-control" id="idFiltro" (change)="cambiarFiltro()">
+            <option value="1">Solo Habilitados</option>
+            <option value="2">Solo Inhabilitados</option>
           </select>
         </div>
         <div class="col-md-4">
@@ -27,318 +30,387 @@
             </div>
           </div>
         </div>
+
         <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarPersonalModal" id="AgregarPersonalModalbtn">
-            <i class="fa-solid fa-user-plus button-icon"></i>Agregar Personal
+          <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
+            <i class="fa-solid fa-user-plus button-icon"></i>Crear Personal
           </button>
         </div>
       </div>
     </form>
-    <!-- Grilla -->
-    <div class="registros mt-3">
-      <h5>No se encontraron registros...</h5>
+    <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
       <div class="table-responsive">
-        <table class="table">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col"></th> <!-- Ver -->
-              <th scope="col">Nombre</th>
-              <th scope="col">Apellido</th>
-              <th scope="col">DNI</th>
-              <th scope="col">Fecha Alta</th>
-              <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
-            </tr>
-          </thead>
-          <tbody class="tablaUser">
-            <tr>
+        <div class="scroll-table">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"></th> <!-- Ver -->
+                <th scope="col">Nro</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Documentacion</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Mail</th>
+                <th scope="col">Fecha de Nacimiento</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Calle</th>
+                <th scope="col">Nro</th>
+                <th scope="col">Piso</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody class="tablaUser">
+              <tr 
+              *ngFor="let item of listaGrilla | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
               <td scope="col"></td> <!-- Ver -->
-              <td scope="col">Nombre</td>
-              <td scope="col">Apellido</td>
-              <td scope="col">DNI</td>
-              <td scope="col">Fecha Alta</td>
-              <td scope="col" class="dropdown">
-                  <!-- Botón de acción con menú desplegable -->
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa-solid fa-gears"></i>
-                    </button>
-                    <!-- Menú desplegable con opciones -->
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#VerPersonalModal">
-                          <i class="fa-solid fa-eye"></i>Ver Datos
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditarPersonalModal">
-                          <i class="fa-solid fa-user-pen"></i>Editar Personal
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#inhabilitarPersonalModal">
-                          <i class="fa-solid fa-user-xmark"></i>Inhabilitar
-                        </a>
-                      </li>
-                    </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <td scope="col">{{ item.IdPersona }}</td>
+              <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+              <td scope="col">{{ item.Documentacion }}</td>
+              <td scope="col">{{ item.Nombre }}</td>
+              <td scope="col">{{ item.Apellido }}</td>
+              <td scope="col">{{ item.Mail }}</td>
+              <td scope="col">{{ item.FechaNacimiento }}</td>
+              <td scope="col">{{ item.Telefono }}</td>
+              <td scope="col">{{ item.Calle }}</td>
+              <td scope="col">{{ item.Nro }}</td>
+              <td scope="col">{{ item.Piso }}</td>
+                <td scope="col" class="dropdown">
+                    <!-- Botón de acción con menú desplegable -->
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-user-gear"></i>
+                      </button>
+                      <!-- Menú desplegable con opciones -->
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <!-- Mostrar solo si FechaBaja no es null -->
+                    <li *ngIf="item.FechaBaja !== null">
+                      <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
+                        <i class="fa-solid fa-check"></i> Habilitar
+                      </a>
+                    </li>
+                    <!-- Mostrar solo si FechaBaja es null -->
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                        <i class="fa-solid fa-xmark"></i> Inhabilitar
+                      </a>
+                    </li>
+                    <!-- Mostrar solo si FechaBaja es null -->
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openEditar(content, item)">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                      </a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+    <div class="mt-3"></div>
+    <pagination-controls (pageChange)="cambiarPagina($event)" class="my-pagination"previousLabel="Anterior"nextLabel="Siguiente"></pagination-controls>
+    <ng-template #noData>
+      <h5>No se encontraron registros...</h5>
+    </ng-template>
   </div>
 </div>
-<div class="modal fade" id="AgregarPersonalModal" tabindex="-1" aria-labelledby="AgregarPersonalModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg"> <!-- Utilizamos modal-lg para un modal más grande -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="AgregarPersonalModalLabel"><i class="fa-solid fa-user-plus"></i>Agregar Personal</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="nombre" class="col-form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre">
-              </div>
-              <div class="mb-3">
-                <label for="fecha-nacimiento" class="col-form-label">Fecha de Nacimiento</label>
-                <input type="date" class="form-control" id="fecha-nacimiento" name="fecha-nacimiento">
-              </div>
-              <div class="mb-3">
-                <label for="calle" class="col-form-label">Domicilio - Calle</label>
-                <input type="text" class="form-control" id="calle" name="calle">
-              </div>
-              <div class="mb-3">
-                <label for="provincia" class="col-form-label">Provincia</label>
-                <select class="form-control" id="provincia" name="provincia">
-                  <option value="" disabled selected hidden>Seleccione...</option>
-                  <option value="localidad1">provincia 1</option>
-                  <option value="localidad2">provincia 2</option>
-                  <option value="localidad3">provincia 3</option>
-                </select>
-              </div>
+<!-- AgregarUsuarioModal -->
+  <!-- AgregarCategoriaModal -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <a>
+        <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+      </a>
+      <a style="margin-left: 5px;"></a>
+      <h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formItemGrilla">
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Nombre">Nombre:</label>
             </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="apellido" class="col-form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellido" name="apellido">
-              </div>
-              <div class="mb-3">
-                <label for="telefono" class="col-form-label">Teléfono</label>
-                <input type="text" class="form-control" id="telefono" name="telefono">
-              </div>
-              <div class="mb-3">
-                <label for="numero" class="col-form-label">Domicilio - Número</label>
-                <input type="text" class="form-control" id="numero" name="numero">
-              </div>
-              <div class="mb-3">
-                <label for="localidad" class="col-form-label">Localidad</label>
-                <select class="form-control" id="localidad" name="localidad">
-                  <option value="" disabled selected hidden>Seleccione...</option>
-                  <option value="localidad1">Localidad 1</option>
-                  <option value="localidad2">Localidad 2</option>
-                  <option value="localidad3">Localidad 3</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="email" class="col-form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email">
-              </div>
-              <div class="mb-3">
-                <label for="calle" class="col-form-label">Domicilio</label>
-                <input type="text" class="form-control" id="calle" name="calle">
-              </div>
-              <div class="mb-3">
-                <label for="piso" class="col-form-label">Domicilio - Piso</label>
-                <input type="text" class="form-control" id="piso" name="piso">
-              </div>
-            </div>
+            <input [(ngModel)]="itemGrilla.Nombre" type="text" formControlName="Nombre" class="form-control" id="Nombre" placeholder="Nombre">
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Crear</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="VerPersonalModal" tabindex="-1" aria-labelledby="VerPersonalModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg"> <!-- Utilizamos modal-lg para un modal más grande -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="VerPersonalModalLabel"><i class="fa-solid fa-file-lines"></i>Datos del Personal: Nombre</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="nombre" class="col-form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre">
-              </div>
-              <div class="mb-3">
-                <label for="fecha-nacimiento" class="col-form-label">Fecha de Nacimiento</label>
-                <input type="date" class="form-control" id="fecha-nacimiento" name="fecha-nacimiento">
-              </div>
-              <div class="mb-3">
-                <label for="calle" class="col-form-label">Domicilio - Calle</label>
-                <input type="text" class="form-control" id="calle" name="calle">
-              </div>
-              <div class="mb-3">
-                <label for="provincia" class="col-form-label">Provincia</label>
-                <select class="form-control" id="provincia" name="provincia">
-                  <option value="" disabled selected hidden>Seleccione...</option>
-                  <option value="localidad1">provincia 1</option>
-                  <option value="localidad2">provincia 2</option>
-                  <option value="localidad3">provincia 3</option>
-                </select>
-              </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Apellido">Apellido:</label>
             </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="apellido" class="col-form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellido" name="apellido">
-              </div>
-              <div class="mb-3">
-                <label for="telefono" class="col-form-label">Teléfono</label>
-                <input type="text" class="form-control" id="telefono" name="telefono">
-              </div>
-              <div class="mb-3">
-                <label for="numero" class="col-form-label">Domicilio - Número</label>
-                <input type="text" class="form-control" id="numero" name="numero">
-              </div>
-              <div class="mb-3">
-                <label for="localidad" class="col-form-label">Localidad</label>
-                <select class="form-control" id="localidad" name="localidad">
-                  <option value="" disabled selected hidden>Seleccione...</option>
-                  <option value="localidad1">Localidad 1</option>
-                  <option value="localidad2">Localidad 2</option>
-                  <option value="localidad3">Localidad 3</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="email" class="col-form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email">
-              </div>
-              <div class="mb-3">
-                <label for="calle" class="col-form-label">Domicilio</label>
-                <input type="text" class="form-control" id="calle" name="calle">
-              </div>
-              <div class="mb-3">
-                <label for="piso" class="col-form-label">Domicilio - Piso</label>
-                <input type="text" class="form-control" id="piso" name="piso">
-              </div>
-            </div>
+            <input [(ngModel)]="itemGrilla.Apellido" type="text" formControlName="Apellido" class="form-control" id="Apellido" placeholder="Apellido">
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Crear</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="EditarPersonalModal" tabindex="-1" aria-labelledby="EditarPersonalModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg"> <!-- Utilizamos modal-lg para un modal más grande -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="EditarPersonalModalLabel"><i class="fa-solid fa-user-pen"></i>Editar Personal</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="nombre" class="col-form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre">
-              </div>
-              <div class="mb-3">
-                <label for="fecha-nacimiento" class="col-form-label">Fecha de Nacimiento</label>
-                <input type="date" class="form-control" id="fecha-nacimiento" name="fecha-nacimiento">
-              </div>
-              <div class="mb-3">
-                <label for="calle" class="col-form-label">Domicilio - Calle</label>
-                <input type="text" class="form-control" id="calle" name="calle">
-              </div>
-              <div class="mb-3">
-                <label for="provincia" class="col-form-label">Provincia</label>
-                <select class="form-control" id="provincia" name="provincia">
-                  <option value="" disabled selected hidden>Seleccione...</option>
-                  <option value="localidad1">provincia 1</option>
-                  <option value="localidad2">provincia 2</option>
-                  <option value="localidad3">provincia 3</option>
-                </select>
-              </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Mail">Mail:</label>
             </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="apellido" class="col-form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellido" name="apellido">
-              </div>
-              <div class="mb-3">
-                <label for="telefono" class="col-form-label">Teléfono</label>
-                <input type="text" class="form-control" id="telefono" name="telefono">
-              </div>
-              <div class="mb-3">
-                <label for="numero" class="col-form-label">Domicilio - Número</label>
-                <input type="text" class="form-control" id="numero" name="numero">
-              </div>
-              <div class="mb-3">
-                <label for="localidad" class="col-form-label">Localidad</label>
-                <select class="form-control" id="localidad" name="localidad">
-                  <option value="" disabled selected hidden>Seleccione...</option>
-                  <option value="localidad1">Localidad 1</option>
-                  <option value="localidad2">Localidad 2</option>
-                  <option value="localidad3">Localidad 3</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="email" class="col-form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email">
-              </div>
-              <div class="mb-3">
-                <label for="calle" class="col-form-label">Domicilio</label>
-                <input type="text" class="form-control" id="calle" name="calle">
-              </div>
-              <div class="mb-3">
-                <label for="piso" class="col-form-label">Domicilio - Piso</label>
-                <input type="text" class="form-control" id="piso" name="piso">
-              </div>
-            </div>
+            <input [(ngModel)]="itemGrilla.Mail" type="text" formControlName="Mail" class="form-control" id="Mail" placeholder="Mail">
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Crear</button>
-      </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Telefono">Telefono</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Telefono" type="text" formControlName="Telefono" class="form-control" id="Telefono" placeholder="100">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="FechaNacimiento">Fecha Nacimiento</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.FechaNacimiento" type="date" formControlName="FechaNacimiento" class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="TipoDomicilio">Tipo domicilio</label>
+            </div>
+              <select [(ngModel)]="itemGrilla.IdTipoDomicilio" type="text" formControlName="domicilio" class="form-control" id="domicilio" placeholder="100">
+                <option [value]="undefined">Seleccione...</option>
+                <option *ngFor="let tipo of lTipoDomicilio" [value]="tipo.IdTipoDomicilio">
+                  {{ tipo.Descripcion }}
+                </option>
+              </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="TipoPersona">Tipo Persona:</label>
+            </div>
+            <select [(ngModel)]="itemGrilla.IdTipoPersona" formControlName="tipoPersona" class="form-control" id="tipoPersona">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lTipoPersona" [value]="tipo.IdTipoPersona">
+                {{ tipo.Descripcion }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Calle">Calle:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Calle" type="text" formControlName="Calle" class="form-control" id="Calle" placeholder="Calle">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Nro">Numero Calle:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Nro" type="text" formControlName="Nro" class="form-control" id="Nro" placeholder="Nro">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 8px;">
+              <label for="Piso">Piso:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Piso" type="text" formControlName="Piso" class="form-control" id="Piso" placeholder="Piso">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Provincia">Provincia:</label>
+            </div>
+            <select [(ngModel)]="itemGrilla.IdProvincia" formControlName="Provincia" class="form-control" id="Provincia">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let Provincia of lProvincia" [value]="Provincia.IdProvincia"> {{Provincia.Detalle}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Localidad">Localidad:</label>
+            </div>
+            <select [(ngModel)]="itemGrilla.IdLocalidad" formControlName="Localidad" class="form-control" id="Localidad">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lLocalidad" [value]="tipo.IdLocalidad">
+                {{ tipo.Detalle }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Documentacion">Numero documentacion:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Documentacion" type="text" formControlName="Documentacion" class="form-control" id="Documentacion" placeholder="Documentacion">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="TipoDocumentacion">Tipo Documentacion:</label>
+            </div>
+            <select [(ngModel)]="itemGrilla.IdTipoDocumentacion" formControlName="TipoDocumentacion" class="form-control" id="TipoDocumentacion">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lTipoDocumentacion" [value]="tipo.IdTipoDocumentacion">
+                {{tipo.Descripcion}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col text-right" style="margin-top: 25px;">
+          <button type="button" class="btn btn-danger" id="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+          <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
+        </div>
+      </form>
     </div>
+</ng-template>
+
+
+<ng-template #contentInhabilitar let-modal>
+  <div class="modal-header">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
-</div>
-<div class="modal fade" id="inhabilitarPersonalModal" tabindex="-1" aria-labelledby="inhabilitarPersonalModalLabel" aria-hidden="true">
+  <div class="modal-body">
+      <a></a><h4 class="">Desea Eliminar?</h4>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="inhabilitar()" >Aceptar</button>
+        </div>
+  </div>
+</ng-template>
+
+<ng-template #contentHabilitar let-modal>
+  <div class="modal-header">
+    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+  </div>
+  <div class="modal-body">
+      <a></a><h4 class="">Desea Habilitar?</h4>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="habilitar()" >Aceptar</button>
+        </div>
+  </div>
+</ng-template>
+<div class="modal fade" id="modificarUsuarioModal" tabindex="-1" aria-labelledby="modificarUsuarioModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="inhabilitarPersonalModalLabel"><i class="fa-solid fa-user-xmark"></i>Inhabilitar Personal</h1>
+        <h1 class="modal-title fs-5" id="modificarUsuarioModalLabel"><i class="fa-solid fa-user-pen"></i>Modificar Usuario</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">Personal</label>
-            <input type="text" id="rol" class="form-control">
+            <label for="recipient-name" class="col-form-label">Personal</label>
+            <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
+                <option value="" disabled selected hidden>Seleccione...</option>
+                <option value="opcion1">Opción 1</option>
+                <option value="opcion2">Opción 2</option>
+                <option value="opcion3">Opción 3</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Usuario</label>
+            <input type="text" id="Usuario" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="gestionarContrasenaModal" tabindex="-1" aria-labelledby="gestionarContrasenaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="gestionarContrasenaModalLabel"><i class="fa-solid fa-key"></i>Gestionar Contraseña</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Usuario</label>
+            <input type="text" id="Usuario" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Contraseña</label>
+            <input type="text" id="Clave" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Por favor repita la contraseña</label>
+            <input type="text" id="ClaveRepetida" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="asignarRolModal" tabindex="-1" aria-labelledby="asignarRolModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="asignarRolModalLabel"><i class="fa-solid fa-id-badge"></i>Asignar Rol/Roles</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Usuario</label>
+            <input type="text" id="Usuario" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Seleccione el Rol</label>
+            <select formControlName="listaRoles" class="form-control" id="listaRoles">
+              <option value="" disabled selected hidden>Seleccione...</option>
+              <option value="opcion1">Opción 1</option>
+              <option value="opcion2">Opción 2</option>
+              <option value="opcion3">Opción 3</option>
+            </select>
+          </div>
+          <div class="text-end"> <!-- Estilo para alinear a la derecha -->
+            <button type="button" class="btn btn-primary" id="asignarBtn">Asignar</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="asignarSucursalModal" tabindex="-1" aria-labelledby="asignarSucursalModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="asignarSucursalModalLabel">Asignar Sucursal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Sucursal</label>
+            <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
+                <option value="" disabled selected hidden>Seleccione la Sucursal</option>
+                <option value="opcion1">Opción 1</option>
+                <option value="opcion2">Opción 2</option>
+                <option value="opcion3">Opción 3</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="inhabilitarModal" tabindex="-1" aria-labelledby="inhabilitarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="inhabilitarModalLabel"><i class="fa-solid fa-user-xmark"></i>Inhabilitar Usuario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Usuario</label>
+            <input type="text" id="Usuario" class="form-control">
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Motivo</label>

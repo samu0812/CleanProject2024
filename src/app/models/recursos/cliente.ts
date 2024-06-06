@@ -1,0 +1,21 @@
+export class cliente{
+    public IdCliente: number;
+    public IdTipoPersonaSistema: number;
+    public IdTipoPersona: number;
+    public IdTipoDomicilio: number;
+    public Calle: string;
+    public Nro: string;
+    public Piso: string;
+    public IdTipoDocumentacion: number;
+    public Documentacion: string;
+    public Nombre: string;
+    public Apellido: string;
+    public Mail: string;
+    public RazonSocial: string;
+    public FechaNacimiento: string;
+    public Telefono: string;
+    public IdLocalidad: number;
+    public IdProvincia: number;
+    public FechaAlta: string;
+    public FechaBaja: string;
+}

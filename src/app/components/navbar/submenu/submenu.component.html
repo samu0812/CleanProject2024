@@ -1,8 +1,9 @@
+<app-loader [isLoading]="loading"></app-loader>
 <div class="row" style="margin: 10px;">
   <ng-container *ngFor="let menu of Menues">
     <div class="col-lg-2 col-md-3 col-sm-4" style="margin-bottom: 20px;">
       <div class="card-menu-wrapper">
-        <app-item [data]="menu"></app-item>
+        <app-item [data]="menu" [isDisabled]="menu.PoseePermiso === 0"></app-item>
       </div>
     </div>
   </ng-container>

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Productos
+import { Productos } from '../../models/recursos/productos';
 
- } from '../../models/recursos/productos';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +20,18 @@ export class StockService {
   agregar(item: Productos, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPA_Producto`;
     const body = {
-      Token: Token};
+      IdTipoMedida: item.IdTipoMedida,
+      IdTipoCategoria: item.IdTipoCategoria,
+      IdTipoProducto: item.IdTipoProducto,
+      Codigo: item.Codigo,
+      Nombre: item.Nombre,
+      Marca: item.Marca,
+      PrecioCosto: item.PrecioCosto,
+      Tamano: item.Tamano,
+      CantMinima: item.CantMinima,
+      CantMaxima: item.CantMaxima,
+      Token: Token
+    };
     return this.http.post(url, body);
   }
 
@@ -29,24 +39,37 @@ export class StockService {
     const url = `${this.apiUrl}/SPM_Producto`;
     const body = {
       IdProducto: item.IdProducto,
-      Token: Token};
-      return this.http.put(url, body);
+      IdTipoMedida: item.IdTipoMedida,
+      IdTipoCategoria: item.IdTipoCategoria,
+      IdTipoProducto: item.IdTipoProducto,
+      Codigo: item.Codigo,
+      Nombre: item.Nombre,
+      Marca: item.Marca,
+      PrecioCosto: item.PrecioCosto,
+      Tamano: item.Tamano,
+      CantMinima: item.CantMinima,
+      CantMaxima: item.CantMaxima,
+      Token: Token
+    };
+    console.log(body);
+    return this.http.put(url, body);
   }
 
   inhabilitar(item: Productos, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPB_Producto`;
     const body = {
       IdProducto: item.IdProducto,
-      Token: Token};
-      return this.http.put(url, body);
+      Token: Token
+    };
+    return this.http.put(url, body);
   }
 
   habilitar(item: Productos, Token: string): Observable<any> {
     const url = `${this.apiUrl}/SPH_Producto`;
     const body = {
       IdProducto: item.IdProducto,
-      Token: Token};
-    return this.http.put<Productos[]>(url,body);
+      Token: Token
+    };
+    return this.http.put(url, body);
   }
 }
-

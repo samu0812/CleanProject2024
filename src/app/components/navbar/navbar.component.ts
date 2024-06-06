@@ -12,8 +12,8 @@ import { Usuario } from './../../models/usuario/usuario';
 })
 export class NavbarComponent implements OnInit {
   Menues: Menu[] = [];
-  isAuthenticated: boolean = false;
   usuarioActual: Usuario | null = null;
+  loading: boolean = true;
 
   constructor(
     private router: Router, // Inyecta el Router
@@ -26,20 +26,25 @@ export class NavbarComponent implements OnInit {
   }
 
   loadMenus() {
-    this.isAuthenticated = this.authService.isAuthenticatedUser();
-    this.usuarioActual = this.authService.getUsuarioActual(); // Obtén el usuario autenticado
+    this.loading = true;
+    this.usuarioActual = this.authService.getUsuarioActual();
       const Token = localStorage.getItem('Token');
       if (Token) {
         this.menuService.getMenuItems(Token).subscribe(
           (response) => {
-            console.log(response);
             this.Menues = response.Menues;
+            this.loading = false;
           },
           (error) => {
-            console.error('Error fetching menu items:', error);
+            console.error('Error', error);
+            this.loading = false;
           }
         );
       }
-
+    
+  }
+  logout() {
+    this.loading = true;
+    this.authService.logout();
   }
 }

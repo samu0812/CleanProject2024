@@ -55,6 +55,7 @@
           "button[is]"
         ]
       }
-    ]
+    ],
+    "button-type": "off"
   }
 }

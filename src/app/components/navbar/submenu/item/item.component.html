@@ -1,14 +1,14 @@
 <div class="card-menu card text-center hover-card"
-    [ngClass]="{ 'card-menu-disabled': menu.PoseePermiso == 0 }"
-    [class.disabled]="menu.PoseePermiso == 1"
-    ngbTooltip="Módulo no permitido"
-    placement="bottom"
-    [routerLink]="menu.PathRoute"> <!-- Usando property binding para routerLink -->
+  [ngClass]="{ 'card-menu-disabled': isDisabled }"
+  [class.disabled]="isDisabled"
+  [attr.disabled]="isDisabled"
+  [routerLink]="isDisabled ? null : menu.PathRoute"
+  ngbTooltip="{{ isDisabled ? 'No posee permiso para este módulo' : '' }}"
+  placement="bottom">
+  
   <div class="card-body">
     <h5 class="card-title"><b>{{ menu.Detalle }}</b></h5>
     <!-- Agrega el atributo alt con una descripción significativa -->
-    <img class="card-icon" src="{{ menu.TipoIcono + menu.Icono }}" alt="Ícono de {{ menu.Detalle }}">
+    <img class="card-icon" [src]="menu.TipoIcono + menu.Icono" alt="Ícono de {{ menu.Detalle }}">
   </div>
 </div>
-
-
