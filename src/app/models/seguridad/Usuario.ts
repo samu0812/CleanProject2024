@@ -11,4 +11,5 @@ export class Usuario{
     public FechaBaja: string;
     public IdSucursal: number;
     public IdTipoRol: number;
+    public Descripcion: string;
   }
