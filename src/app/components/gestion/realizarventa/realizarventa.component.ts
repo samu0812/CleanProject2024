@@ -4,9 +4,10 @@ import { Menu } from './../../../models/menu/menu';
 import { TipoCategoria } from './../../../models/parametria/tipoCategoria';
 import { TipoCategoriaService } from './../../../services/parametria/tipocategoria.service';
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgIfContext } from '@angular/common';
+import { SnackbarService } from '../../../services/snackbar/snackbar.service';
 @Component({
   selector: 'app-realizarventa',
   templateUrl: './realizarventa.component.html',
@@ -28,13 +29,15 @@ export class RealizarventaComponent {
   loading: boolean = true;
   Busqueda = "";
   noData: TemplateRef<NgIfContext<boolean>>;
+  showToast: boolean = false;
+  toastTimeout: any;
 
   constructor(
     private tipoCategoriaService: TipoCategoriaService,
-    private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService
+    private alertasService: AlertasService,
+    private snackbarService: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -86,94 +89,18 @@ export class RealizarventaComponent {
     this.listar(filtro);
   }
 
-  openAgregar(content) {
-    this.tituloModal = 'Agregar';
-    this.tituloBoton = 'Agregar';
-    this.itemGrilla = Object.assign({}, new TipoCategoria());
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+  generarVenta(): void {
+    const snackbarRef = this.snackbarService.openSnackbar('Generando venta...', '', 60000);
+
+    snackbarRef.afterDismissed().subscribe(() => {
+      console.log('Snackbar cerrado');
+    });
   }
 
-  openEditar(content, item: TipoCategoria) {
-    this.tituloModal = 'Editar';
-    this.tituloBoton = 'Guardar';
-    this.itemGrilla = Object.assign({}, item);
-    this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+
+  cancelarVenta(): void {
+    this.snackbarService.openSnackbar('Venta cancelada', '', 3000);
+    console.log('Hola');
   }
 
-  openInhabilitar(contentInhabilitar, item: TipoCategoria) {
-    this.tituloModal = 'Inhabilitar';
-    this.itemGrilla = Object.assign({}, item);
-    this.modalRef = this.modalService.open(contentInhabilitar, { size: 'sm', centered: true });
-  }
-
-  openHabilitar(contentHabilitar, item: TipoCategoria) {
-    this.tituloModal = 'Habilitar';
-    this.itemGrilla = Object.assign({}, item);
-    this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
-  }
-
-  guardar(): void {
-    this.loading = true;
-    if (this.itemGrilla.IdTipoCategoria == null) {
-      this.tipoCategoriaService.agregar(this.itemGrilla, this.Token).subscribe(
-        response => {
-          this.listar(1);
-          this.modalRef.close();
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-        },
-        error => {
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false;
-        }
-      );
-    } else {
-      this.tipoCategoriaService.editar(this.itemGrilla, this.Token).subscribe(
-        response => {
-          this.listar(1);
-          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-          this.modalRef.close();
-        },
-        error => {
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false;
-        }
-      );
-    }
-  }
-
-  inhabilitar(): void {
-    this.loading = true;
-    this.tipoCategoriaService.inhabilitar(this.itemGrilla, this.Token).subscribe(
-      response => {
-        this.listar(1);
-        this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
-        this.modalRef.close();
-      },
-      response => {
-        this.loading = false;
-        this.alertasService.ErrorAlert('Error', response.error.Message);
-      }
-    );
-  }
-
-  habilitar(): void {
-    this.loading = true;
-    this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token).subscribe(
-      response => {
-        this.listar(2);
-        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
-        this.modalRef.close();
-      },
-      error => {
-        this.loading = false;
-        this.alertasService.ErrorAlert('Error', error.error.Message);
-      }
-    );
-  }
-  limpiarBusqueda(): void {
-    this.formFiltro.get('busqueda').setValue('');
-  }
-  cambiarPagina(event): void {
-    this.paginaActual = event;
-  }
 }

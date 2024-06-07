@@ -1,6 +1,6 @@
 import { Component , OnInit, Input } from '@angular/core';
 import { ProveedorService } from '../../../services/recursos/proveedor.service';
-import { Proveedor } from '../../../models/recursos/proveedor'
+import { Proveedor } from '../../../models/recursos/proveedor';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';

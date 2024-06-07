@@ -65,7 +65,8 @@ export class StockComponent {
        CantMinima: new FormControl('', [Validators.required]),
        tipoMedida: new FormControl('', [Validators.required]),
        tipoCategoria:new FormControl('', [Validators.required]),
-       tipoProducto: new FormControl('', [Validators.required])
+       tipoProducto: new FormControl('', [Validators.required]),
+       proveedor: new FormControl('', [Validators.required])
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -94,6 +95,10 @@ export class StockComponent {
     });
     this.tipoproductoService.listar(1).subscribe(data => {
       this.lTipoProducto = data.TipoProducto;
+    });
+    this.proveedorService.listar(1).subscribe(data => {
+      this.lProveedor = data.Proveedores;
+      console.log(data, "prvvvv");
     });
   }
   

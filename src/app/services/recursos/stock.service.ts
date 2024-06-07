@@ -25,6 +25,7 @@ export class StockService {
       IdTipoProducto: item.IdTipoProducto,
       Codigo: item.Codigo,
       Nombre: item.Nombre,
+      IdPersona: item.IdPersona,
       Marca: item.Marca,
       PrecioCosto: item.PrecioCosto,
       Tamano: item.Tamano,
@@ -32,6 +33,9 @@ export class StockService {
       CantMaxima: item.CantMaxima,
       Token: Token
     };
+    
+    console.log(body);
+    
     return this.http.post(url, body);
   }
 
@@ -44,6 +48,7 @@ export class StockService {
       IdTipoProducto: item.IdTipoProducto,
       Codigo: item.Codigo,
       Nombre: item.Nombre,
+      IdPersona: item.IdPersona,
       Marca: item.Marca,
       PrecioCosto: item.PrecioCosto,
       Tamano: item.Tamano,

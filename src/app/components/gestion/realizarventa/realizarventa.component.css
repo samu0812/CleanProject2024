@@ -19,7 +19,7 @@
     border-radius: 50px;
     justify-content: center;
   }
-  
+
   .title-menu {
     display: inline-flex;
     justify-content: center;
@@ -49,30 +49,14 @@
       border-radius: 10px;
     }
     
-    .footer {
-      margin-top: 20px;
-      background-color: #f8f8f8;
-      padding: 20px;
-      text-align: center;
-      color: #666;
-    }
-    
     
     .form-group {
       margin-bottom: 0;
     }
-    
-
-    
-    .btn-add-right{
-      position: absolute;
-      right: 0;
-      margin-right: 10px;
-    }
     .registros {
       overflow-y: auto; /* Agrega desplazamiento vertical si los registros son demasiado largos */
      /* Ocupa todo el espacio disponible dentro del contenedor modal-content */
-    
+
     }
     .thead, th{
       background-color:#464343;
@@ -80,39 +64,12 @@
       color: rgb(255, 255, 255);
     }
     /* Estilos CSS para el menú desplegable */
-    .dropdown {
-      position: relative; /* Establece la posición relativa para posicionar el menú */
-    }
-    
-    .dropdown-menu {
-      right: 0; /* Alinea el menú a la derecha del botón */
-      top: 100%; /* Coloca el menú debajo del botón */
-      z-index: 10;
-      position: fixed; /* Cambia la posición a fixed */
-      color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
-    }  
-    
-    .dropdown button{
-      background-color: rgb(31, 31, 95);
-      border-color: rgb(31, 31, 95);
-      width: 50px;
-      height: 30px;
-      font-size: 12px;
-      padding: 5px; /* Relleno */
-    }
-    
     
     tbody td {
       text-align: center;
       margin-top: auto;
     }
-    .dropdown-item i {
-      margin-right: 10px; /* Adjust the value for desired spacing */
-      color: rgb(31, 31, 95);
-    }
-    .dropdown-item {
-      color: rgb(31, 31, 95);
-    }
+
     
   
     .button-icon {
@@ -137,19 +94,16 @@
       min-height: 400px;
       display: grid;
       border-color: #464343;
+      margin-bottom: 30px;
     }
     .hide-column {
       display: none;
-    }
-    .scroll-table {
-        overflow-y: auto;
-        max-height: 450px;
     }
     
   .table {
       min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
       margin-bottom: 0; 
-      width: 100%; /* Elimina el margen inferior de la tabla */
+      width: 100%; /* Elimina el margen inferior de la tabla */      
   }
   /* Estilos adicionales según sea necesario */
   
@@ -244,33 +198,15 @@
   #datosVenta{
     margin-bottom: 20px;
   }
-  .scroll-table::-webkit-scrollbar {
-    width: 10px; /* Ancho del scrollbar */
-  }
-  
-  .scroll-table::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Color del track del scrollbar */
-    border-radius: 10px; /* Bordes redondeados del track */
-  }
-  
-  .scroll-table::-webkit-scrollbar-thumb {
-    background: #464343; /* Color del thumb del scrollbar */
-    border-radius: 10px; /* Bordes redondeados del thumb */
-  }
-  
-  .scroll-table::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color del thumb del scrollbar al pasar el mouse */
-  }
-  
-  .scroll-table::-webkit-scrollbar-thumb:active {
-    background: #333; /* Color del thumb del scrollbar al hacer clic */
-  }
 #btnGenerarVenta  {
     text-align: center;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
     box-sizing: border-box; /* Incluye el padding y el borde en el tamaño total del botón */
+    background: #FF8C00; /* Color de fondo */
+    border-color: #FF8C00; /* Color de fondo */
+    background-color: #FF8C00; /* Color de fondo */
 }
 .input-group .input-group-append .btn {
     border-radius: 0 0.25rem 0.25rem 0;
@@ -284,18 +220,13 @@
     white-space: nowrap; /* Asegura que el texto del botón no se envuelva */
   }
   
-  .total-venta {
-    display: inline-block;
-    background: #FF8C00; /* Color de fondo */
-    padding: 5px 20px; /* Espacio interno reducido */
-    border-radius: 10px; /* Bordes redondeados */
-}
-
-.total-venta h3 {
-    margin-bottom: 0; /* Elimina el margen inferior */
-    color: white; /* Color de texto */
-}
-
+  h3.mb-0 {
+    margin-bottom: 0;
+    color: rgb(31, 31, 95); /* Color opcional para "Total Venta" */
+    padding: 5px 50px; /* Espacio interno reducido */
+    align-items: center; /* Alinea los elementos hijos verticalmente */
+    border-radius: 50px;
+  }
   
   #btnImprimir{
     margin-top: 18px;
@@ -304,3 +235,75 @@
     align-items: center;
     justify-content: center;
   }
+  .card-header{
+    background: #FF8C00; /* Color de fondo */
+
+  }
+  .thead th {
+    background-color: #464343;
+    text-align: center;
+    color: rgb(255, 255, 255);
+  }
+  
+  /* Redondear el primer th */
+  .thead th:first-child {
+    border-top-left-radius: 10px; /* Ajusta el valor según lo necesario */
+    border-bottom-left-radius: 10px;
+  }
+  
+  /* Redondear el último th */
+  .thead th:last-child {
+    border-top-right-radius: 10px; /* Ajusta el valor según lo necesario */
+    border-bottom-right-radius: 10px;
+  }
+  
+  
+  .scroll-table {
+    overflow-y: auto;
+    max-height: 600px;
+  }
+  
+  .scroll-table::-webkit-scrollbar {
+    width: 10px; /* Ancho del scrollbar */
+  }
+  
+  .scroll-table::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color del track del scrollbar */
+    /* Elimina los bordes redondeados del track */
+    border-radius: 0;
+  }
+  
+  .scroll-table::-webkit-scrollbar-thumb {
+    background: #635959; /* Color del thumb del scrollbar */
+    /* Elimina los bordes redondeados del thumb */
+    border-radius: 0;
+  }
+  
+  .scroll-table::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color del thumb del scrollbar al pasar el mouse */
+  }
+  
+  .scroll-table::-webkit-scrollbar-thumb:active {
+    background: #333; /* Color del thumb del scrollbar al hacer clic */
+  }
+  .toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+  }
+  
+  .toast {
+    background-color: #343a40;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .toast button {
+    margin-left: 10px;
+  }
+  
