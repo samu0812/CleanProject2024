@@ -63,12 +63,8 @@ export class ClienteService {
   }
 
   inhabilitar(item: cliente , Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/clientes`;
-    const body = {
-      IdCliente: item.IdCliente,
-      Token: Token
-    };
-    return this.http.put(url, body);
+    const url = `${this.apiUrl}/recursos/clientes?IdCliente=${item.IdCliente}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
   habilitar(item: cliente): Observable<any> {

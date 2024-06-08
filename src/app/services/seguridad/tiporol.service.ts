@@ -17,7 +17,7 @@ export class TiporolService {
   }
 
   agregar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/tiporol`;
+    const url = `${this.apiUrl}/seguridad/tiporoles`;
     const body = {
       Descripcion: item.Descripcion,
       Token: Token};
@@ -25,7 +25,7 @@ export class TiporolService {
   }
 
   editar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/tiporol`;
+    const url = `${this.apiUrl}/seguridad/tiporoles`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       Descripcion: item.Descripcion,
@@ -34,14 +34,11 @@ export class TiporolService {
   }
 
   inhabilitar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/tiporol`;
-    const body = {
-      IdTipoRol: item.IdTipoRol,
-      Token: Token};
-      return this.http.put(url, body);
+    const url = `${this.apiUrl}/seguridad/tiporoles?IdTipoRol=${item.IdTipoRol}&Token=${Token}`;
+    return this.http.delete(url);
   }
   habilitar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/tiporol`;
+    const url = `${this.apiUrl}/seguridad/tiporoles`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       Token: Token};

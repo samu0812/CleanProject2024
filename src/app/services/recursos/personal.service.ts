@@ -67,12 +67,8 @@ export class PersonalService {
   }
 
   inhabilitar(item: Personal , Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/personal`;
-    const body = {
-      IdPersona: item.IdPersona,
-      Token: Token
-    };
-    return this.http.put(url, body);
+    const url = `${this.apiUrl}/recursos/personal?IdPersona=${item.IdPersona}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
   habilitar(item: Personal,Token: string): Observable<any> {

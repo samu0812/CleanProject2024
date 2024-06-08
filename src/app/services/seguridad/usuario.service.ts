@@ -20,7 +20,7 @@ export class UsuarioService {
 
 
   agregar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuario`;
+    const url = `${this.apiUrl}/seguridad/usuarios`;
     const body = {
       IdPersona: item.IdPersona,
       Usuario: item.Usuario,
@@ -30,7 +30,7 @@ export class UsuarioService {
   }
 
   editar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuario`;
+    const url = `${this.apiUrl}/seguridad/usuarios`;
     const body = {
       IdUsuario: item.IdUsuario,
       NuevoUsuario: item.Usuario,
@@ -45,7 +45,7 @@ export class UsuarioService {
   }
 
   agregarRolUsuario(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuario/rol`;
+    const url = `${this.apiUrl}/seguridad/usuarios/rol`;
     const body = {
       IdUsuario: item.IdUsuario,
       IdRol: item.IdTipoRol,
@@ -54,21 +54,17 @@ export class UsuarioService {
   }
 
   listarUsuariosRol(IdUsuario: number): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuario/rol?IdUsuario=${IdUsuario}`;
+    const url = `${this.apiUrl}/seguridad/usuarios/rol?IdUsuario=${IdUsuario}`;
     return this.http.get(url);
   }
 
   eliminarUsuarioRol(item: any, Token: string): Observable<any> {
-    console.log(item);
-    const url = `${this.apiUrl}/seguridad/usuario/rol`;
-    const body = {
-      IdUsuarioRol: item.IdUsuarioRol,
-      Token: Token};
-      return this.http.put(url, body);
+    const url = `${this.apiUrl}/seguridad/usuarios?IdUsuarioRol=${item.IdUsuarioRol}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
   modificarUsuarioSucursal(IdUsuario: number, IdSucursal: number, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuario/sucursal`;
+    const url = `${this.apiUrl}/seguridad/usuarios/sucursal`;
     const body = {
       IdUsuario: IdUsuario,
       IdSucursal: IdSucursal,
@@ -77,11 +73,8 @@ export class UsuarioService {
   }
 
   inhabilitar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuario`;
-    const body = {
-      IdUsuario: item.IdUsuario,
-      Token: Token};
-      return this.http.put(url, body);
+    const url = `${this.apiUrl}/seguridad/usuarios?IdUsuario=${item.IdUsuario}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
 }

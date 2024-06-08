@@ -34,11 +34,8 @@ export class TipoCategoriaService {
   }
 
   inhabilitar(item: TipoCategoria, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/parametria/tipocategoria`;
-    const body = {
-      IdTipoCategoria: item.IdTipoCategoria,
-      Token: Token};
-      return this.http.put(url, body);
+    const url = `${this.apiUrl}/parametria/tipocategoria?IdTipoCategoria=${item.IdTipoCategoria}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
   habilitar(item: TipoCategoria, Token: string): Observable<any> {

@@ -45,12 +45,8 @@ export class TiposucursalService {
   }
 
   inhabilitar(item: Sucursales, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/parametria/sucursal`;
-    const body = {
-      IdSucursal: item.IdSucursal,
-      Token: Token
-    };
-    return this.http.put(url, body);
+    const url = `${this.apiUrl}/parametria/sucursal?IdSucursal=${item.IdSucursal}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
   habilitar(item: Sucursales, Token: string): Observable<any> {
