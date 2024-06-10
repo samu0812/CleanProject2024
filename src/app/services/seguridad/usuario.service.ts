@@ -11,7 +11,7 @@ export class UsuarioService {
   private apiUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) { }
-
+ 
 
   listar(TipoLista: number): Observable<any> {
     const url = `${this.apiUrl}/SPL_Usuarios?TipoLista=${TipoLista}`;
@@ -29,14 +29,15 @@ export class UsuarioService {
     return this.http.post(url, body);
   }
 
-  editar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuario`;
+  editar(usuario: Usuario, token: string): Observable<any> {
+    const url = `${this.apiUrl}/SPM_Usuarios`;
     const body = {
-      IdUsuario: item.IdUsuario,
-      NuevoUsuario: item.Usuario,
-      NuevaClave: item.Clave,
-      Token: Token};
-      return this.http.put(url, body);
+      IdUsuario: usuario.IdUsuario,
+      NuevoUsuario: usuario.Usuario,
+      NuevaClave: usuario.Clave,
+      Token: token
+    };
+    return this.http.put(url, body);
   }
 
   listarPersonas(): Observable<any> {
