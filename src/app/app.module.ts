@@ -61,6 +61,10 @@ import { AccesoComponent } from './components/acceso/acceso.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoaderComponent } from './components/loader/loader.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatCardModule } from '@angular/material/card';
+import { BaseChartDirective } from 'ng2-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 
 @NgModule({
@@ -127,7 +131,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule,
     NgxPaginationModule,
     NgbModule,
-
+    MatCardModule,
+    BaseChartDirective,
+    NgxChartsModule
   ],
   providers: [
     provideClientHydration(),
