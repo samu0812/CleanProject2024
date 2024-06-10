@@ -9,7 +9,7 @@
           <a style="margin-left: 5px;">Realizar Venta</a>
         </h4>
       </div>
-      <div class="row mt-3 justify-content-end"> <!-- Alineamos los elementos a la derecha -->
+      <div class="row mt-3 justify-content-end">
         <div class="col-md-3">
           <label for="busqueda"><i class="fa-solid fa-barcode"></i> Código de barras: </label>
           <div class="input-group">
@@ -39,37 +39,39 @@
         </div>
       </div>
     </form>
-
-
     <div class="row mt-3">
       <div class="col-md-9" id="tablaVenta">
-        <div class="registros" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
+        <div class="registros">
           <div class="table-responsive">
             <div class="scroll-table">
-              <ng-container
-                *ngIf="(listaGrilla | busqueda:Busqueda:'IdTipoCategoria':'Descripcion').length > 0; else noResults">
+              <ng-container>
                 <table class="table">
                   <thead class="thead-dark">
                     <tr>
-                      <th scope="col">Nro</th>
+                      <th scope="col" class="hide-column">Nro</th>
                       <th scope="col">Código</th>
                       <th scope="col">Producto</th>
-                      <th scope="col">Precio Unitario</th>
-                      <th scope="col">Cantidad</th>
-                      <th scope="col">Precio por cantidad</th>
+                      <th scope="col">Marca</th>
+                      <th scope="col" class="th-short">Medida/tamaño</th>
+                      <th scope="col">Precio $</th>
+                      <th scope="col" class="th-short">Cantidad</th>
+                      <th scope="col">Precio p/cant.</th>
                       <th scope="col">Acción</th>
                     </tr>
                   </thead>
                   <tbody class="tablaUser">
-                    <tr
-                      *ngFor="let item of listaGrilla | busqueda:Busqueda:'IdTipoCategoria':'Descripcion'; let i = index">
-                      <td scope="col">{{ item.IdTipoCategoria }}</td>
+                    <tr>
+                      <td scope="col" class="hide-column">1AAAA</td>
                       <td scope="col">111111</td>
-                      <td scope="col">{{ item.Descripcion }}</td>
+                      <td scope="col">Detergenteeeeeeeeeeee asdasdasdasasdsadasd</td>
+                      <td scope="col">Ariel</td>
+                      <td scope="col" class="td-short">1 litro</td>
                       <td scope="col">1000</td>
-                      <td scope="col">
-                        <input type="number" formControlName="cantidad" [(ngModel)]="item.Cantidad" class="form-control"
-                          placeholder="Cantidad">
+                      <td scope="col" class="td-short">
+                        <div class="input-group input-group-sm mb-3">
+                          <input type="number" formControlName="cantidad" class="form-control cantidad-input"
+                            placeholder="Cantidad">
+                        </div>
                       </td>
                       <td scope="col">2000</td>
                       <td scope="col">
@@ -103,55 +105,55 @@
           <div class="card-body p-2">
             <!-- SELECCIONAR TIPO DE DOCUMENTO -->
             <div class="form-group mb-2">
-              <label class="col-form-label" for="selDocumentoVenta">
+              <label class="col-form-label">
                 <i class="fas fa-file-alt fs-6"></i>
                 <span class="small"> Documento</span><span class="text-danger">*</span>
               </label>
-              <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selDocumentoVenta"
-                name="documento">
-                <option value="0" selected disabled id="defaultOption">Seleccione Documento</option>
+              <select class="form-select form-select-sm" formControlName="tipoDocumento">
+                <option selected disabled>Seleccione Documento</option>
+                <option *ngFor="let tipoFactura of lTipoFacturas" [value]="tipoFactura.IdTipoFactura">
+                  {{ tipoFactura.Descripcion }}
+                </option>
               </select>
-              <span id="validate_categoria" class="text-danger small fst-italic" style="display:none">
-                Debe Seleccione documento
-              </span>
             </div>
             <!-- SELECCIONAR TIPO DE PAGO -->
             <div class="form-group mb-2">
-              <label class="col-form-label" for="selCategoriaReg">
+              <label class="col-form-label">
                 <i class="fas fa-money-bill-alt fs-6"></i>
                 <span class="small"> Forma de Pago</span><span class="text-danger">*</span>
               </label>
-              <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selTipoPago">
-                <option value="" selected disabled id="defaultOption">Seleccione Forma de Pago</option>
+              <select class="form-select form-select-sm" formControlName="formaDePago">
+                <option selected disabled>Seleccione Forma de Pago</option>
+                <option *ngFor="let formaPago of lFormaDePago" [value]="formaPago.IdTipoFormaDePago">
+                  {{ formaPago.Descripcion }}
+                </option>
               </select>
-            </div>
-            <!-- SERIE Y NRO DE BOLETA -->
-            <div class="form-group">
-              <div class="row">
-                <div class="col-md-8">
-                  <label for="iptNroVenta">Nro Venta</label>
-                  <input type="text" min="1" name="iptEfectivo" id="iptNroVenta" class="form-control form-control-sm"
-                    placeholder="Nro Venta" disabled>
-                </div>
-              </div>
             </div>
             <!-- INPUT DE EFECTIVO ENTREGADO -->
             <div class="form-group">
-              <label for="iptEfectivoRecibido">Monto recibido</label>
-              <input type="number" min="0" name="iptEfectivo" id="iptEfectivoRecibido"
-                class="form-control form-control-sm" placeholder="Cantidad de efectivo recibida">
+              <label>Monto recibido</label>
+              <input type="number" min="0" class="form-control form-control-sm"
+                placeholder="Cantidad de efectivo recibida">
             </div>
             <!-- INPUT CHECK DE EFECTIVO EXACTO -->
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="chkEfectivoExacto">
-              <label class="form-check-label" for="chkEfectivoExacto">
+              <input class="form-check-input" type="checkbox">
+              <label class="form-check-label">
                 Monto Exacto
               </label>
             </div>
             <div class="form-group">
-              <label for="iptagregarDescuento">Agregar Descuento</label>
-              <input type="number" min="0" name="iptDescuento" id="iptagregarDescuento"
-                class="form-control form-control-sm" placeholder="Agregar Descuento">
+              <label for="iptagregarDescuento">Descuento:</label>
+              <input type="number" min="0" class="form-control form-control-sm" placeholder="Agregar Descuento">
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <p><strong>Subtotal: S./ </strong><span id="subtotalVenta">0.00</span></p>
+                <p><strong>Descuentos: S./ </strong><span id="descuentosVenta">0.00</span></p>
+                <p><strong>Vuelto: S./ </strong><span id="vueltoVenta">0.00</span></p>
+                <p><strong>Total: S./ </strong><span id="totalVentaFinal">0.00</span></p>
+              </div>
             </div>
             <div class="row">
               <div class="col-md-12 d-flex justify-content-between align-items-end">
@@ -159,7 +161,7 @@
                   <i class="fa-solid fa-cart-shopping"></i>
                   Generar Venta
                 </button>
-                <button type="button" class="btn btn-primary" id="btnImprimir">
+                <button type="button" class="btn btn-primary" (click)="imprimirTicketPDF()" id="btnImprimir">
                   <i class="fa-solid fa-print"></i>
                 </button>
               </div>
@@ -169,3 +171,4 @@
       </div>
     </div>
   </div>
+</div>

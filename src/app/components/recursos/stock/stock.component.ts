@@ -98,7 +98,6 @@ export class StockComponent {
     });
     this.proveedorService.listar(1).subscribe(data => {
       this.lProveedor = data.Proveedores;
-      console.log(data, "prvvvv");
     });
   }
   
@@ -114,8 +113,6 @@ export class StockComponent {
       response => {
         this.itemGrilla = new Productos();
         this.listaGrilla = response.Productos || [];
-        console.log(response.Productos);
-        console.log(response);
         this.loading = false;
       },
       error => {

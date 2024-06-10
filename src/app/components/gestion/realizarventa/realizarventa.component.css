@@ -306,4 +306,21 @@
   .toast button {
     margin-left: 10px;
   }
+  .th-short {
+    width: 50px; /* ajusta este valor según tu preferencia */
+  }
+  .td-short {
+    width: 200px; /* ajusta este valor según tu preferencia */
+  }
+  .table tbody td {
+    height: 80px; /* Ajusta este valor según tu preferencia */
+    margin-top: 3px;
+    vertical-align: middle;
+  }
+  .cantidad-input {
+    margin-top: 18px;
+    width: 40px;
+    height: 30px; 
+    padding: 5px; 
+  }
   
