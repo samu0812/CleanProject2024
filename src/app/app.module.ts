@@ -64,10 +64,11 @@ import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
 import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
 import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
 import { BusquedaNombreApellidoDniPipe } from './components/busqueda/busquedaPersonal.pipe';
-import { ToastrModule } from 'ngx-toastr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { MatButtonModule } from '@angular/material/button';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 @NgModule({
   declarations: [
@@ -121,6 +122,7 @@ import { MatButtonModule } from '@angular/material/button';
     RealizarventaComponent,
     BusquedaNombreApellidoDniPipe,
     SnackbarComponent,
+    
 
   ],
   imports: [
@@ -140,9 +142,11 @@ import { MatButtonModule } from '@angular/material/button';
     NgxPaginationModule,
     NgbModule,
     NgbTooltipModule,
-    ToastrModule,
     MatSnackBarModule,
-    MatButtonModule
+    MatButtonModule,
+    NgxChartsModule 
+
+    
   ],
   providers: [
     provideClientHydration(),
