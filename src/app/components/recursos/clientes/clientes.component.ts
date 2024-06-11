@@ -164,7 +164,7 @@ export class ClientesComponent implements OnInit {
   guardar(): void {
     this.loading = true;
     if (this.itemGrilla.IdCliente == null) {
-      this.ClienteService.agregar(this.itemGrilla).subscribe(
+      this.ClienteService.agregar(this.itemGrilla, this.Token).subscribe(
         response => {
           this.loading = false;
           this.listar(1);
@@ -179,7 +179,7 @@ export class ClientesComponent implements OnInit {
       );
     } else {
       console.log(this.itemGrilla);
-      this.ClienteService.editar(this.itemGrilla).subscribe(
+      this.ClienteService.editar(this.itemGrilla, this.Token).subscribe(
         response => {
           this.loading = false;
           this.listar(1);
@@ -214,7 +214,7 @@ export class ClientesComponent implements OnInit {
   habilitar(): void {
     // console.log(this.itemGrilla,'------' ,this.Token);
     this.loading = true;
-    this.ClienteService.habilitar(this.itemGrilla).subscribe(
+    this.ClienteService.habilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(2);
         this.loading = false;

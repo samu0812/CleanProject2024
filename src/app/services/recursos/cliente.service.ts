@@ -16,7 +16,7 @@ export class ClienteService {
     return this.http.get(url);
   }
 
-  agregar(item: cliente): Observable<any> {
+  agregar(item: cliente, Token: string): Observable<any> {
     const url = `${this.apiUrl}/recursos/clientes`;
     const body = {
       IdTipoPersona: item.IdTipoPersona,
@@ -34,11 +34,12 @@ export class ClienteService {
       FechaNacimiento: item.FechaNacimiento,
       Telefono: item.Telefono,
       IdProvincia: item.IdProvincia,
+      Token: Token
     };
     return this.http.post(url, body);
   }
 
-  editar(item: cliente): Observable<any> {
+  editar(item: cliente, Token: string): Observable<any> {
     const url = `${this.apiUrl}/recursos/clientes`;
     const body = {
       IdCliente: item.IdCliente,
@@ -57,6 +58,7 @@ export class ClienteService {
       FechaNacimiento: item.FechaNacimiento,
       Telefono: item.Telefono,
       IdProvincia: item.IdProvincia,
+      Token:Token
     };
     console.log(body);
     return this.http.put(url, body);
@@ -67,10 +69,11 @@ export class ClienteService {
     return this.http.delete(url);
   }
 
-  habilitar(item: cliente): Observable<any> {
-    const url = `${this.apiUrl}/recursos/clientes`;
+  habilitar(item: cliente, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/recursos/clientes/habilitar`;
     const body = {
       IdCliente: item.IdCliente,
+      Token:Token
     };
     return this.http.put(url, body);
   }

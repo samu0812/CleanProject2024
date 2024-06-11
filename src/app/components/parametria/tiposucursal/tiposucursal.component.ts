@@ -106,11 +106,7 @@ export class TiposucursalComponent {
     this.modalRef = this.modalService.open(contentInhabilitar, { size: 'sm', centered: true });
   }
 
-  openHabilitar(contentHabilitar, item: Sucursales) {
-    this.tituloModal = "Habilitar";
-    this.itemGrilla = Object.assign({}, item);
-    this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
-  }
+
 
   guardar(): void {
     this.loading = true;
@@ -151,18 +147,6 @@ export class TiposucursalComponent {
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
         this.loading = false;
-      });
-  }
-
-  habilitar(): void {
-    this.loading = true;
-    this.tiposucursalService.habilitar(this.itemGrilla, this.Token)
-      .subscribe(response => {
-        this.listar(2);
-        this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
-        this.modalRef.close();
-      }, error => {
-        this.alertasService.ErrorAlert('Error', error.error.Message);
       });
   }
   limpiarBusqueda(): void {

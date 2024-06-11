@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { Usuario } from '../../../models/seguridad/Usuario';
 import { UsuarioService } from '../../../services/seguridad/usuario.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +10,7 @@ import { Sucursales } from '../../../models/parametria/tiposucursal';
 import { TiposucursalService } from '../../../services/parametria/tiposucursal.service';
 import { TipoRol } from '../../../models/seguridad/TipoRol';
 import { TiporolService } from '../../../services/seguridad/tiporol.service';
+import { NgIfContext } from '@angular/common';
 
 @Component({
   selector: 'app-usuarios',
@@ -34,6 +35,11 @@ export class UsuariosComponent implements OnInit {
   lRolesUsuario: any[] = [];
   rolesUsuario: Usuario;
   rol:TipoRol;
+  paginaActual = 1;
+  elementosPorPagina = 10;
+  loading: boolean = true;
+  busquedausuarios = "";
+  noData: TemplateRef<NgIfContext<boolean>>;
 
   constructor(
     private UsuarioService: UsuarioService,
@@ -63,15 +69,20 @@ export class UsuariosComponent implements OnInit {
     });
 
     this.formFiltro = this.formBuilder.group({
-      idFiltro: new FormControl('1', [Validators.required]) // Default value set to 1
+      idFiltro: new FormControl('1', [Validators.required]),
+      busquedausuarios: new FormControl('') // Control de búsqueda
     });
 
-    this.listar(1); // Initially list only enabled items
+    this.listar(1);
 
-    // Listen for changes in the filter and update the list accordingly
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
     });
+
+    this.formFiltro.get('busquedausuarios').valueChanges.subscribe(value => {
+      this.busquedausuarios = value;
+    });
+
   }
 
   obtenerImgMenu() {
@@ -236,5 +247,12 @@ export class UsuariosComponent implements OnInit {
           this.alertasService.ErrorAlert('Error', 'Ocurrió un error al eliminar el usuario');
         }
       });
+  }
+  
+  limpiarBusqueda(): void {
+    this.formFiltro.get('busquedausuarios').setValue('');
+  }
+  cambiarPagina(event): void {
+    this.paginaActual = event;
   }
 }

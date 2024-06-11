@@ -40,7 +40,7 @@ export class TipoformadepagoService {
   }
 
   habilitar(item: TipoFormaDePago, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/parametria/tipoformadepago`;
+    const url = `${this.apiUrl}/parametria/tipoformadepago/habilitar`;
     const body = {
       IdTipoFormaDePago: item.IdTipoFormaDePago,
       Token: Token};

@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef } from '@angular/core';
+import { NgIfContext } from '@angular/common';
 import { TipoRol } from '../../../models/seguridad/TipoRol';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TiporolService } from '../../../services/seguridad/tiporol.service';
@@ -24,6 +25,11 @@ export class TiporolesComponent {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
+  paginaActual = 1;
+  elementosPorPagina = 10;
+  loading: boolean = true;
+  Busqueda = "";
+  noData: TemplateRef<NgIfContext<boolean>>;
 
 
   constructor(private TiporolService: TiporolService,
@@ -41,17 +47,24 @@ export class TiporolesComponent {
     });
 
     this.formFiltro = this.formBuilder.group({
-      idFiltro: new FormControl('1', [Validators.required]) // Default value set to 1
+      idFiltro: new FormControl('1', [Validators.required]),
+      busqueda: new FormControl('') // Control de búsqueda
     });
 
-    // Listen for changes in the filter and update the list accordingly
+    this.listar(1);
+
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
     });
+
+    this.formFiltro.get('busqueda').valueChanges.subscribe(value => {
+      this.Busqueda = value;
+    });
+
   }
   
   obtenerImgMenu(){
-    this.imagenService.getImagenSubMenu('/parametria/tipocategoria').subscribe(data => {
+    this.imagenService.getImagenSubMenu('/seguridad/tiporoles').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
     });
   }
@@ -143,5 +156,12 @@ export class TiporolesComponent {
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
       });
+  }
+
+  limpiarBusqueda(): void {
+    this.formFiltro.get('busqueda').setValue('');
+  }
+  cambiarPagina(event): void {
+    this.paginaActual = event;
   }
 }
