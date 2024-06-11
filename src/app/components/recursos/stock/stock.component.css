@@ -161,7 +161,6 @@
 }
 
 
-/*modalessss*/
 #btnGuardar{
   background-color: rgb(31, 31, 95);
   border-color: rgb(31, 31, 95);
@@ -260,6 +259,11 @@
   margin-top: 0;
   margin-bottom: 0;
 }
+
+.table-hover tr.selected {
+  background-color: orange;
+}
+
 
 /* Media query para pantallas pequeñas */
 @media screen and (max-width: 768px) {
