@@ -6,7 +6,7 @@
         <a>
           <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
         </a>
-        <a style="margin-left: 5px;">Categoría</a>
+        <a style="margin-left: 5px;">Personal</a>
       </h4>
     </div>
     <div class="row mt-3">
@@ -41,11 +41,10 @@
     <div class="table-responsive">
       <div class="scroll-table">
         <ng-container
-          *ngIf="(listaGrilla | busquedaPersonal:formFiltro.get('busquedaPersonal').value:'Nombre':'Apellido').length > 0; else noResults">
+          *ngIf="(listaGrilla | busquedaPersonal:busquedaPersonal:'Nombre':'Apellido':'Documentacion':'RazonSocial').length > 0; else noResults">
           <table class="table">
             <thead class="thead-dark">
               <tr>
-                <th scope="col"></th> <!-- Ver -->
                 <th scope="col">Nro</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Documentacion</th>
@@ -62,7 +61,7 @@
             </thead>
             <tbody class="tablaUser">
               <tr
-                *ngFor="let item of listaGrilla | busquedaPersonal:formFiltro.get('busquedaPersonal').value:'Nombre':'Apellido' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
+                *ngFor="let item of listaGrilla | busquedaPersonal:busquedaPersonal:'Nombre':'Apellido':'Documentacion':'RazonSocial' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
                 <td scope="col">{{ item.IdPersona }}</td>
                 <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
                 <td scope="col">{{ item.Documentacion }}</td>
@@ -74,7 +73,6 @@
                 <td scope="col">{{ item.Calle }}</td>
                 <td scope="col">{{ item.Nro }}</td>
                 <td scope="col">{{ item.Piso }}</td>
-
                 <td scope="col" class="dropdown">
                   <!-- Botón de acción con menú desplegable -->
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -107,7 +105,6 @@
             </tbody>
           </table>
         </ng-container>
-
         <ng-template #noResults>
           <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
             No se encontraron resultados.

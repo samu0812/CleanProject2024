@@ -216,3 +216,61 @@
   border-color: #ffd690;
 
 }
+
+.modal-body .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-body .col-md-3 {
+  padding: 5px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-input {
+  margin-right: 10px;
+}
+
+
+.input-short {
+  width: 100px; /* Ajusta este valor según sea necesario */
+}
+
+.checkbox-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.checkbox-column {
+  flex: 1;
+  max-width: 25%; /* Esto asegurará que haya 4 columnas */
+  box-sizing: border-box;
+}
+
+.checkbox-item {
+  width: 100%;
+  margin-bottom: 1px; /* Espacio entre los elementos */
+}
+
+.form-check-input {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Media query para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+  .checkbox-column {
+    max-width: 50%; /* Mostrar 2 columnas en pantallas pequeñas */
+  }
+}
+
+/* Media query para pantallas extra pequeñas */
+@media screen and (max-width: 576px) {
+  .checkbox-column {
+    max-width: 100%; /* Mostrar 1 columna en pantallas extra pequeñas */
+  }
+}

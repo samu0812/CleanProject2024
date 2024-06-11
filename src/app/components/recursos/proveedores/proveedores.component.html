@@ -21,19 +21,20 @@
             </select>
           </div>
           <div class="col-md-4">
-            <label for="equipo">Proveedor:</label>
+            <label for="busquedaPersonal">Buscar:</label>
             <div class="input-group">
-              <input type="text" formControlName="equipo" class="form-control" id="equipo" placeholder="Equipo">
+              <input type="text" formControlName="busquedaPersonal" class="form-control" id="busquedaPersonal" placeholder="Buscar...">
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Buscar</button>
-                <button class="btn btn-outline-secondary" type="button">Limpiar</button>
+                <button type="button" class="btn btn-secondary" (click)="limpiarBusqueda()" style="margin-left: 5px;"
+                  id="btnBusqueda"><i class="fa-solid fa-eraser"></i></button>
               </div>
             </div>
           </div>
-  
+    
           <div class="col-md-5 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
             <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
-              <i class="fa-solid fa-user-plus button-icon"></i>Crear Proveedor
+              <i class="fa-solid fa-circle-plus"></i>
+              Agregar
             </button>
           </div>
         </div>
@@ -41,63 +42,66 @@
       <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
         <div class="table-responsive">
           <div class="scroll-table">
-            <table class="table">
-              <thead class="thead-dark">
-                <tr>
-                  <th scope="col">Nro</th>
-                  <th scope="col">Estado</th>
-                  <th scope="col">Documentacion</th>
-                  <th scope="col">Mail</th>
-                  <th scope="col">Razon Social</th>
-                  <th scope="col">Telefono</th>
-                  <th scope="col">Calle</th>
-                  <th scope="col">Nro</th>
-                  <th scope="col">Piso</th>
-                  <th scope="col">Acción</th>
-                </tr>
-              </thead>
-              <tbody class="tablaUser">
-                <tr *ngFor="let item of listaGrilla | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
-                  <td scope="col">{{ item.IdPersona }}</td>
-                  <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
-                  <td scope="col">{{ item.Documentacion }}</td>
-                  <td scope="col">{{ item.Mail }}</td>
-                  <td scope="col">{{ item.RazonSocial }}</td>
-                  <td scope="col">{{ item.Telefono }}</td>
-                  <td scope="col">{{ item.Calle }}</td>
-                  <td scope="col">{{ item.Nro }}</td>
-                  <td scope="col">{{ item.Piso }}</td>
-                  <td scope="col" class="dropdown">
-                    <!-- Botón de acción con menú desplegable -->
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                      data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa-solid fa-gears"></i>
-                    </button>
-                    <!-- Menú desplegable con opciones -->
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <!-- Mostrar solo si FechaBaja no es null -->
-                      <li *ngIf="item.FechaBaja !== null">
-                        <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
-                          <i class="fa-solid fa-check"></i> Habilitar
-                        </a>
-                      </li>
-                      <!-- Mostrar solo si FechaBaja es null -->
-                      <li *ngIf="item.FechaBaja === null">
-                        <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
-                          <i class="fa-solid fa-xmark"></i> Inhabilitar
-                        </a>
-                      </li>
-                      <!-- Mostrar solo si FechaBaja es null -->
-                      <li *ngIf="item.FechaBaja === null">
-                        <a class="dropdown-item" (click)="openEditar(content, item)">
-                          <i class="fa-solid fa-pen-to-square"></i> Editar
-                        </a>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <ng-container
+              *ngIf="(listaGrilla | busquedaPersonal:busquedaPersonal:'Nombre':'Apellido':'Documentacion':'RazonSocial').length > 0; else noResults">
+              <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Nro</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Documentacion</th>
+                    <th scope="col">Mail</th>
+                    <th scope="col">Razon Social</th>
+                    <th scope="col">Telefono</th>
+                    <th scope="col">Calle</th>
+                    <th scope="col">Nro</th>
+                    <th scope="col">Piso</th>
+                    <th scope="col">Acción</th>
+                  </tr>
+                </thead>
+                <tbody class="tablaUser">
+                  <tr *ngFor="let item of listaGrilla | busquedaPersonal:busquedaPersonal:'Nombre':'Apellido':'Documentacion':'RazonSocial'| paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
+                    <td scope="col">{{ item.IdPersona }}</td>
+                    <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                    <td scope="col">{{ item.Documentacion }}</td>
+                    <td scope="col">{{ item.Mail }}</td>
+                    <td scope="col">{{ item.RazonSocial }}</td>
+                    <td scope="col">{{ item.Telefono }}</td>
+                    <td scope="col">{{ item.Calle }}</td>
+                    <td scope="col">{{ item.Nro }}</td>
+                    <td scope="col">{{ item.Piso }}</td>
+                    <td scope="col" class="dropdown">
+                      <!-- Botón de acción con menú desplegable -->
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-gears"></i>
+                      </button>
+                      <!-- Menú desplegable con opciones -->
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <!-- Mostrar solo si FechaBaja no es null -->
+                        <li *ngIf="item.FechaBaja !== null">
+                          <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
+                            <i class="fa-solid fa-check"></i> Habilitar
+                          </a>
+                        </li>
+                        <!-- Mostrar solo si FechaBaja es null -->
+                        <li *ngIf="item.FechaBaja === null">
+                          <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                            <i class="fa-solid fa-xmark"></i> Inhabilitar
+                          </a>
+                        </li>
+                        <!-- Mostrar solo si FechaBaja es null -->
+                        <li *ngIf="item.FechaBaja === null">
+                          <a class="dropdown-item" (click)="openEditar(content, item)">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-container>
             <ng-template #noResults>
               <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
                 No se encontraron resultados.
