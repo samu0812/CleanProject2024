@@ -1,3 +1,4 @@
+<app-loader [isLoading]="loading"></app-loader>
 <div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
@@ -227,12 +228,14 @@
 
       <div class="form-row">
         <div class="form-group col-md-12">
-
-          <div *ngIf="lRoles == undefined || lRoles.length == undefined || lRoles.length == 0">
-            <h5>No se encontraron roles para el usuario...</h5>
+          <!-- Mensaje de No Posee Roles -->
+          <div *ngIf="!lRolesUsuario || lRolesUsuario.length === 0">
+            <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
+              No posee roles...
+            </div>
           </div>
 
-          <div *ngIf="lRoles != undefined && lRoles.length > 0">
+          <div *ngIf="lRolesUsuario && lRolesUsuario.length > 0">
             <table class="table table-sm table-hover col-md-12">
               <thead class="tablaUser">
                 <tr class="d-flex">
@@ -261,6 +264,7 @@
     </form>
   </div>
 </ng-template>
+
 
 <ng-template #contentInhabilitar let-modal>
   <div class="modal-header">

@@ -70,14 +70,17 @@ export class TiporolesComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.TiporolService.listar(TipoLista).subscribe(
       response => {
         console.log('API response:', response);
         this.itemGrilla = new TipoRol();
         this.listaGrilla = response.TiposRol || [];
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       }
     );
   }
@@ -114,6 +117,7 @@ export class TiporolesComponent {
   }
 
   guardar(): void {
+    this.loading = true;
     if (this.itemGrilla.IdTipoRol== null) {
       this.TiporolService.agregar(this.itemGrilla, this.Token)
         .subscribe(response => {
@@ -122,9 +126,11 @@ export class TiporolesComponent {
           this.modalRef.close();
         }, error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
+          this.loading = false;
         })
       }
     else{
+      this.loading = true;
       this.TiporolService.editar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
@@ -132,11 +138,13 @@ export class TiporolesComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       })
     };
   }
 
   inhabilitar(): void {
+    this.loading = true;
     this.TiporolService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
@@ -144,10 +152,12 @@ export class TiporolesComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 
   habilitar(): void {
+    this.loading = true;
     this.TiporolService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
@@ -155,6 +165,7 @@ export class TiporolesComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 

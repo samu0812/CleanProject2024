@@ -91,28 +91,34 @@ export class UsuariosComponent implements OnInit {
     });
   }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.UsuarioService.listar(TipoLista).subscribe(
       response => {
         this.itemGrilla = new Usuario();
         this.listaGrilla = response.Usuarios;
+        this.loading = false;
       },
       error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.message);
+        this.loading = false;
       }
     );
     //llama a la api y trae la lista de personas
     this.UsuarioService.listarPersonas().subscribe(
       data => {
         this.lPersonas = data.Personas;
+        this.loading = false;
       },
       error => {
         console.error('Error fetching personas', error);
       });
     this.tiposucursalService.listar(1).subscribe(data => {
       this.lSucursales = data.Sucursales;
+      this.loading = false;
     });
     this.tiporolService.listar(1).subscribe(data => {
       this.lRoles = data.TiposRol;
+      this.loading = false;
     });
   }
   cambiarFiltro(): void {
@@ -121,6 +127,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   agregarRol() {
+    this.loading = true;
     const rolSeleccionado = this.formItemRol.get('rol').value;
     this.rolesUsuario.IdTipoRol = rolSeleccionado;
     this.UsuarioService.agregarRolUsuario(this.rolesUsuario, this.Token)
@@ -131,13 +138,16 @@ export class UsuariosComponent implements OnInit {
       console.error('Error al agregar usuario:', error);
       if (error.error && error.error.Message) {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       } else {
         this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+        this.loading = false;
       }
     });
   }
 
   eliminarRol(item: any) {
+    this.loading = true;
     this.UsuarioService.eliminarUsuarioRol(item, this.Token)
     .subscribe(response => {
       this.alertasService.OkAlert('Éxito', 'Rol eliminado exitosamente');
@@ -145,8 +155,10 @@ export class UsuariosComponent implements OnInit {
     }, error => {
       if (error.error && error.error.Message) {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       } else {
         this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+        this.loading = false;
       }
     });
   }
@@ -170,6 +182,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   modUsuarioSucursal(): void {
+    this.loading = true;
     this.UsuarioService.modificarUsuarioSucursal(this.itemGrilla.IdUsuario, this.itemGrilla.IdSucursal, this.Token)
       .subscribe(response => {
         this.listar(1);
@@ -177,12 +190,14 @@ export class UsuariosComponent implements OnInit {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 
   getListaRoles(IdUsuario: number){
     this.UsuarioService.listarUsuariosRol(IdUsuario).subscribe(data => {
       this.lRolesUsuario = data.UsuariosPorRol;
+      this.loading = false;
     });
   }
 
@@ -201,6 +216,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   guardar(): void {
+    this.loading = true;
     if (this.itemGrilla.IdUsuario == null) {
       const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
       this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
@@ -212,11 +228,14 @@ export class UsuariosComponent implements OnInit {
         }, error => {
           if (error.error && error.error.Message) {
             this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
           } else {
             this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+            this.loading = false;
           }
         });
     } else {
+      this.loading = true;
       this.UsuarioService.editar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
@@ -225,16 +244,20 @@ export class UsuariosComponent implements OnInit {
         }, error => {
           if (error.error.Errors.NuevoUsuario) {
             this.alertasService.ErrorAlert('Error', error.error.Errors.NuevoUsuario);
+            this.loading = false;
           }if (error.error.Errors.NuevaClave) {
             this.alertasService.ErrorAlert('Error', error.error.Errors.NuevaClave);
+            this.loading = false;
           } else {
             this.alertasService.ErrorAlert('Error', 'Ocurrió un error al modificar el usuario');
+            this.loading = false;
           }
         });
     }
   }
 
   inhabilitar(): void {
+    this.loading = true;
     this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.alertasService.OkAlert('Éxito', 'Usuario eliminado exitosamente');
@@ -243,8 +266,10 @@ export class UsuariosComponent implements OnInit {
       }, error => {
         if (error.error && error.error.Message) {
           this.alertasService.ErrorAlert('Error', error.error.Message);
+          this.loading = false;
         } else {
           this.alertasService.ErrorAlert('Error', 'Ocurrió un error al eliminar el usuario');
+          this.loading = false;
         }
       });
   }

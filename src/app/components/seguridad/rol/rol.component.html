@@ -1,3 +1,4 @@
+<app-loader [isLoading]="loading"></app-loader>
 <div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
@@ -28,7 +29,6 @@
             </select>
           </div>
         </div>
-
         <div class="col-md-8 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
           <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
             <i class="fa-solid fa-user-plus button-icon"></i>Agregar

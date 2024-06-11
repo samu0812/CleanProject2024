@@ -101,9 +101,7 @@ export class RolComponent {
     }
 
   listar(TipoLista: number, TipoRol: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    console.log("hola")
-    console.log(TipoLista)
-    console.log(TipoRol)
+    this.loading = true;
     if (TipoRol == null){
       TipoRol = 0;
     }
@@ -111,9 +109,11 @@ export class RolComponent {
       response => {
         this.itemGrilla = new ModulosPorRol();
         this.listaGrilla = response.RolModulo || [];
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
+        this.loading = false;
       }
     );
   }
@@ -138,6 +138,7 @@ export class RolComponent {
   }
 
   guardar(): void {
+    this.loading = true;
     this.modulosPorRolService.agregar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1, 0);
@@ -145,10 +146,12 @@ export class RolComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', 'Error al agregar.');
+        this.loading = false;
       })
     }
 
   inhabilitar(): void {
+    this.loading = true;
     console.log(this.itemGrilla)
     this.modulosPorRolService.inhabilitar(this.itemGrilla.IdRolModulo, this.Token)
       .subscribe(response => {
@@ -157,10 +160,12 @@ export class RolComponent {
         this.modalRef.close();
       }, response => {
         this.alertasService.ErrorAlert('Error', 'Error al Inhabilitarr.');
+        this.loading = false;
       });
   }
 
   habilitar(): void {
+    this.loading = true;
     this.modulosPorRolService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1, 0);
@@ -168,6 +173,7 @@ export class RolComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
+        this.loading = false;
       });
   }
   cambiarPagina(event): void {
