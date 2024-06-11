@@ -12,12 +12,12 @@ export class TipoimpuestoService {
   constructor(private http: HttpClient) {}
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoImpuesto?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/parametria/tipoimpuesto?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
   agregar(item: TipoImpuesto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_TipoImpuesto`;
+    const url = `${this.apiUrl}/parametria/tipoimpuesto`;
     const body = {
       Detalle: item.Detalle,
       Porcentaje: item.Porcentaje,
@@ -26,7 +26,7 @@ export class TipoimpuestoService {
   }
 
   editar(item: TipoImpuesto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_TipoImpuesto`;
+    const url = `${this.apiUrl}/parametria/tipoimpuesto`;
     const body = {
       IdTipoImpuesto: item.IdTipoImpuesto,
       Detalle: item.Detalle,
@@ -36,15 +36,12 @@ export class TipoimpuestoService {
   }
 
   inhabilitar(item: TipoImpuesto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_TipoImpuesto`;
-    const body = {
-      IdTipoImpuesto: item.IdTipoImpuesto,
-      Token: Token};
-      return this.http.put(url, body);
+    const url = `${this.apiUrl}/parametria/tipoimpuesto?IdTipoImpuesto=${item.IdTipoImpuesto}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
   habilitar(item: TipoImpuesto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_TipoImpuesto`;
+    const url = `${this.apiUrl}/parametria/tipoimpuesto`;
     const body = {
       IdTipoImpuesto: item.IdTipoImpuesto,
       Token: Token};

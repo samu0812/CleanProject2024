@@ -11,7 +11,7 @@ export class TipopersonaService {
   constructor(private http: HttpClient) { }
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoPersona?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/parametria/tipopersona?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 }

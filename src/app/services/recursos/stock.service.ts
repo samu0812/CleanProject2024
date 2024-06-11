@@ -13,12 +13,12 @@ export class StockService {
   constructor(private http: HttpClient) {}
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_Producto?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/recursos/inventario?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
   agregar(item: Productos, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_Producto`;
+    const url = `${this.apiUrl}/recursos/inventario`;
     const body = {
       IdTipoMedida: item.IdTipoMedida,
       IdTipoCategoria: item.IdTipoCategoria,
@@ -40,7 +40,7 @@ export class StockService {
   }
 
   editar(item: Productos, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPM_Producto`;
+    const url = `${this.apiUrl}/recursos/inventario`;
     const body = {
       IdProducto: item.IdProducto,
       IdTipoMedida: item.IdTipoMedida,
@@ -61,16 +61,12 @@ export class StockService {
   }
 
   inhabilitar(item: Productos, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_Producto`;
-    const body = {
-      IdProducto: item.IdProducto,
-      Token: Token
-    };
-    return this.http.put(url, body);
+    const url = `${this.apiUrl}/recursos/inventario?IdProducto=${item.IdProducto}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
   habilitar(item: Productos, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_Producto`;
+    const url = `${this.apiUrl}/recursos/inventario`;
     const body = {
       IdProducto: item.IdProducto,
       Token: Token
