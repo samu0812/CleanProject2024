@@ -28,6 +28,7 @@ export class TipoimpuestoComponent {
   elementosPorPagina = 10;
   loading: boolean = true;
   Busqueda = "";
+  
   noData: TemplateRef<NgIfContext<boolean>>;
 
   constructor(private tipoImpuestoService: TipoimpuestoService,
