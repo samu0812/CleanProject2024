@@ -76,17 +76,17 @@ export class StockService {
 
   // Método para obtener tipos de aumento
   obtenerTiposAumento(): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoAumento`;
+    const url = `${this.apiUrl}//recursos/inventario/tipoaumento`;
     return this.http.get(url);
   }
 
   // Método para obtener aumentos por producto
   getAumentosPorProducto(IdProducto: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/SPL_AumentoPorProducto?IdProducto=${IdProducto}`);
+    return this.http.get<any>(`${this.apiUrl}/recursos/inventario/aumentoporproducto?IdProducto=${IdProducto}`);
   }
 
   guardarAumentosProducto(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/guardarAumentosProducto`, data);
+    return this.http.post<any>(`${this.apiUrl}/recursos/inventario/aumentoporproducto`, data);
   }
 
   AgregarStock(IdProducto: number, Cantidad: number, token: string): Observable<any> {

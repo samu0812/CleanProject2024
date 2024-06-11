@@ -1,6 +1,6 @@
 export class TipoImpuesto{
     public IdTipoImpuesto: number;
     public Detalle: string;
-    public Porcentaje: string;
+    public Porcentaje: number;
     public FechaBaja: string;
 }

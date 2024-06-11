@@ -39,7 +39,7 @@ export class TipoCategoriaService {
   }
 
   habilitar(item: TipoCategoria, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/parametria/tipocategoria`;
+    const url = `${this.apiUrl}/parametria/tipocategoria/habilitar`;
     const body = {
       IdTipoCategoria: item.IdTipoCategoria,
       Token: Token};
