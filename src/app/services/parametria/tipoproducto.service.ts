@@ -38,10 +38,9 @@ export class TipoproductoService {
     return this.http.delete(url);
   }
 
-  
 
   habilitar(item: TipoProducto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/parametria/tipoproducto`;
+    const url = `${this.apiUrl}/parametria/tipoproducto/habilitar`;
     const body = {
       IdTipoProducto: item.IdTipoProducto,
       Token: Token};
