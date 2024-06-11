@@ -68,7 +68,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -150,7 +150,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })
