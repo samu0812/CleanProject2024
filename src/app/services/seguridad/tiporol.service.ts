@@ -12,7 +12,7 @@ export class TiporolService {
   constructor(private http: HttpClient) { }
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/tiporol?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/seguridad/tiporoles?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 

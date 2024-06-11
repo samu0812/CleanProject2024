@@ -14,7 +14,7 @@ export class UsuarioService {
 
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuario?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/seguridad/usuarios?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
