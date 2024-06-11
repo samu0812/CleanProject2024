@@ -44,8 +44,6 @@ export class TiporolesComponent {
       idFiltro: new FormControl('1', [Validators.required]) // Default value set to 1
     });
 
-    this.listar(1); // Initially list only enabled items
-
     // Listen for changes in the filter and update the list accordingly
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);

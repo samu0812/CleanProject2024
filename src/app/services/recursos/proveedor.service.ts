@@ -14,13 +14,13 @@ export class ProveedorService {
 
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/recursos/proovedores?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/recursos/proveedores?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
 
   agregarProveedor(proveedor: Proveedor, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/proovedores`;
+    const url = `${this.apiUrl}/recursos/proveedores`;
     const body = {
       IdTipoPersona: proveedor.IdTipoPersona,
       IdTipoDomicilio: proveedor.IdTipoDomicilio,
@@ -40,7 +40,7 @@ export class ProveedorService {
   }
 
   editar(proveedor: Proveedor,Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/proovedores`;
+    const url = `${this.apiUrl}/recursos/proveedores`;
     const body = {
       IdTipoPersona: proveedor.IdTipoPersona,
       IdPersona: proveedor.IdPersona,
@@ -62,12 +62,12 @@ export class ProveedorService {
   }
 
   inhabilitar(item: Proveedor , Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/proovedores?IdPersona=${item.IdPersona}&Token=${Token}`;
+    const url = `${this.apiUrl}/recursos/proveedores?IdPersona=${item.IdPersona}&Token=${Token}`;
     return this.http.delete(url);
   }
 
   habilitar(item: Proveedor,Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/proovedores`;
+    const url = `${this.apiUrl}/recursos/proveedores`;
     const body = {
       IdPersona: item.IdPersona,
       Token: Token
