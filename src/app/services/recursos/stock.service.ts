@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { Productos } from '../../models/recursos/productos';
 
 @Injectable({
@@ -25,6 +25,7 @@ export class StockService {
       IdTipoProducto: item.IdTipoProducto,
       Codigo: item.Codigo,
       Nombre: item.Nombre,
+      IdPersona: item.IdPersona,
       Marca: item.Marca,
       PrecioCosto: item.PrecioCosto,
       Tamano: item.Tamano,
@@ -32,6 +33,9 @@ export class StockService {
       CantMaxima: item.CantMaxima,
       Token: Token
     };
+
+    console.log(body);
+
     return this.http.post(url, body);
   }
 
@@ -44,6 +48,7 @@ export class StockService {
       IdTipoProducto: item.IdTipoProducto,
       Codigo: item.Codigo,
       Nombre: item.Nombre,
+      IdPersona: item.IdPersona,
       Marca: item.Marca,
       PrecioCosto: item.PrecioCosto,
       Tamano: item.Tamano,
@@ -68,4 +73,27 @@ export class StockService {
     };
     return this.http.put(url, body);
   }
+
+  // Método para obtener tipos de aumento
+  obtenerTiposAumento(): Observable<any> {
+    const url = `${this.apiUrl}/SPL_TipoAumento`;
+    return this.http.get(url);
+  }
+
+  // Método para obtener aumentos por producto
+  getAumentosPorProducto(IdProducto: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/SPL_AumentoPorProducto?IdProducto=${IdProducto}`);
+  }
+
+  guardarAumentosProducto(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/guardarAumentosProducto`, data);
+  }
+
+  AgregarStock(IdProducto: number, Cantidad: number, token: string): Observable<any> {
+    const url = `${this.apiUrl}/recursos/inventario/stock`;
+    const body = { IdProducto, Cantidad, Token: token };
+    return this.http.post(url, body);
+  }
+  
+    
 }

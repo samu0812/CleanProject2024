@@ -21,7 +21,8 @@
         <div class="col-md-4">
           <label for="busquedastock">Buscar:</label>
           <div class="input-group">
-            <input type="text" formControlName="busquedastock" class="form-control" id="busquedastock" placeholder="Buscar...">
+            <input type="text" formControlName="busquedastock" class="form-control" id="busquedastock"
+              placeholder="Buscar...">
             <div class="input-group-append">
               <button type="button" class="btn btn-secondary" (click)="limpiarBusqueda()" style="margin-left: 5px;"
                 id="btnBusqueda"><i class="fa-solid fa-eraser"></i></button>
@@ -41,7 +42,8 @@
     <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
       <div class="table-responsive">
         <div class="scroll-table">
-          <ng-container *ngIf="(listaGrilla | busquedastock:busquedastock:'IdProducto':'Nombre'
+          <ng-container
+            *ngIf="(listaGrilla | busquedastock:busquedastock:'IdProducto':'Nombre'
           :'Codigo':'Marca':'TipoMedidaDescripcion':'CategoriaDescripcion':'TipoProductoDescripcion').length > 0; else noResults">
             <table class="table">
               <thead class="thead-dark">
@@ -62,11 +64,14 @@
                   <th scope="col">Categoria</th>
                   <th scope="col" class="hide-column">IdTipoProducto</th>
                   <th scope="col">Tipo</th>
-                  <th scope="col">Acción</th>  
+                  <th scope="col" class="hide-column">IdPersona</th>
+                  <th scope="col">NombreProveedor</th>
+                  <th scope="col">Acción</th>
                 </tr>
               </thead>
               <tbody class="tablaUser">
-                <tr *ngFor="let item of listaGrilla | busquedastock:busquedastock:'IdProducto':'Nombre':'Codigo':'Marca':'TipoMedidaDescripcion'
+                <tr
+                  *ngFor="let item of listaGrilla | busquedastock:busquedastock:'IdProducto':'Nombre':'Codigo':'Marca':'TipoMedidaDescripcion'
                 :'CategoriaDescripcion':'TipoProductoDescripcion' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
                   <td scope="col">{{ item.IdProducto }}</td>
                   <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
@@ -84,7 +89,8 @@
                   <td scope="col">{{ item.CategoriaDescripcion}}</td>
                   <td scope="col" class="hide-column">{{ item.IdTipoProducto }}</td>
                   <td scope="col">{{ item.TipoProductoDescripcion }}</td>
-  
+                  <td scope="col" class="hide-column">{{ item.IdPersona }}</td>
+                  <td scope="col">{{ item.RazonSocial }}</td>
                   <td scope="col" class="dropdown">
                     <!-- Botón de acción con menú desplegable -->
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -111,6 +117,17 @@
                           <i class="fa-solid fa-pen-to-square"></i> Editar
                         </a>
                       </li>
+                      <li *ngIf="item.FechaBaja === null">
+                        <a class="dropdown-item"(click)="openCantidad(contentCantidad,item)" >
+                          <i class="fa-solid fa-box"></i> Cantidad
+                        </a>
+                      </li>
+                      
+                      <li *ngIf="item.FechaBaja === null">
+                        <a class="dropdown-item"(click)="openAumentos(contentAumento,item)" >
+                          <i class="fa-solid fa-percent"></i> Aumento
+                        </a>
+                      </li>
                     </ul>
                   </td>
                 </tr>
@@ -135,138 +152,209 @@
       </div>
     </ng-template>
   </div>
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <a>
-      <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
-    </a>
-    <a style="margin-left: 5px;"></a>
-    <h4 class="modal-title">{{ tituloModal }}</h4>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="formItemGrilla">
-      <div class="row">
-        <div class="form-group col-md-4">
-          <div style="margin-bottom: 15px;">
-            <label for="Codigo">Código:</label>
-          </div>
-          <input [(ngModel)]="itemGrilla.Codigo" type="text" formControlName="Codigo" class="form-control" id="Codigo"
-            placeholder="Código">
-        </div>
-        <div class="form-group col-md-4">
-          <div style="margin-bottom: 15px;">
-            <label for="Nombre">Nombre:</label>
-          </div>
-          <input [(ngModel)]="itemGrilla.Nombre" type="text" formControlName="Nombre" class="form-control" id="Nombre"
-            placeholder="Nombre">
-        </div>
-        <div class="form-group col-md-4">
-          <div style="margin-bottom: 15px;">
-            <label for="Marca">Marca:</label>
-          </div>
-          <input [(ngModel)]="itemGrilla.Marca" type="text" formControlName="Marca" class="form-control" id="Marca"
-            placeholder="Marca">
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-md-4">
-          <div style="margin-bottom: 15px;">
-            <label for="PrecioCosto">Precio Costo:</label>
-          </div>
-          <input [(ngModel)]="itemGrilla.PrecioCosto" type="number" formControlName="PrecioCosto" class="form-control"
-            id="PrecioCosto" placeholder="100">
-        </div>
-        <div class="form-group col-md-4">
-          <div style="margin-bottom: 15px;">
-            <label for="CantMaxima">Can. Max.</label>
-          </div>
-          <input [(ngModel)]="itemGrilla.CantMaxima" type="number" formControlName="CantMaxima" class="form-control"
-            id="CantMaxima" placeholder="100">
-        </div>
-        <div class="form-group col-md-4">
-          <div style="margin-bottom: 15px;">
-            <label for="CantMinima">Can. Min.</label>
-          </div>
-          <input [(ngModel)]="itemGrilla.CantMinima" type="number" formControlName="CantMinima" class="form-control"
-            id="CantMinima" placeholder="100">
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-md-4">
-          <label for="Tamano">Tamaño:</label>
-          <input [(ngModel)]="itemGrilla.Tamano" type="number" formControlName="Tamano" class="form-control" id="Tamano"
-            placeholder="100">
-        </div>
-        <div class="form-group col-md-4">
-          <label for="tipoMedida">Medida:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoMedida" formControlName="tipoMedida" class="form-control"
-            id="tipoMedida">
-            <option [value]="undefined">Seleccione...</option>
-            <option *ngFor="let tipo of lTipoMedida" [value]="tipo.IdTipoMedida">{{ tipo.Detalle }}</option>
-          </select>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="tipoCategoria">Tipo de Categoría:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoCategoria" formControlName="tipoCategoria" class="form-control">
-            <option [value]="undefined">Seleccione...</option>
-            <option *ngFor="let categoria of lTipoCategoria" [value]="categoria.IdTipoCategoria"> {{
-              categoria.Descripcion }}</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-md-4">
-          <label for="tipoProducto">Tipo de Producto:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoProducto" class="form-control" formControlName="tipoProducto">
-            <option [value]="undefined">Seleccione...</option>
-            <option *ngFor="let tipo of lTipoProducto" [ngValue]="tipo.IdTipoProducto">{{ tipo.Detalle }}</option>
-          </select>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="proveedor">Proveedor:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoProducto" class="form-control" formControlName="proveedor">
-            <option [value]="undefined">Seleccione...</option>
-            <option *ngFor="let tipo of lTipoProducto" [ngValue]="tipo.IdTipoProducto">{{ tipo.Detalle }}</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group col text-right" style="margin-top: 25px;">
-        <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
-        <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
-      </div>
-    </form>
-  </div>
-</ng-template>
-<ng-template #contentInhabilitar let-modal>
-  <div class="modal-header">
-    <a></a>
-    <h4 class="modal-title">{{ tituloModal }}</h4>
-  </div>
-  <div class="modal-body">
-    <a></a>
-    <h4 class="">Desea Eliminar?</h4>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
-      <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
-    </div>
-  </div>
-</ng-template>
 
-<ng-template #contentHabilitar let-modal>
-  <div class="modal-header">
-    <a></a>
-    <h4 class="modal-title">{{ tituloModal }}</h4>
-  </div>
-  <div class="modal-body">
-    <a></a>
-    <h4 class="">Desea Habilitar?</h4>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
-      <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
-    </div>
-  </div>
-</ng-template>
 
-<footer class="footer">
-  <app-footer></app-footer>
-</footer>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <a>
+        <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+      </a>
+      <a style="margin-left: 5px;"></a>
+      <h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formItemGrilla">
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Codigo">Código:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Codigo" type="text" formControlName="Codigo" class="form-control" id="Codigo"
+              placeholder="Código">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Nombre">Nombre:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Nombre" type="text" formControlName="Nombre" class="form-control" id="Nombre"
+              placeholder="Nombre">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="Marca">Marca:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.Marca" type="text" formControlName="Marca" class="form-control" id="Marca"
+              placeholder="Marca">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="PrecioCosto">Precio Costo:</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.PrecioCosto" type="number" formControlName="PrecioCosto" class="form-control"
+              id="PrecioCosto" placeholder="100">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="CantMaxima">Can. Max.</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.CantMaxima" type="number" formControlName="CantMaxima" class="form-control"
+              id="CantMaxima" placeholder="100">
+          </div>
+          <div class="form-group col-md-4">
+            <div style="margin-bottom: 15px;">
+              <label for="CantMinima">Can. Min.</label>
+            </div>
+            <input [(ngModel)]="itemGrilla.CantMinima" type="number" formControlName="CantMinima" class="form-control"
+              id="CantMinima" placeholder="100">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label for="Tamano">Tamaño:</label>
+            <input [(ngModel)]="itemGrilla.Tamano" type="number" formControlName="Tamano" class="form-control"
+              id="Tamano" placeholder="100">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="tipoMedida">Medida:</label>
+            <select [(ngModel)]="itemGrilla.IdTipoMedida" formControlName="tipoMedida" class="form-control"
+              id="tipoMedida">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lTipoMedida" [value]="tipo.IdTipoMedida">{{ tipo.Detalle }}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="tipoCategoria">Tipo de Categoría:</label>
+            <select [(ngModel)]="itemGrilla.IdTipoCategoria" formControlName="tipoCategoria" class="form-control">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let categoria of lTipoCategoria" [value]="categoria.IdTipoCategoria"> {{
+                categoria.Descripcion }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label for="tipoProducto">Tipo de Producto:</label>
+            <select [(ngModel)]="itemGrilla.IdTipoProducto" class="form-control" formControlName="tipoProducto">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lTipoProducto" [ngValue]="tipo.IdTipoProducto">{{ tipo.Detalle }}</option>
+            </select>
+          </div>
+            <div class="form-group col-md-4">
+               <label for="proveedor">Proveedor:</label>
+               <select [(ngModel)]="itemGrilla.IdPersona" class="form-control" formControlName="proveedor">
+                  <option [value]="undefined">Seleccione...</option>
+                  <option *ngFor="let tipo of lProveedor" [ngValue]="tipo.IdPersona">{{ tipo.RazonSocial }}</option>
+               </select>
+            </div>
+        </div>
+        <div class="form-group col text-right" style="margin-top: 25px;">
+          <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+          <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #contentInhabilitar let-modal>
+    <div class="modal-header">
+      <a></a>
+      <h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+      <a></a>
+      <h4 class="">Desea Eliminar?</h4>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #contentHabilitar let-modal>
+    <div class="modal-header">
+      <a></a>
+      <h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+      <a></a>
+      <h4 class="">Desea Habilitar?</h4>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
+      </div>
+    </div>
+  </ng-template>
+  <!-- Modal para aumento de precios -->
+  <ng-template #contentAumento let-modal>
+    <div class="modal-header">
+      <a>
+        <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+      </a>
+      <h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="itemGrilla">
+        <label for="nombreProducto">Nombre del Producto:</label>
+        <input id="nombreProducto" [(ngModel)]="itemGrilla.Nombre" class="form-control" disabled>
+  
+        <div class="mt-3">
+          <h5>Tipos de Aumento</h5>
+          <div class="checkbox-container">
+            <div class="checkbox-column" *ngFor="let column of columns">
+              <div class="checkbox-item" *ngFor="let tipo of column">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input"
+                         [id]="'tipo-' + tipo.IdTipoAumento"
+                         [value]="tipo.IdTipoAumento"
+                         [(ngModel)]="tipo.seleccionado">
+                  <label class="form-check-label" [for]="'tipo-' + tipo.IdTipoAumento">{{ tipo.Detalle }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <h5 class="mr-3">Aumento Extra</h5>
+        <div class="input-group mb-2">
+          <input type="text" class="form-control input-short" placeholder="Ingrese porcentaje" [(ngModel)]="aumentoExtra">
+          <div class="input-group-append">
+            <span class="input-group-text">%</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn btn-secondary" (click)="modalRef.close('Save click')">Cerrar</button>
+        <button type="button" class="btn btn-primary ml-2" (click)="guardarAumentos()">Guardar</button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #contentCantidad let-modal>
+    <div class="modal-header">
+      <a>
+        <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+      </a>
+      <h4 class="modal-title">{{ tituloModal }}</h4>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="itemGrilla">
+        <label for="nombreProducto">Nombre del Producto:</label>
+        <input id="nombreProducto" [(ngModel)]="itemGrilla.Nombre" class="form-control" disabled>
+        <label for="nombreProducto">Codigo del producto:</label>
+        <input id="Codigo" [(ngModel)]="itemGrilla.Codigo" class="form-control" disabled>
+        <label for="Codigo">Ingrese cantidad:</label>
+        <input type="number" id="Cantidad" [(ngModel)]="cantidad" class="form-control">
+      </div>
+      <div class="modal-footer d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cerrar</button>
+        <button type="button" class="btn btn-primary ml-2" (click)="guardarStock()">Guardar</button>
+      </div>
+    </div>
+  </ng-template>
+  
+  <footer class="footer">
+    <app-footer></app-footer>
+  </footer>

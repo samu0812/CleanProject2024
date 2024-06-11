@@ -1,6 +1,6 @@
 import { Component , OnInit, Input } from '@angular/core';
 import { ProveedorService } from '../../../services/recursos/proveedor.service';
-import { Proveedor } from '../../../models/recursos/proveedor'
+import { Proveedor } from '../../../models/recursos/proveedor';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
@@ -38,6 +38,7 @@ export class ProveedoresComponent {
   personas: any[] = []; //para listar las personas
   lTipoPersona: TipoPersonas[];
   lTipoDomicilio:TipoDomicilios[];
+  busquedaPersonal = "";
   lProvincia: provincia[];
   lLocalidad: Localidad[];
   lTipoDocumentacion: TipoDocumentacion[];
@@ -93,6 +94,15 @@ export class ProveedoresComponent {
 
     //llama a la api y trae la lista de personas
       this.obtenerListas();
+
+    this.formFiltro = this.formBuilder.group({
+      idFiltro: new FormControl('1', [Validators.required]),
+      busquedaPersonal: new FormControl('') // Control de búsqueda
+    });
+
+    this.formFiltro.get('busquedaPersonal').valueChanges.subscribe(value => {
+      this.busquedaPersonal = value;
+    });
   }
 
   obtenerListas(){
@@ -137,6 +147,7 @@ export class ProveedoresComponent {
     );
     this.obtenerListas();
   }
+  
 
   guardar(): void {
     this.loading = true;
@@ -236,6 +247,9 @@ export class ProveedoresComponent {
     this.tituloModal = 'Habilitar';
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentHabilitar, { size: 'sm', centered: true });
+  }
+  limpiarBusqueda(): void {
+    this.formFiltro.get('busquedaPersonal').setValue('');
   }
 
   cambiarPagina(event): void {

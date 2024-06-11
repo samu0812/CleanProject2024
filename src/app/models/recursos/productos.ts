@@ -3,6 +3,7 @@ export class Productos{
     public IdTipoMedida: number;
     public TipoMedidaDescripcion: string;
     public IdTipoCategoria: number;
+    public IdPersona: number;
     public CategoriaDescripcion: string;
     public IdTipoProducto: number;
     public TipoProductoDescripcion: string;
@@ -15,5 +16,5 @@ export class Productos{
     public CantMinima: number;
     public FechaAlta: number;
     public FechaBaja: number;
-
+    public RazonSocial: string;
 }

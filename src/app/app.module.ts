@@ -62,7 +62,13 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
 import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
 import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
-import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa/realizarventa.component';
+import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
+import { BusquedaNombreApellidoDniPipe } from './components/busqueda/busquedaPersonal.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import { MatButtonModule } from '@angular/material/button';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -113,7 +119,11 @@ import { RealizarventaComponent } from './components/gestion/realizarventa/reali
     BusquedastockPipe,
     BusquedausuariosPipe,
     BusquedausuariosPipe,
-    RealizarventaComponent
+    RealizarventaComponent,
+    BusquedaNombreApellidoDniPipe,
+    SnackbarComponent,
+    
+
   ],
   imports: [
     BrowserModule,
@@ -131,11 +141,17 @@ import { RealizarventaComponent } from './components/gestion/realizarventa/reali
     RouterModule,
     NgxPaginationModule,
     NgbModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    MatSnackBarModule,
+    MatButtonModule,
+    NgxChartsModule 
+
+    
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })

@@ -34,49 +34,49 @@ import { SubmenuComponent } from './components/navbar/submenu/submenu.component'
 import { AccesoComponent } from './components/acceso/acceso.component';
 import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
 import { AuthGuard } from './services/auth/auth.guard';
-import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa/realizarventa.component';
+import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: 'home', component: HomeComponent,  },
   {path: ':id/submenu', component: SubmenuComponent},
 
   {path: 'seguridad/usuarios', component: UsuariosComponent },
-  {path: 'seguridad/tiporoles', component: TiporolesComponent, canActivate: [AuthGuard]},
-  {path: 'seguridad/rolmodulos', component: RolComponent, canActivate: [AuthGuard]},
-  {path: 'seguridad/apispormodulo', component: ApisComponent, canActivate: [AuthGuard]},
+  {path: 'seguridad/tiporoles', component: TiporolesComponent,  },
+  {path: 'seguridad/rolmodulos', component: RolComponent,  },
+  {path: 'seguridad/apispormodulo', component: ApisComponent,  },
 
-  {path: 'parametria/tipopersona', component: TipopersonaComponent, canActivate: [AuthGuard]},
+  {path: 'parametria/tipopersona', component: TipopersonaComponent,  },
 
-  {path: 'parametria/tipodocumentacion', component: TipodocumentacionComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipoproducto', component: TipoproductoComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipocategoria', component: TipocategoriaComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipomedida', component: TipomedidaComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipodomicilio', component: TipodomicilioComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipoimpuesto', component: TipoimpuestoComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipofactura', component: TipofacturaComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipodestinatariofactura', component: TipodestinatariofacturaComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipoformadepago', component: TipoformadepagoComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipopermiso', component: TipopermisoComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/sucursal', component: TiposucursalComponent, canActivate: [AuthGuard]},
-  {path: 'parametria/tipomodulo', component: TipomoduloComponent, canActivate: [AuthGuard]},
+  {path: 'parametria/tipodocumentacion', component: TipodocumentacionComponent,  },
+  {path: 'parametria/tipoproducto', component: TipoproductoComponent,  },
+  {path: 'parametria/tipocategoria', component: TipocategoriaComponent,  },
+  {path: 'parametria/tipomedida', component: TipomedidaComponent,  },
+  {path: 'parametria/tipodomicilio', component: TipodomicilioComponent,  },
+  {path: 'parametria/tipoimpuesto', component: TipoimpuestoComponent,  },
+  {path: 'parametria/tipofactura', component: TipofacturaComponent,  },
+  {path: 'parametria/tipodestinatariofactura', component: TipodestinatariofacturaComponent,  },
+  {path: 'parametria/tipoformadepago', component: TipoformadepagoComponent,  },
+  {path: 'parametria/tipopermiso', component: TipopermisoComponent,  },
+  {path: 'parametria/sucursal', component: TiposucursalComponent,  },
+  {path: 'parametria/tipomodulo', component: TipomoduloComponent,  },
 
-  {path: 'recursos/inventario', component:StockComponent , canActivate: [AuthGuard]},
-  {path: 'recursos/proveedores', component: ProveedoresComponent, canActivate: [AuthGuard]},
-  {path: 'recursos/personal', component: PersonalComponent, canActivate: [AuthGuard]},
-  {path: 'recursos/clientes', component:ClientesComponent , canActivate: [AuthGuard]},
+  {path: 'recursos/inventario', component:StockComponent ,  },
+  {path: 'recursos/proveedores', component: ProveedoresComponent,  },
+  {path: 'recursos/personal', component: PersonalComponent,  },
+  {path: 'recursos/clientes', component:ClientesComponent ,  },
 
-  {path: 'gestion/realizarventa', component:RealizarventaComponent , canActivate: [AuthGuard]},
-  {path: 'gestion/realizarpedidos', component:RealizarpedidosComponent , canActivate: [AuthGuard]},
-  {path: 'gestion/enviodeinventario', component: EnviodeinventarioComponent, canActivate: [AuthGuard]},
-  {path: 'gestion/confirmacionderecepcion', component: ConfirmacionderecepcionComponent, canActivate: [AuthGuard]},
+  {path: 'gestion/realizarventa', component:RealizarventaComponent ,  },
+  {path: 'gestion/realizarpedidos', component:RealizarpedidosComponent ,  },
+  {path: 'gestion/enviodeinventario', component: EnviodeinventarioComponent,  },
+  {path: 'gestion/confirmacionderecepcion', component: ConfirmacionderecepcionComponent,  },
 
-  {path: 'reportes/informesdeventa', component:InformesdeventaComponent, canActivate: [AuthGuard]},
-  {path: 'reportes/informesfinancieros', component: InformesfinancierosComponent, canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeabastecimiento', component: InformesdeabastecimientoComponent, canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeclientes', component:InformesdeclientesComponent, canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeproductos', component: InformesdeproductosComponent, canActivate: [AuthGuard]},
+  {path: 'reportes/informesdeventa', component:InformesdeventaComponent,  },
+  {path: 'reportes/informesfinancieros', component: InformesfinancierosComponent,  },
+  {path: 'reportes/informesdeabastecimiento', component: InformesdeabastecimientoComponent,  },
+  {path: 'reportes/informesdeclientes', component:InformesdeclientesComponent,  },
+  {path: 'reportes/informesdeproductos', component: InformesdeproductosComponent,  },
 
-  {path: 'acceso', component: AccesoComponent, canActivate: [AuthGuard]},
+  {path: 'acceso', component: AccesoComponent,  },
   { path: '**', redirectTo: '/login' }, // Ruta wildcard para manejar rutas no encontradas
 
 ];
