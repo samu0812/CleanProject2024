@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ImagenService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/SP_GetImagenSubMenu';
+  private apiUrl = 'http://127.0.0.1:8000/api/utils/submenu/image';
 
   constructor(private http: HttpClient) { }
 

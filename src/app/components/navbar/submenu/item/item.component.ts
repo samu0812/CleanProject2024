@@ -1,7 +1,8 @@
 // item.component.ts
 import { Component, Input, OnInit } from '@angular/core';
 import { Menu } from '../../../../models/menu/menu';
-import { TooltipModule } from 'ng-bootstrap/tooltip';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-item',
@@ -10,7 +11,7 @@ import { TooltipModule } from 'ng-bootstrap/tooltip';
 })
 export class ItemComponent implements OnInit {
   @Input('data') menu: Menu;
-  @Input() isDisabled: boolean = false;
+  @Input() isDisabled: boolean = false;z
   constructor() {}
 
   ngOnInit(): void {

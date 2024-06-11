@@ -1,41 +1,157 @@
-#tituloTabla {
-  font-family: 'Roboto', sans-serif; /* Utiliza una fuente sans-serif agradable para el título */
-  font-size: 20px; /* Haz el título más grande */
-  font-weight: lighter; /* Haz el título más ligero */
-  text-align: center; /* Centra el título en la página */
-  color: #ffffff; /* Usa un color blanco para el título */
-  margin-top: 10px; /* Agrega un poco de margen encima del título */
-  letter-spacing: 2px;
-  background-color: #FF8C00;
-  border-radius: 10px; /* Redondea los bordes del elemento */
+.container {
+  display: flex; /* Utiliza flexbox para el contenedor */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
 }
-.footer {
-  margin-top: 20px;
-  background-color: #f8f8f8;
-  padding: 20px;
+.centered-rounded-background {
+  font-family: 'Roboto', sans-serif;
   text-align: center;
-  color: #666;
+  color: #ffffff;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  margin-bottom: 0%;
+  display: inline-flex; /* Ajusta el tamaño al contenido */
+  background: #FF8C00; /* Color de fondo */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 5px 50px; /* Espacio interno reducido */
+  align-items: center; /* Alinea los elementos hijos verticalmente */
 }
 
-.main-section{
-  margin:0 auto;
-  margin-top:5%;
-  margin-bottom: 20px;
-  padding: 0;
-  min-height: 100vh;
-  width: 80%;
 
+.title-menu {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espacio entre los elementos internos */
 }
-.form-group {
-  margin-bottom: 0;
+.img-crud{
+  width: 40px;
+  vertical-align: middle;
+}
+  .main-section {
+    margin: 0 auto;
+    margin-top: 5%;
+    margin-bottom: 20px;
+    padding: 20px;
+    min-height: 100vh;
+    margin-top: 0%;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Agrega una sombra suave */
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 0 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Agrega una sombra suave */
+    border-radius: 10px;
+  }
+  
+  .footer {
+    margin-top: 20px;
+    background-color: #f8f8f8;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+  }
+  
+  
+  .form-group {
+    margin-bottom: 0;
+  }
+  
+  
+  #btnAgregarUsuario{
+    margin-right: 5px;
+    margin-top: 20px;
+  }
+  
+  .btn-add-right{
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+  }
+  .registros {
+    overflow-y: auto; /* Agrega desplazamiento vertical si los registros son demasiado largos */
+   /* Ocupa todo el espacio disponible dentro del contenedor modal-content */
+  
+  }
+  .thead, th{
+    background-color:#464343;
+    text-align: center;
+    color: rgb(255, 255, 255);
+  }
+  /* Estilos CSS para el menú desplegable */
+  .dropdown {
+    position: relative; /* Establece la posición relativa para posicionar el menú */
+  }
+  
+  .dropdown-menu {
+    right: 0; /* Alinea el menú a la derecha del botón */
+    top: 100%; /* Coloca el menú debajo del botón */
+    z-index: 10;
+    position: fixed; /* Cambia la posición a fixed */
+    color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
+  }  
+  
+  .dropdown button{
+    background-color: rgb(31, 31, 95);
+    border-color: rgb(31, 31, 95);
+    width: 50px;
+    height: 30px;
+    font-size: 12px;
+    padding: 5px; /* Relleno */
+  }
+  
+  
+  tbody td {
+    text-align: center;
+    margin-top: auto;
+  }
+  .dropdown-item i {
+    margin-right: 10px; /* Adjust the value for desired spacing */
+    color: rgb(31, 31, 95);
+  }
+  .dropdown-item {
+    color: rgb(31, 31, 95);
+  }
+  
+
+  .button-icon {
+    margin-right: 5px; /* Ajusta el margen derecho del ícono */
+  }
+  #AgregarModalbtn{
+    margin-top: 18px;
+    background-color: rgb(31, 31, 95);
+    border-color: rgb(31, 31, 95);
+  }
+  
+  /* Estilo para el botón de cerrar */
+  .btn-close {
+    align-self: center; /* Alinea el botón verticalmente en el centro */
+  }
+  
+  .table-responsive {
+    border-radius: 10px; /* Redondea los bordes */
+    overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
+    min-height: 400px;
+    display: grid;
+  }
+  .hide-column {
+    display: none;
+  }
+  .scroll-table {
+    max-height: auto; /* Ajusta según sea necesario */
+    overflow-y: auto; /* Agrega desplazamiento vertical si es necesario */
 }
 
-.modal-content{
-  background-color: white;
-  padding: 0 20px;
-  box-shadow: 0px 0px 3px rgb(204, 203, 203);
-
+.table {
+    min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
+    margin-bottom: 0; 
+    width: 100%; /* Elimina el margen inferior de la tabla */
 }
+/* Estilos adicionales según sea necesario */
 
 .modal-dialog {
   display: flex;
@@ -44,132 +160,61 @@
   min-height: calc(100% - 60px); /* Altura mínima que cubre toda la pantalla menos el espacio del footer */
 }
 
+
+/*modalessss*/
+#btnGuardar{
+  background-color: rgb(31, 31, 95);
+  border-color: rgb(31, 31, 95);
+  margin-left: 5px;
+}
+
 .modal-header {
-  border-bottom: none; /* Quita el borde inferior del encabezado del modal */
+  border-bottom: 2px solid #f0f0f0; /* Borde inferior */
+  margin: 0; /* Elimina márgenes */
+  padding: 15px; /* Agrega padding para un espaciado uniforme */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  background-color: #FF8C00; /* Color de fondo */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+  box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
+}
+.modal-header .modal-title {
+  font-weight: bold; /* Hace que el título esté en negrita */
+}
+
+.modal-body .form-group {
+  margin-bottom: 15px; /* Espacio entre grupos de formularios */
+}
+
+.modal-body .form-group:last-child {
+  margin-bottom: 0; /* Elimina el margen inferior del último grupo */
+}
+.modal-body label {
+  margin-bottom: 5px; /* Espacio entre el label y el input */
+  display: block; /* Asegura que el label esté alineado con su input */
+}
+
+.modal-body input {
+  margin-bottom: 15px; /* Espacio inferior para los inputs */
 }
 
 .modal-footer {
   border-top: none; /* Quita el borde superior del pie de página del modal */
 }
 
-
-#btnAgregarUsuario{
-  margin-right: 5px;
-  margin-top: 20px;
+.text-right {
+  text-align: right; /* Alinea los botones a la derecha */
 }
 
-.btn-add-right{
-  position: absolute;
-  right: 0;
-  margin-right: 10px;
-}
-.registros {
-  overflow-y: auto; /* Agrega desplazamiento vertical si los registros son demasiado largos */
- /* Ocupa todo el espacio disponible dentro del contenedor modal-content */
-
-}
-.thead, th{
-  background-color:#cccccc;
-  text-align: center;
-  color: rgb(22, 22, 72);
-}
-/* Estilos CSS para el menú desplegable */
-.dropdown {
-  position: static; /* Establece la posición relativa para posicionar el menú */
-}
-
-.dropdown-menu {
-  right: 0; /* Alinea el menú a la derecha del botón */
-  top: 100%; /* Coloca el menú debajo del botón */
-  z-index: 10;
-  position: absolute;
-  color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
-}
-
-.dropdown button{
-  background-color: #FF8C00;
+#btnBusqueda{
+  background: #FF8C00;
   border-color: #FF8C00;
-  width: 50px;
-  height: 30px;
-  font-size: 12px;
-  padding: 5px; /* Relleno */
 }
-
-
-tbody td {
-  text-align: center;
-  margin-top: auto;
+#alerta{
+  background: #ffd690;
+  border-color: #ffd690;
 }
-.dropdown-item i {
-  margin-right: 10px; /* Adjust the value for desired spacing */
-  color: rgb(31, 31, 95);
-}
-.dropdown-item {
-  color: rgb(31, 31, 95);
-}
-
-/* Estilo para el icono dentro del título en los modales */
-.modal-header h1 i {
-  margin-right: 10px; /* Ajusta este valor según sea necesario */
-  color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
-}
-
-/* Estilo para el texto dentro del título en los modales */
-.modal-header h1 {
-  color: rgb(31, 31, 95); /* Cambia el color del texto a azul */
-}
-.button-icon {
-  margin-right: 5px; /* Ajusta el margen derecho del ícono */
-}
-/* Estilos para los form-group que contienen los selectores */
-.form-group {
-  margin-bottom: 0;
-}
-
-/* Ajustar el ancho de los form-group para que estén lado a lado */
-.form-group.col-md-2 {
-  width: 45%; /* Ajustar según el espacio disponible y el diseño deseado */
-  margin-right: 10px; /* Margen derecho para separar los selectores */
-}
-
-/* Estilos adicionales para los selectores */
-select.form-control {
-  width: 100%; /* Ajustar el ancho del selector al 100% del contenedor */
-}
-
-#AgregarPersonalModalbtn {
+#footerRol{
   margin-top: 20px;
-  display: inline-flex; /* Permite que el botón sea un elemento de línea y use flexbox */
-  align-items: center; /* Alinea los elementos verticalmente en el centro */
-  padding: 5px 10px; /* Ajusta el relleno interno del botón */
-  font-size: 14px; /* Ajusta el tamaño del texto dentro del botón */
-  background-color: rgb(31, 31, 95);
-  border-color: rgb(31, 31, 95);
-  color: #fff; /* Color del texto */
-  white-space: nowrap; /* Evita que el texto se ajuste automáticamente */
-}
-
-#AgregarPersonalModalbtn i {
-  margin-right: 3px; /* Espacio entre el ícono y el texto */
-}
-
-/* Estilo para el encabezado del modal */
-.modal-header {
-  display: flex;
-  align-items: center; /* Alinea los elementos verticalmente en el centro */
-  justify-content: space-between; /* Distribuye el espacio entre los elementos */
-  border-bottom: 1px solid #ccc; /* Borde inferior */
-  padding-bottom: 10px; /* Espaciado inferior */
-}
-
-/* Estilo para el título del modal */
-.modal-header h1 {
-  color: rgb(31, 31, 95); /* Color del texto */
-  display: flex;
-  align-items: center; /* Alinea los elementos verticalmente en el centro */
-}
-
-/* Estilo para el botón de cerrar */
-.btn-close {
-  align-self: center; /* Alinea el botón verticalmente en el centro */
 }

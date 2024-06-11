@@ -7,14 +7,13 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
-import { GestionComponent } from './components/gestion/gestion.component';
+
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { UsuariosComponent } from './components/seguridad/usuarios/usuarios.component';
 import { TiporolesComponent } from './components/seguridad/tiporoles/tiporoles.component';
 import { RolComponent } from './components/seguridad/rol/rol.component';
 import { ApisComponent } from './components/seguridad/apis/apis.component';
 import { TipopersonaComponent } from './components/parametria/tipopersona/tipopersona.component';
-import { TiporolComponent } from './components/parametria/tiporol/tiporol.component';
 import { TipoproductoComponent } from './components/parametria/tipoproducto/tipoproducto.component';
 import { TipocategoriaComponent } from './components/parametria/tipocategoria/tipocategoria.component';
 import { TipomedidaComponent } from './components/parametria/tipomedida/tipomedida.component';
@@ -24,16 +23,15 @@ import { TipofacturaComponent } from './components/parametria/tipofactura/tipofa
 import { TipodestinatariofacturaComponent } from './components/parametria/tipodestinatariofactura/tipodestinatariofactura.component';
 import { TipoformadepagoComponent } from './components/parametria/tipoformadepago/tipoformadepago.component';
 import { TipopermisoComponent } from './components/parametria/tipopermiso/tipopermiso.component';
-import { TipopermisodetalleComponent } from './components/parametria/tipopermisodetalle/tipopermisodetalle.component';
 import { StockComponent } from './components/recursos/stock/stock.component';
 import { ProveedoresComponent } from './components/recursos/proveedores/proveedores.component';
 import { PersonalComponent } from './components/recursos/personal/personal.component';
 import { ClientesComponent } from './components/recursos/clientes/clientes.component';
-import { RegistrodeventasComponent } from './components/gestion/registrodeventas/registrodeventas.component';
+
 import { RealizarpedidosComponent } from './components/gestion/realizarpedidos/realizarpedidos.component';
 import { EnviodeinventarioComponent } from './components/gestion/enviodeinventario/enviodeinventario.component';
 import { ConfirmacionderecepcionComponent } from './components/gestion/confirmacionderecepcion/confirmacionderecepcion.component';
-import { VizualizarfacturasComponent } from './components/gestion/vizualizarfacturas/vizualizarfacturas.component';
+
 import { InformesdeventaComponent } from './components/reportes/informesdeventas/informesdeventa.component';
 import { InformesfinancierosComponent } from './components/reportes/informesfinancieros/informesfinancieros.component';
 import { InformesdeabastecimientoComponent } from './components/reportes/informesdeabastecimiento/informesdeabastecimiento.component';
@@ -52,7 +50,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
-import { TipopersonasistemaComponent } from './components/parametria/tipopersonasistema/tipopersonasistema.component';
 import { SubmenuComponent } from './components/navbar/submenu/submenu.component';
 import { ItemComponent } from './components/navbar/submenu/item/item.component';
 import { TipodocumentacionComponent } from './components/parametria/tipodocumentacion/tipodocumentacion.component';
@@ -61,11 +58,17 @@ import { AccesoComponent } from './components/acceso/acceso.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoaderComponent } from './components/loader/loader.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatCardModule } from '@angular/material/card';
-import { BaseChartDirective } from 'ng2-charts';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
+import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
+import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
+import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
+import { BusquedaNombreApellidoDniPipe } from './components/busqueda/busquedaPersonal.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import { MatButtonModule } from '@angular/material/button';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-
-
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -74,14 +77,13 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     LoginComponent,
     FooterComponent,
     HomeComponent,
-    GestionComponent,
     ReportesComponent,
     UsuariosComponent,
     TiporolesComponent,
     RolComponent,
     ApisComponent,
     TipopersonaComponent,
-    TiporolComponent,
+
     TipoproductoComponent,
     TipocategoriaComponent,
     TipomedidaComponent,
@@ -91,29 +93,37 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     TipodestinatariofacturaComponent,
     TipoformadepagoComponent,
     TipopermisoComponent,
-    TipopermisodetalleComponent,
+
     StockComponent,
     ProveedoresComponent,
     PersonalComponent,
     ClientesComponent,
-    RegistrodeventasComponent,
     RealizarpedidosComponent,
     EnviodeinventarioComponent,
     ConfirmacionderecepcionComponent,
-    VizualizarfacturasComponent,
+
     InformesdeventaComponent,
     InformesfinancierosComponent,
     InformesdeabastecimientoComponent,
     InformesdeclientesComponent,
     InformesdeproductosComponent,
     TipomoduloComponent,
-    TipopersonasistemaComponent,
+
     SubmenuComponent,
     ItemComponent,
     TipodocumentacionComponent,
     TiposucursalComponent,
     AccesoComponent,
     LoaderComponent,
+    BusquedaPipe,
+    BusquedastockPipe,
+    BusquedausuariosPipe,
+    BusquedausuariosPipe,
+    RealizarventaComponent,
+    BusquedaNombreApellidoDniPipe,
+    SnackbarComponent,
+    
+
   ],
   imports: [
     BrowserModule,
@@ -131,13 +141,17 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     RouterModule,
     NgxPaginationModule,
     NgbModule,
-    MatCardModule,
-    BaseChartDirective,
-    NgxChartsModule
+    NgbTooltipModule,
+    MatSnackBarModule,
+    MatButtonModule,
+    NgxChartsModule 
+
+    
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { TipoCategoriaService } from '../../../services/parametria/tipocategoria.service';
 import { TipoCategoria } from '../../../models/parametria/tipoCategoria';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
+import { NgIfContext } from '@angular/common';
 
 @Component({
   selector: 'app-tipocategoria',
@@ -26,6 +27,8 @@ export class TipocategoriaComponent implements OnInit {
   paginaActual = 1;
   elementosPorPagina = 10;
   loading: boolean = true;
+  Busqueda = "";
+  noData: TemplateRef<NgIfContext<boolean>>;
 
   constructor(
     private tipoCategoriaService: TipoCategoriaService,
@@ -43,13 +46,18 @@ export class TipocategoriaComponent implements OnInit {
     });
 
     this.formFiltro = this.formBuilder.group({
-      idFiltro: new FormControl('1', [Validators.required])
+      idFiltro: new FormControl('1', [Validators.required]),
+      busqueda: new FormControl('') // Control de búsqueda
     });
 
     this.listar(1);
 
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
+    });
+
+    this.formFiltro.get('busqueda').valueChanges.subscribe(value => {
+      this.Busqueda = value;
     });
   }
 
@@ -110,40 +118,35 @@ export class TipocategoriaComponent implements OnInit {
     if (this.itemGrilla.IdTipoCategoria == null) {
       this.tipoCategoriaService.agregar(this.itemGrilla, this.Token).subscribe(
         response => {
-          this.loading = false;
           this.listar(1);
           this.modalRef.close();
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-
         },
         error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false; // Asegúrate de manejar el caso de error
+          this.loading = false;
         }
       );
     } else {
       this.tipoCategoriaService.editar(this.itemGrilla, this.Token).subscribe(
         response => {
-          this.loading = false;
           this.listar(1);
           this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
         },
         error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false; // Asegúrate de manejar el caso de error
+          this.loading = false;
         }
       );
     }
   }
-  
 
   inhabilitar(): void {
     this.loading = true;
     this.tipoCategoriaService.inhabilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(1);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       },
@@ -159,7 +162,6 @@ export class TipocategoriaComponent implements OnInit {
     this.tipoCategoriaService.habilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(2);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       },
@@ -169,7 +171,9 @@ export class TipocategoriaComponent implements OnInit {
       }
     );
   }
-
+  limpiarBusqueda(): void {
+    this.formFiltro.get('busqueda').setValue('');
+  }
   cambiarPagina(event): void {
     this.paginaActual = event;
   }

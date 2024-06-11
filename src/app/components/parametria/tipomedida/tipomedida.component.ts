@@ -20,6 +20,7 @@ export class TipomedidaComponent {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
+  loading: boolean = true;
 
   constructor(
     private tipomedidaService: TipomedidaService,
@@ -49,11 +50,14 @@ export class TipomedidaComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipomedidaService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoMedidas || [];
+        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 }

@@ -12,11 +12,12 @@
   letter-spacing: 1px;
   margin-bottom: 0%;
   display: inline-flex; /* Ajusta el tamaño al contenido */
-  background-color: #FF8C00; /* Color de fondo */
+  background: #FF8C00; /* Color de fondo */
   border-radius: 10px; /* Bordes redondeados */
   padding: 5px 50px; /* Espacio interno reducido */
   align-items: center; /* Alinea los elementos hijos verticalmente */
 }
+
 
 .title-menu {
   display: inline-flex;
@@ -90,9 +91,9 @@
     right: 0; /* Alinea el menú a la derecha del botón */
     top: 100%; /* Coloca el menú debajo del botón */
     z-index: 10;
-    position: absolute;
+    position: fixed; /* Cambia la posición a fixed */
     color: rgb(31, 31, 95); /* Cambia el color del icono a azul */
-  }
+  }  
   
   .dropdown button{
     background-color: rgb(31, 31, 95);
@@ -135,6 +136,7 @@
     border-radius: 10px; /* Redondea los bordes */
     overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
     min-height: 400px;
+    display: grid;
   }
   .hide-column {
     display: none;
@@ -148,7 +150,6 @@
     min-width: 100%; /* Garantiza que la tabla ocupe el ancho completo */
     margin-bottom: 0; 
     width: 100%; /* Elimina el margen inferior de la tabla */
-    min-height: 400px;
 }
 /* Estilos adicionales según sea necesario */
 
@@ -204,4 +205,72 @@
 
 .text-right {
   text-align: right; /* Alinea los botones a la derecha */
+}
+
+#btnBusqueda{
+  background: #FF8C00;
+  border-color: #FF8C00;
+}
+#alerta{
+  background: #ffd690;
+  border-color: #ffd690;
+
+}
+
+.modal-body .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-body .col-md-3 {
+  padding: 5px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-input {
+  margin-right: 10px;
+}
+
+
+.input-short {
+  width: 100px; /* Ajusta este valor según sea necesario */
+}
+
+.checkbox-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.checkbox-column {
+  flex: 1;
+  max-width: 25%; /* Esto asegurará que haya 4 columnas */
+  box-sizing: border-box;
+}
+
+.checkbox-item {
+  width: 100%;
+  margin-bottom: 1px; /* Espacio entre los elementos */
+}
+
+.form-check-input {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Media query para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+  .checkbox-column {
+    max-width: 50%; /* Mostrar 2 columnas en pantallas pequeñas */
+  }
+}
+
+/* Media query para pantallas extra pequeñas */
+@media screen and (max-width: 576px) {
+  .checkbox-column {
+    max-width: 100%; /* Mostrar 1 columna en pantallas extra pequeñas */
+  }
 }

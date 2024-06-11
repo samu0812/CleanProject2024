@@ -14,13 +14,13 @@ export class UsuarioService {
 
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_Usuarios?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/seguridad/usuarios?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 
 
   agregar(item: Usuario, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_Usuarios`;
+    const url = `${this.apiUrl}/seguridad/usuarios`;
     const body = {
       IdPersona: item.IdPersona,
       Usuario: item.Usuario,
@@ -29,20 +29,52 @@ export class UsuarioService {
     return this.http.post(url, body);
   }
 
-
-  // editar(item: Usuario, Token: string): Observable<any> {
-  //   const url = `${this.apiUrl}/SPM_TipoCategoria`;
-  //   const body = {
-  //     IdTipoCategoria: item.IdTipoCategoria,
-  //     Descripcion: item.Descripcion,
-  //     Token: Token};
-  //     return this.http.put(url, body);
-  // }
-
+  editar(item: Usuario, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/seguridad/usuarios`;
+    const body = {
+      IdUsuario: item.IdUsuario,
+      NuevoUsuario: item.Usuario,
+      NuevaClave: item.Clave,
+      Token: Token};
+      return this.http.put(url, body);
+  }
 
   listarPersonas(): Observable<any> {
-    const url = `${this.apiUrl}/SP_ListaPersonas`;
+    const url = `${this.apiUrl}/lista/personas`;
     return this.http.get(url);
+  }
+
+  agregarRolUsuario(item: Usuario, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/seguridad/usuarios/rol`;
+    const body = {
+      IdUsuario: item.IdUsuario,
+      IdRol: item.IdTipoRol,
+      Token: Token};
+    return this.http.post(url, body);
+  }
+
+  listarUsuariosRol(IdUsuario: number): Observable<any> {
+    const url = `${this.apiUrl}/seguridad/usuarios/rol?IdUsuario=${IdUsuario}`;
+    return this.http.get(url);
+  }
+
+  eliminarUsuarioRol(item: any, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/seguridad/usuarios?IdUsuarioRol=${item.IdUsuarioRol}&Token=${Token}`;
+    return this.http.delete(url);
+  }
+
+  modificarUsuarioSucursal(IdUsuario: number, IdSucursal: number, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/seguridad/usuarios/sucursal`;
+    const body = {
+      IdUsuario: IdUsuario,
+      IdSucursal: IdSucursal,
+      Token: Token};
+      return this.http.put(url, body);
+  }
+
+  inhabilitar(item: Usuario, Token: string): Observable<any> {
+    const url = `${this.apiUrl}/seguridad/usuarios?IdUsuario=${item.IdUsuario}&Token=${Token}`;
+    return this.http.delete(url);
   }
 
 }

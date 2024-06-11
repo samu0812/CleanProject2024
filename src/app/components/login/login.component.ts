@@ -12,12 +12,13 @@ import { AlertasService } from '../../services/alertas/alertas.service';
 })
 export class LoginComponent implements OnInit {
   FormularioLogin: FormGroup;
+  loading: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private authService: AuthService,
     private router: Router,
-    private alertasService: AlertasService
+    private alertasService: AlertasService,
   ) {}
 
   ngOnInit(): void {
@@ -27,25 +28,33 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  
   onSubmit(): void {
+    
     if (this.FormularioLogin.valid) {
+      this.loading = true;
       const formData = this.FormularioLogin.value;
       this.loginService.login(formData).subscribe(
         (response) => {
           if (response.Status === 200) {
             localStorage.setItem("Token", response.Token);
+            console.log(response);
             this.authService.setAuthenticated(true, response); // Pasa la información del usuario
             this.router.navigate(['/home']);
+            this.loading = false;
           } else {
             this.alertasService.ErrorAlert('Credenciales incorrectas', 'Por favor intenta de nuevo.');
+            this.loading = false;
           }
         },
         (error) => {
           this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
+          this.loading = false;
         }
       );
     } else {
       this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
+    
     }
   }
 

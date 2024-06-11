@@ -13,7 +13,7 @@ export class TipofacturaService {
   constructor(private http: HttpClient) { }
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoFactura?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/parametria/tipofactura?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 }

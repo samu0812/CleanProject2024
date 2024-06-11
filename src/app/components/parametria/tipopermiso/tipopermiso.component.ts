@@ -31,6 +31,7 @@ export class TipopermisoComponent {
   lTipoPermisoDetalles: TipoPermisoDetalles[];
   paginaActual = 1; // Página actual
   elementosPorPagina = 10; // Elementos por página
+  loading: boolean = true;
 
 
   constructor(private tipopermisoService: TipopermisoService,
@@ -55,24 +56,30 @@ export class TipopermisoComponent {
   }
 
   listar(): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipopermisoService.listar().subscribe(
       response => {
         this.itemGrilla = new TipoPermiso();
         this.listaGrilla = response.TipoPermiso || [];
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.message);
+        this.loading = false;
       }
     );
   }
   listarDetalle(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipopermisoService.listarDetalle(TipoLista).subscribe(
       response => {
         this.itemGrilla2 = new TipoPermisoDetalles();
         this.listaGrilla2 = response.TipoPermisoDetalles || [];
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.message);
+        this.loading = false;
       }
     );
   }

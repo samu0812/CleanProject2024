@@ -12,7 +12,7 @@ export class TipodomicilioService {
   constructor(private http: HttpClient) { }
 
   listar(TipoLista: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_TipoDomicilio?TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/parametria/tipodomicilio?TipoLista=${TipoLista}`;
     return this.http.get(url);
   }
 }

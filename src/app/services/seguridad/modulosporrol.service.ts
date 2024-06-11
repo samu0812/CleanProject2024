@@ -13,7 +13,7 @@ export class ModulosporrolService {
   constructor(private http: HttpClient) { }
 
   listar(TipoLista: number, TipoRol: number): Observable<any> {
-    const url = `${this.apiUrl}/SPL_RolModulo?IdTipoRol=${TipoRol}&TipoLista=${TipoLista}`;
+    const url = `${this.apiUrl}/seguridad/rolmodulos?IdTipoRol=${TipoRol}&TipoLista=${TipoLista}`;
     const body = {
       IdTipoRol: TipoRol,
       TipoLista: TipoLista};
@@ -21,7 +21,7 @@ export class ModulosporrolService {
   }
 
   agregar(item: ModulosPorRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPA_RolModulo`;
+    const url = `${this.apiUrl}/seguridad/rolmodulos`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       DescripcionTipoRol: item.DescripcionTipoRol,
@@ -32,16 +32,14 @@ export class ModulosporrolService {
       Token: Token};
     return this.http.post(url, body);
   }
-
+  
   inhabilitar(item: number, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPB_RolModulo`;
-    const body = {
-      IdRolModulo: item,
-      Token: Token};
-      return this.http.put(url, body);
+    const url = `${this.apiUrl}/seguridad/rolmodulos?IdRolModulo=${item}&Token=${Token}`;
+    return this.http.delete(url);
   }
+
   habilitar(item: ModulosPorRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/SPH_TipoRol`;
+    const url = `${this.apiUrl}/seguridad/rolmodulos`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       DescripcionTipoRol: item.DescripcionTipoRol,

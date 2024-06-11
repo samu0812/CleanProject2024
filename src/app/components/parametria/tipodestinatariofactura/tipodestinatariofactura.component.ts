@@ -21,6 +21,7 @@ export class TipodestinatariofacturaComponent implements OnInit {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
+  loading: boolean = true;
 
   constructor(
     private tipodestinatariofacturaService: TipodestinatariofacturaService,
@@ -49,11 +50,14 @@ export class TipodestinatariofacturaComponent implements OnInit {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipodestinatariofacturaService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoDestinatarioFacturas || [];
+        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 }

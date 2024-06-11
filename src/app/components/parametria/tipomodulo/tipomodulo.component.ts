@@ -22,6 +22,7 @@ export class TipomoduloComponent {
   imgSubmenu: Menu;
   paginaActual = 1; // Página actual
   elementosPorPagina = 10; // Elementos por página
+  loading: boolean = true;
 
   constructor(
     private tipomoduloService: TipomoduloService,
@@ -55,12 +56,14 @@ export class TipomoduloComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.tipomoduloService.listar(TipoLista)
       .subscribe(response => {
         this.listaGrilla = response.TipoModulos || [];
-        console.log(response);
+        this.loading = false;
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 
