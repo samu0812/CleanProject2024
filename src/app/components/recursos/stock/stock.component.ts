@@ -15,6 +15,7 @@ import { TipoproductoService } from '../../../services/parametria/tipoproducto.s
 import { Proveedor } from '../../../models/recursos/proveedor';
 import { ProveedorService } from '../../../services/recursos/proveedor.service';
 import { NgIfContext } from '@angular/common';
+import { StockSucursal } from '../../../models/recursos/stockSucursal';
 
 @Component({
   selector: 'app-stock',
@@ -40,6 +41,13 @@ export class StockComponent {
   loading: boolean = true;
   busquedastock = "";
   noData: TemplateRef<NgIfContext<boolean>>;
+  tiposAumento: any[] = [];
+  aumentosProducto: any[] = [];
+  aumentos: any[] = [];
+  aumentoExtra: number;
+  columns: any[][];
+  StockSucursal:StockSucursal;
+  cantidad: number;
 
   constructor(private stockService: StockService,
     private modalService: NgbModal,
@@ -105,8 +113,8 @@ export class StockComponent {
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/recursos/inventario').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-    });
-  }
+    });
+  }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
     this.loading = true;
@@ -145,7 +153,108 @@ export class StockComponent {
     this.itemGrilla = Object.assign({}, item); // Duplica el item
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
   }
+  openAumentos(content: any, item: Productos): void {
+    this.tituloModal = "Aumento";
+    this.tituloBoton = "Guardar";
+    this.itemGrilla = { ...item };
+
+    // Obtener tipos de aumento
+    this.stockService.obtenerTiposAumento().subscribe({
+      next: (data) => {
+        this.tiposAumento = data.TiposAumento.map(tipo => ({
+          ...tipo,
+          seleccionado: false
+        }));
+        console.log(this.tiposAumento)
+        this.columns = this.getColumns(this.tiposAumento);
+        console.log(this.columns,"columnas");
+
+        // Obtener aumentos actuales del producto
+        this.stockService.getAumentosPorProducto(this.itemGrilla!.IdProducto).subscribe({
+          next: (response) => {
+            // Verificamos que response.Aumentos es un array
+            if (Array.isArray(response.Aumentos)) {
+              this.aumentosProducto = response.Aumentos;
+              // Marcar los tipos de aumento que ya están asignados
+              this.tiposAumento.forEach(tipo => {
+                const aumento = this.aumentosProducto.find(a => a.IdTipoAumento === tipo.IdTipoAumento);
+                if (aumento) tipo.seleccionado = true;
+              });
+            } else {
+              console.error('Datos de aumentos no es un array:', response.Aumentos);
+            }
+          },
+          error: (error) => {
+            console.error('Error al obtener aumentos del producto', error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error al obtener tipos de aumento', error);
+      }
+    });
+
+    this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+  }
+
+  openCantidad(content: any, item): void {
+    this.tituloModal = "Cantidad";
+    this.tituloBoton = "Guardar";
+    this.itemGrilla = item;
+    this.cantidad = 0;
+    this.modalRef = this.modalService.open(content, { size: 'md', centered: true });
+  }
   
+  guardarStock(): void {
+    if (this.cantidad <= 0) {
+      this.alertasService.ErrorAlert('Error', 'La cantidad debe ser mayor que cero.');
+      return;
+    }
+    const idProducto = this.itemGrilla.IdProducto;
+    this.stockService.AgregarStock(idProducto, this.cantidad, this.Token).subscribe(
+      response => {
+        this.alertasService.OkAlert('Éxito', 'Stock agregado correctamente.');
+        this.modalRef.close();
+        
+      },
+      error => {
+        this.alertasService.ErrorAlert('Error', error.error.message);
+      }
+    );
+  }
+
+  getColumns(tipos: any[]): any[][] {
+    const columns = [];
+    let currentColumn = [];
+    for (let i = 0; i < tipos.length; i++) {
+      currentColumn.push(tipos[i]);
+      if ((i + 1) % 4 === 0 || i === tipos.length - 1) {
+        columns.push(currentColumn);
+        currentColumn = [];
+      }
+    }
+    return columns;
+  }
+
+  guardarAumentos() {
+    const payload = {
+        IdProducto: this.itemGrilla.IdProducto,
+        Aumentos: this.tiposAumento.filter(tipo => tipo.seleccionado).map(tipo => ({ IdTipoAumento: tipo.IdTipoAumento })),
+        AumentoExtra: this.aumentoExtra
+    };
+
+    this.stockService.guardarAumentosProducto(payload).subscribe(
+        response => {
+            this.alertasService.OkAlert('Éxito', 'Aumentos guardados correctamente.');
+            console.log('Aumentos guardados correctamente', response);
+            this.modalRef.close();
+        },
+        error => {
+            this.alertasService.ErrorAlert('Error', 'Error al guardar aumentos.');
+            console.error('Error al guardar aumentos', error);
+        }
+    );
+}
 
   openInhabilitar(contentInhabilitar, item: Productos) {
     this.tituloModal = "Inhabilitar";
