@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { TipoCategoriaService } from '../../../services/parametria/tipocategoria.service';
 import { TipoCategoria } from '../../../models/parametria/tipoCategoria';
-import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
 import { NgIfContext } from '@angular/common';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
 
 @Component({
@@ -95,13 +95,11 @@ export class TipocategoriaComponent implements OnInit {
     this.itemGrilla = Object.assign({}, new TipoCategoria());
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
     this.modalRef.result.then((result) => {
-      console.log(result, 'BOTON');
       if (result === 'Cancelar') {
         this.formItemGrilla.reset();
       }
     }, (reason) => {
       if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
-        console.log('BOTONDSDASDSA');
         this.formItemGrilla.reset();
       }
     });
@@ -192,9 +190,11 @@ export class TipocategoriaComponent implements OnInit {
       }
     );
   }
+
   limpiarBusqueda(): void {
     this.formFiltro.get('busqueda').setValue('');
   }
+
   cambiarPagina(event): void {
     this.paginaActual = event;
   }
