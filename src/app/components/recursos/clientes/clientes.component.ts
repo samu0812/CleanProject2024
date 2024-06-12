@@ -166,7 +166,6 @@ export class ClientesComponent implements OnInit {
     if (this.itemGrilla.IdCliente == null) {
       this.ClienteService.agregar(this.itemGrilla, this.Token).subscribe(
         response => {
-          this.loading = false;
           this.listar(1);
           this.modalRef.close();
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
@@ -181,7 +180,6 @@ export class ClientesComponent implements OnInit {
       console.log(this.itemGrilla);
       this.ClienteService.editar(this.itemGrilla, this.Token).subscribe(
         response => {
-          this.loading = false;
           this.listar(1);
           this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
@@ -200,7 +198,6 @@ export class ClientesComponent implements OnInit {
     this.ClienteService.inhabilitar(this.itemGrilla , this.Token).subscribe(
       response => {
         this.listar(1);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       },
@@ -217,7 +214,6 @@ export class ClientesComponent implements OnInit {
     this.ClienteService.habilitar(this.itemGrilla, this.Token).subscribe(
       response => {
         this.listar(2);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       },

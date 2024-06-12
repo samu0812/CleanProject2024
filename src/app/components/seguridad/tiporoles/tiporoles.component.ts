@@ -160,7 +160,7 @@ export class TiporolesComponent {
     this.loading = true;
     this.TiporolService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(2);
         this.alertasService.OkAlert('OK', 'Se habilitó Correctamente');
         this.modalRef.close();
       }, error => {
