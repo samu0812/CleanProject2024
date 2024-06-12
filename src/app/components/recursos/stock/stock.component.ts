@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef , ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
@@ -16,6 +16,8 @@ import { Proveedor } from '../../../models/recursos/proveedor';
 import { ProveedorService } from '../../../services/recursos/proveedor.service';
 import { NgIfContext } from '@angular/common';
 import { StockSucursal } from '../../../models/recursos/stockSucursal';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
+import { localidadesPorProvService } from '../../../services/recursos/localidadesPorProv.service';
 
 @Component({
   selector: 'app-stock',
@@ -58,24 +60,26 @@ export class StockComponent {
     private tipomedidaService: TipomedidaService,
     private tipoCategoriaService: TipoCategoriaService,
     private tipoproductoService: TipoproductoService,
-    private proveedorService: ProveedorService
+    private proveedorService: ProveedorService,
+    private ValidacionErroresService: ValidacionErroresService,
+    private localidadesPorProvService : localidadesPorProvService
   ) {}
   
   ngOnInit(): void {
     this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
-      Codigo: Productos.validarCampo('', Productos.obtenerValidadoresCampo('Codigo')),
-      Nombre: Productos.validarCampo('', Productos.obtenerValidadoresCampo('Nombre')),
-      Marca: Productos.validarCampo('', Productos.obtenerValidadoresCampo('Marca')),
-      PrecioCosto: Productos.validarCampo('', Productos.obtenerValidadoresCampo('PrecioCosto')),
-      Tamano: Productos.validarCampo('', Productos.obtenerValidadoresCampo('Tamano')),
-      CantMaxima: Productos.validarCampo('', Productos.obtenerValidadoresCampo('CantMaxima')),
-      CantMinima: Productos.validarCampo('', Productos.obtenerValidadoresCampo('CantMinima')),
-      tipoMedida: Productos.validarCampo('', Productos.obtenerValidadoresCampo('tipoMedida')),
-      tipoCategoria: Productos.validarCampo('', Productos.obtenerValidadoresCampo('tipoCategoria')),
-      tipoProducto: Productos.validarCampo('', Productos.obtenerValidadoresCampo('tipoProducto')),
-      proveedor: Productos.validarCampo('', Productos.obtenerValidadoresCampo('proveedor'))
+      Codigo: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(45)]),
+      Nombre: new FormControl('', [Validators.required, Validators.maxLength(45)]),
+      Marca: new FormControl('', [Validators.required, Validators.maxLength(45)]),
+      PrecioCosto: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]),
+      Tamano: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]),
+      CantMaxima: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
+      CantMinima: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
+      tipoMedida: new FormControl('', [Validators.required]),
+      tipoCategoria: new FormControl('', [Validators.required]),
+      tipoProducto: new FormControl('', [Validators.required]),
+      proveedor: new FormControl('', [Validators.required,Validators.maxLength(45)]),
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -96,20 +100,29 @@ export class StockComponent {
     this.obtenerListas();
   }
 
-  obtenerMensajeError(nombreCampo: string): string {
-    return Productos.obtenerMensajeError(nombreCampo);
+  cerrarModal () {
+    console.log('cerrando')
+    this.formItemGrilla.reset();
+    console.log(this.formItemGrilla)
+    this.modalRef.close();
   }
+
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
   isFieldInvalid(fieldName: string): boolean {
+    console.log(fieldName ,'isFieldInvalid');
     const field = this.formItemGrilla.get(fieldName);
     return field.invalid && (field.touched || field.dirty);
   }
 
-  esCampoInvalido(nombreCampo: string): boolean {
-    const control = this.formItemGrilla.get(nombreCampo);
-    if (control instanceof FormControl) {
-      return Productos.esCampoInvalido(control);
-    }
-    return false;
+  getErrorMessage(fieldName: string): string | null {
+    console.log(fieldName ,'getErrorMessage');
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
   }
 
   toggleSelection(item: any) {
@@ -187,6 +200,18 @@ export class StockComponent {
     this.itemGrilla = Object.assign({}, new Productos());
     console.log(this.itemGrilla)
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+
+    this.modalRef.result.then((result) => {
+      console.log(result, 'BOTON');
+      if (result === 'Cancelar') {
+        this.formItemGrilla.reset();
+      }
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        console.log('BOTONDSDASDSA');
+        this.formItemGrilla.reset();
+      }
+    });
   }
 
   openEditar(content, item: Productos) {

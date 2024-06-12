@@ -1,7 +1,7 @@
 import { Component , OnInit, Input, TemplateRef } from '@angular/core';
 import { Personal } from '../../../models/recursos/personal';
 import { PersonalService } from '../../../services/recursos/personal.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef , ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
@@ -17,6 +17,8 @@ import { Localidad } from '../../../models/recursos/localidad';
 import { TipoDocumentacion } from '../../../models/parametria/tipodocumentacion';
 import { TipodocumentacionService } from '../../../services/parametria/tipodocumentacion.service';
 import { NgIfContext } from '@angular/common';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
+import { localidadesPorProvService } from '../../../services/recursos/localidadesPorProv.service';
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
@@ -56,7 +58,9 @@ export class PersonalComponent {
     private TipodomicilioService: TipodomicilioService,
     private ProvinciaService: ProvinciaService,
     private LocalidadService: LocalidadService,
-    private TipodocumentacionService: TipodocumentacionService
+    private TipodocumentacionService: TipodocumentacionService,
+    private ValidacionErroresService: ValidacionErroresService,
+    private localidadesPorProvService : localidadesPorProvService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -65,21 +69,21 @@ export class PersonalComponent {
     this.Token = localStorage.getItem('Token');
 
     this.formItemGrilla = this.formBuilder.group({
-      Nombre: new FormControl('', [Validators.required]),
-      Apellido: new FormControl('', [Validators.required]),
-      Mail: new FormControl('', [Validators.required]),
-      Telefono: new FormControl('', [Validators.required]),
+      Nombre: new FormControl('', [Validators.required, Validators.maxLength(45)], ),
+      Apellido: new FormControl('', [Validators.required, Validators.maxLength(45)]),
+      Mail: new FormControl('', [Validators.required, Validators.maxLength(45), Validators.email]),
+      Telefono: new FormControl('', [Validators.required , Validators.minLength(10), Validators.maxLength(45)]),
       FechaNacimiento: new FormControl('', [Validators.required]),
       domicilio: new FormControl('', [Validators.required]),
       tipoPersona: new FormControl('', [Validators.required]),
-      Calle: new FormControl('', [Validators.required]),
-      Nro: new FormControl('', [Validators.required]),
-      Piso: new FormControl('', [Validators.required]),
+      Calle: new FormControl('', [Validators.required, Validators.maxLength(45)]),
+      Nro: new FormControl('', [Validators.required, Validators.maxLength(45), Validators.pattern(/^\d+$/)]),
+      Piso: new FormControl('', [Validators.maxLength(45)]),
       Localidad: new FormControl('', [Validators.required]),
       TipoDocumentacion: new FormControl('', [Validators.required]),
-      Documentacion: new FormControl('', [Validators.required]),
+      Documentacion: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(45)]),
       Provincia: new FormControl('', [Validators.required]),
-      listaPersonal: new FormControl('', [Validators.required])
+      listaPersonal: new FormControl('')
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -105,9 +109,9 @@ export class PersonalComponent {
     this.TipodomicilioService.listar(1).subscribe(data => {
       this.lTipoDomicilio = data.TipoDomicilios;
     });
-    this.LocalidadService.listar(1).subscribe(data => {
-      this.lLocalidad = data.Localidades;
-    });
+    // this.LocalidadService.listar(1).subscribe(data => {
+    //   this.lLocalidad = data.Localidades;
+    // });
     this.ProvinciaService.listar(1).subscribe(data => {
       this.lProvincia = data.Provincias;
     });
@@ -125,6 +129,33 @@ export class PersonalComponent {
     });
   }
   
+  obtenerLocalidadesPorProv(IdProvincia) {
+    this.itemGrilla.IdLocalidad = undefined;
+    this.localidadesPorProvService.listar(IdProvincia).subscribe(data => {
+      this.lLocalidad = data.Localidades;
+    });
+  }
+
+  cerrarModal () {
+    this.formItemGrilla.reset();
+    console.log(this.formItemGrilla)
+    this.modalRef.close();
+  }
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
 
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/recursos/personal').subscribe(data => {
@@ -151,34 +182,39 @@ export class PersonalComponent {
 
   guardar(): void {
     this.loading = true;
-    console.log(this.itemGrilla);
-    if (this.itemGrilla.IdPersona == null) {
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdPersona == null) {
 
-      this.PersonalService.agregarPersonal(this.itemGrilla,this.Token).subscribe(
-        response => {
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-          this.listar(1);
-          this.modalRef.close();
-        },
-        error => {
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false; // Asegúrate de manejar el caso de error
-        }
-      );
-    } else {
-      this.loading = true;
-       this.PersonalService.editar(this.itemGrilla, this.Token).subscribe(
-         response => {
-           this.loading = false;
-           this.listar(1);
-           this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-           this.modalRef.close();
-         },
-         error => {
-           this.alertasService.ErrorAlert('Error', error.error.Message);
-           this.loading = false; // Asegúrate de manejar el caso de error
-         }
-      );
+        this.PersonalService.agregarPersonal(this.itemGrilla,this.Token).subscribe(
+          response => {
+            this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+            this.listar(1);
+            this.modalRef.close();
+          },
+          error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false; // Asegúrate de manejar el caso de error
+          }
+        );
+      } else {
+        this.loading = true;
+        this.PersonalService.editar(this.itemGrilla, this.Token).subscribe(
+          response => {
+            this.loading = false;
+            this.listar(1);
+            this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
+            this.modalRef.close();
+          },
+          error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false; // Asegúrate de manejar el caso de error
+          }
+        );
+      }
+    }else {
+      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+      this.loading = false;
     }
   }
 
@@ -221,6 +257,18 @@ export class PersonalComponent {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Personal());
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+
+    this.modalRef.result.then((result) => {
+      console.log(result, 'BOTON');
+      if (result === 'Cancelar') {
+        this.formItemGrilla.reset();
+      }
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        console.log('BOTONDSDASDSA');
+        this.formItemGrilla.reset();
+      }
+    });
   }
 
   openEditar(content, item: Personal) {

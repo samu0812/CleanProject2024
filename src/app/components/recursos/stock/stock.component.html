@@ -167,92 +167,92 @@
           <div class="form-group col-md-4">
             <label for="Codigo">Código:</label>
             <input [(ngModel)]="itemGrilla.Codigo" type="text" formControlName="Codigo" class="form-control" id="Codigo"
-              placeholder="Código"
-              [ngClass]="{'is-invalid': isFieldInvalid('Codigo')}">
+              placeholder="Codigo"
+              [ngClass]="{'is-invalid': isFieldInvalid('Codigo'), 'is-valid': !isFieldInvalid('Codigo') && isFieldTouched('Codigo')}">
               <div *ngIf="isFieldInvalid('Codigo')" class="invalid-feedback">
-                {{ obtenerMensajeError('Codigo') }}
+                {{ getErrorMessage('Codigo') }}
               </div>
           </div>
           <div class="form-group col-md-4">
             <label for="Nombre">Nombre:</label>
             <input [(ngModel)]="itemGrilla.Nombre" type="text" formControlName="Nombre" class="form-control" id="Nombre"
               placeholder="Nombre"
-              [ngClass]="{'is-invalid': isFieldInvalid('Nombre')}">
-            <div *ngIf="isFieldInvalid('Nombre')" class="invalid-feedback">
-              El campo Nombre es requerido.
-            </div>
+              [ngClass]="{'is-invalid': isFieldInvalid('Nombre'), 'is-valid': !isFieldInvalid('Nombre') && isFieldTouched('Nombre')}">
+              <div *ngIf="isFieldInvalid('Nombre')" class="invalid-feedback">
+                {{ getErrorMessage('Nombre') }}
+              </div>
           </div>
           <div class="form-group col-md-4">
             <label for="Marca">Marca:</label>
             <input [(ngModel)]="itemGrilla.Marca" type="text" formControlName="Marca" class="form-control" id="Marca"
               placeholder="Marca"
-              [ngClass]="{'is-invalid': isFieldInvalid('Marca')}">
-            <div *ngIf="isFieldInvalid('Marca')" class="invalid-feedback">
-              El campo Marca es requerido.
-            </div>
+              [ngClass]="{'is-invalid': isFieldInvalid('Marca'), 'is-valid': !isFieldInvalid('Marca') && isFieldTouched('Marca')}">
+              <div *ngIf="isFieldInvalid('Marca')" class="invalid-feedback">
+                {{ getErrorMessage('Marca') }}
+              </div>
           </div>
         </div>
         <div class="row">
           <div class="form-group col-md-4">
             <label for="PrecioCosto">Precio Costo:</label>
-            <input [(ngModel)]="itemGrilla.PrecioCosto" type="number" formControlName="PrecioCosto" class="form-control"
+            <input [(ngModel)]="itemGrilla.PrecioCosto" type="text" formControlName="PrecioCosto" class="form-control"
               id="PrecioCosto" placeholder="100"
-              [ngClass]="{'is-invalid': isFieldInvalid('PrecioCosto')}">
-            <div *ngIf="isFieldInvalid('PrecioCosto')" class="invalid-feedback">
-              El campo Precio Costo es requerido.
-            </div>
+              [ngClass]="{'is-invalid': isFieldInvalid('PrecioCosto'), 'is-valid': !isFieldInvalid('PrecioCosto') && isFieldTouched('PrecioCosto')}">
+              <div *ngIf="isFieldInvalid('PrecioCosto')" class="invalid-feedback">
+                {{ getErrorMessage('PrecioCosto') }}
+              </div>
           </div>
           <div class="form-group col-md-4">
             <label for="CantMaxima">Can. Max.</label>
-            <input [(ngModel)]="itemGrilla.CantMaxima" type="number" formControlName="CantMaxima" class="form-control"
+            <input [(ngModel)]="itemGrilla.CantMaxima" type="text" formControlName="CantMaxima" class="form-control"
               id="CantMaxima" placeholder="100"
-              [ngClass]="{'is-invalid': isFieldInvalid('CantMaxima')}">
-            <div *ngIf="isFieldInvalid('CantMaxima')" class="invalid-feedback">
-              El campo Cantidad Máxima es requerido.
-            </div>
+              [ngClass]="{'is-invalid': isFieldInvalid('CantMaxima'), 'is-valid': !isFieldInvalid('CantMaxima') && isFieldTouched('CantMaxima')}">
+              <div *ngIf="isFieldInvalid('CantMaxima')" class="invalid-feedback">
+                {{ getErrorMessage('CantMaxima') }}
+              </div>
           </div>
           <div class="form-group col-md-4">
             <label for="CantMinima">Can. Min.</label>
-            <input [(ngModel)]="itemGrilla.CantMinima" type="number" formControlName="CantMinima" class="form-control"
+            <input [(ngModel)]="itemGrilla.CantMinima" type="text" formControlName="CantMinima" class="form-control"
               id="CantMinima" placeholder="100"
-              [ngClass]="{'is-invalid': isFieldInvalid('CantMinima')}">
-            <div *ngIf="isFieldInvalid('CantMinima')" class="invalid-feedback">
-              El campo Cantidad Mínima es requerido.
-            </div>
+              [ngClass]="{'is-invalid': isFieldInvalid('CantMinima'), 'is-valid': !isFieldInvalid('CantMinima') && isFieldTouched('CantMinima')}">
+              <div *ngIf="isFieldInvalid('CantMinima')" class="invalid-feedback">
+                {{ getErrorMessage('CantMinima') }}
+              </div>
           </div>
         </div>
         <div class="row">
           <div class="form-group col-md-4">
             <label for="Tamano">Tamaño:</label>
-            <input [(ngModel)]="itemGrilla.Tamano" type="number" formControlName="Tamano" class="form-control"
+            <input [(ngModel)]="itemGrilla.Tamano" type="text" formControlName="Tamano" class="form-control"
               id="Tamano" placeholder="100"
-              [ngClass]="{'is-invalid': isFieldInvalid('Tamano')}">
-            <div *ngIf="isFieldInvalid('Tamano')" class="invalid-feedback">
-              El campo Tamaño es requerido.
-            </div>
+              [ngClass]="{'is-invalid': isFieldInvalid('Tamano'), 'is-valid': !isFieldInvalid('Tamano') && isFieldTouched('Tamano')}">
+              <div *ngIf="isFieldInvalid('Tamano')" class="invalid-feedback">
+                {{ getErrorMessage('Tamano') }}
+              </div>
           </div>
           <div class="form-group col-md-4">
             <label for="tipoMedida">Medida:</label>
             <select [(ngModel)]="itemGrilla.IdTipoMedida" formControlName="tipoMedida" class="form-control"
-              id="tipoMedida" [ngClass]="{'is-invalid': isFieldInvalid('tipoMedida')}">
-              <option [value]="undefined">Seleccione...</option>
+              id="tipoMedida" [ngClass]="{'is-invalid': isFieldInvalid('tipoMedida'), 'is-valid': !isFieldInvalid('tipoMedida') && isFieldTouched('tipoMedida')}">
+              <option [value]="undefined" disabled>Seleccione...</option>
               <option *ngFor="let tipo of lTipoMedida" [value]="tipo.IdTipoMedida">{{ tipo.Detalle }}</option>
             </select>
             <div *ngIf="isFieldInvalid('tipoMedida')" class="invalid-feedback">
-              El campo Medida es requerido.
+              {{ getErrorMessage('tipoMedida') }}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label for="tipoCategoria">Tipo de Categoría:</label>
             <select [(ngModel)]="itemGrilla.IdTipoCategoria" formControlName="tipoCategoria" class="form-control" 
-              [ngClass]="{'is-invalid': isFieldInvalid('tipoCategoria')}">
-              <option [value]="undefined">Seleccione...</option>
+              [ngClass]="{'is-invalid': isFieldInvalid('tipoCategoria'), 'is-valid': !isFieldInvalid('tipoCategoria') && isFieldTouched('tipoCategoria')}">
+              <option [value]="undefined" disabled>Seleccione...</option>
               <option *ngFor="let categoria of lTipoCategoria" [value]="categoria.IdTipoCategoria">
                 {{ categoria.Descripcion }}
               </option>
             </select>
             <div *ngIf="isFieldInvalid('tipoCategoria')" class="invalid-feedback">
-              El campo Tipo de Categoría es requerido.
+              {{ getErrorMessage('tipoCategoria') }}
             </div>
           </div>
         </div>
@@ -260,28 +260,28 @@
           <div class="form-group col-md-4">
             <label for="tipoProducto">Tipo de Producto:</label>
             <select [(ngModel)]="itemGrilla.IdTipoProducto" class="form-control" formControlName="tipoProducto" 
-              [ngClass]="{'is-invalid': isFieldInvalid('tipoProducto')}">
-              <option [value]="undefined">Seleccione...</option>
+              [ngClass]="{'is-invalid': isFieldInvalid('tipoProducto'), 'is-valid': !isFieldInvalid('tipoProducto') && isFieldTouched('tipoProducto')}">
+              <option [value]="undefined" disabled>Seleccione...</option>
               <option *ngFor="let tipo of lTipoProducto" [ngValue]="tipo.IdTipoProducto">{{ tipo.Detalle }}</option>
             </select>
             <div *ngIf="isFieldInvalid('tipoProducto')" class="invalid-feedback">
-              El campo Tipo de Producto es requerido.
+              {{ getErrorMessage('tipoProducto') }}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label for="proveedor">Proveedor:</label>
             <select [(ngModel)]="itemGrilla.IdPersona" class="form-control" formControlName="proveedor" 
-              [ngClass]="{'is-invalid': isFieldInvalid('proveedor')}">
-              <option [value]="undefined">Seleccione...</option>
+              [ngClass]="{'is-invalid': isFieldInvalid('proveedor'), 'is-valid': !isFieldInvalid('proveedor') && isFieldTouched('proveedor')}">
+              <option [value]="undefined" disabled>Seleccione...</option>
               <option *ngFor="let tipo of lProveedor" [ngValue]="tipo.IdPersona">{{ tipo.RazonSocial }}</option>
             </select>
             <div *ngIf="isFieldInvalid('proveedor')" class="invalid-feedback">
-              El campo Proveedor es requerido.
+              {{ getErrorMessage('proveedor') }}
             </div>
           </div>
         </div>
         <div class="form-group col text-right" style="margin-top: 25px;">
-          <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+          <button type="button" class="btn btn-danger" is="btnCancelar" (click)="cerrarModal()">Cancelar</button>
           <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
         </div>
       </form>
@@ -395,7 +395,7 @@
       <div *ngIf="selectedRows.length > 0">
         <div class="mb-3">
           <label for="aumentoExtra" class="form-label">Aumento Extra</label>
-          <input type="number" class="form-control" id="aumentoExtra"[(ngModel)]="aumentoExtra" (input)="updatePrices()">
+          <input type="number" class="form-control" id="aumentoExtra"[(ngModel)]="aumentoExtra" formControlName="aumentoExtra" (input)="updatePrices()">
         </div>
         <table class="table">
           <thead>

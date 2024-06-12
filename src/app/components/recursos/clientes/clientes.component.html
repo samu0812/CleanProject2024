@@ -121,30 +121,41 @@
       <div class="row">
         <div class="form-group col-md-4">
           <div style="margin-bottom: 15px;">
-            <label for="TipoPersona">Tipo de Persona:</label>
+            <label for="tipoPersona">Tipo de Persona:</label>
           </div>
-          <select [(ngModel)]="itemGrilla.IdTipoPersona" formControlName="TipoPersona" class="form-control">
-            <option [value]="undefined">Seleccione...</option>
+          <select [(ngModel)]="itemGrilla.IdTipoPersona" formControlName="tipoPersona" class="form-control"
+          [ngClass]="{'is-invalid': isFieldInvalid('tipoPersona'), 'is-valid': !isFieldInvalid('tipoPersona') && isFieldTouched('tipoPersona')}">
+            <option [value]="undefined" disabled>Seleccione...</option>
             <option *ngFor="let persona of lTipoPersona" [value]="persona.IdTipoPersona"> {{persona.Descripcion }}
             </option>
           </select>
+          <div *ngIf="isFieldInvalid('tipoPersona')" class="invalid-feedback">
+            {{ getErrorMessage('tipoPersona') }}
+          </div>
         </div>
         <div class="form-group col-md-4">
           <div style="margin-bottom: 15px;">
-            <label for="TipoDomicilio">Tipo de Domicilio:</label>
+            <label for="TipoDomicilio" disabled>Tipo de Domicilio:</label>
           </div>
-          <select [(ngModel)]="itemGrilla.IdTipoDomicilio" formControlName="TipoDomicilio" class="form-control">
+          <select [(ngModel)]="itemGrilla.IdTipoDomicilio" formControlName="TipoDomicilio" class="form-control"
+          [ngClass]="{'is-invalid': isFieldInvalid('TipoDomicilio'), 'is-valid': !isFieldInvalid('TipoDomicilio') && isFieldTouched('TipoDomicilio')}">
             <option [value]="undefined">Seleccione...</option>
             <option *ngFor="let domicilio of lTipoDomicilio" [value]="domicilio.IdTipoDomicilio">
               {{domicilio.Descripcion }}</option>
           </select>
+          <div *ngIf="isFieldInvalid('TipoDomicilio')" class="invalid-feedback">
+            {{ getErrorMessage('TipoDomicilio') }}
+          </div>
         </div>
         <div class="form-group col-md-4">
           <div style="margin-bottom: 15px;">
             <label for="Calle">Calle:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Calle" type="text" formControlName="Calle" class="form-control" id="Calle"
-            placeholder="Calle">
+            placeholder="Calle" [ngClass]="{'is-invalid': isFieldInvalid('Calle'), 'is-valid': !isFieldInvalid('Calle') && isFieldTouched('Calle')}">
+          <div *ngIf="isFieldInvalid('Calle')" class="invalid-feedback">
+            {{ getErrorMessage('Calle') }}
+          </div>
         </div>
         <div class="row">
           <div class="form-group col-md-4">
@@ -152,25 +163,34 @@
               <label for="Nro">Nro:</label>
             </div>
             <input [(ngModel)]="itemGrilla.Nro" type="text" formControlName="Nro" class="form-control" id="Nro"
-              placeholder="Nro">
+              placeholder="Nro" [ngClass]="{'is-invalid': isFieldInvalid('Nro'), 'is-valid': !isFieldInvalid('Nro') && isFieldTouched('Nro')}">
+            <div *ngIf="isFieldInvalid('Nro')" class="invalid-feedback">
+              {{ getErrorMessage('Nro') }}
+            </div>
           </div>
           <div class="form-group col-md-4">
             <div style="margin-bottom: 15px;">
               <label for="Piso">Piso:</label>
             </div>
             <input [(ngModel)]="itemGrilla.Piso" type="text" formControlName="Piso" class="form-control" id="Piso"
-              placeholder="Piso">
+              placeholder="Piso" [ngClass]="{'is-invalid': isFieldInvalid('Piso'), 'is-valid': !isFieldInvalid('Piso') && isFieldTouched('Piso')}">
+            <div *ngIf="isFieldInvalid('Piso')" class="invalid-feedback">
+              {{ getErrorMessage('Piso') }}
+            </div>
           </div>
           <div class="form-group col-md-4">
             <div style="margin-bottom: 15px;">
               <label for="TipoDocumentacion">Tipo de Documentacion:</label>
             </div>
             <select [(ngModel)]="itemGrilla.IdTipoDocumentacion" formControlName="TipoDocumentacion"
-              class="form-control">
-              <option [value]="undefined">Seleccione...</option>
+              class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('TipoDocumentacion'), 'is-valid': !isFieldInvalid('TipoDocumentacion') && isFieldTouched('TipoDocumentacion')}">
+              <option [value]="undefined" disabled>Seleccione...</option>
               <option *ngFor="let documentacion of lTipoDocumentacion" [value]="documentacion.IdTipoDocumentacion">
                 {{documentacion.Descripcion }}</option>
             </select>
+            <div *ngIf="isFieldInvalid('TipoDocumentacion')" class="invalid-feedback">
+              {{ getErrorMessage('TipoDocumentacion') }}
+            </div>
           </div>
         </div>
       </div>
@@ -180,21 +200,30 @@
             <label for="Documentacion">Documentacion:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Documentacion" type="text" formControlName="Documentacion" class="form-control"
-            id="Documentacion" placeholder="Documentacion">
+            id="Documentacion" placeholder="Documentacion" [ngClass]="{'is-invalid': isFieldInvalid('Documentacion'), 'is-valid': !isFieldInvalid('Documentacion') && isFieldTouched('Documentacion')}">
+          <div *ngIf="isFieldInvalid('Documentacion')" class="invalid-feedback">
+            {{ getErrorMessage('Documentacion') }}
+          </div>
         </div>
         <div class="form-group col-md-4">
           <div style="margin-bottom: 15px;">
             <label for="Nombre">Nombre:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Nombre" type="text" formControlName="Nombre" class="form-control" id="Nombre"
-            placeholder="Nombre">
+            placeholder="Nombre" [ngClass]="{'is-invalid': isFieldInvalid('Nombre'), 'is-valid': !isFieldInvalid('Nombre') && isFieldTouched('Nombre')}">
+          <div *ngIf="isFieldInvalid('Nombre')" class="invalid-feedback">
+            {{ getErrorMessage('Nombre') }}
+          </div>
         </div>
         <div class="form-group col-md-4">
           <div style="margin-bottom: 15px;">
             <label for="Apellido">Apellido:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Apellido" type="text" formControlName="Apellido" class="form-control"
-            id="Apellido" placeholder="Apellido">
+            id="Apellido" placeholder="Apellido" [ngClass]="{'is-invalid': isFieldInvalid('Apellido'), 'is-valid': !isFieldInvalid('Apellido') && isFieldTouched('Apellido')}">
+          <div *ngIf="isFieldInvalid('Apellido')" class="invalid-feedback">
+            {{ getErrorMessage('Apellido') }}
+          </div>
         </div>
       </div>
       <div class="row">
@@ -203,21 +232,31 @@
             <label for="Mail">Mail:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Mail" type="text" formControlName="Mail" class="form-control" id="Mail"
-            placeholder="Mail">
+            placeholder="Mail" [ngClass]="{'is-invalid': isFieldInvalid('Mail'), 'is-valid': !isFieldInvalid('Mail') && isFieldTouched('Mail')}">
+          <div *ngIf="isFieldInvalid('Mail')" class="invalid-feedback">
+            {{ getErrorMessage('Mail') }}
+          </div>
         </div>
         <div class="form-group col-md-4">
           <div style="margin-bottom: 15px;">
             <label for="RazonSocial">Razon Social:</label>
           </div>
           <input [(ngModel)]="itemGrilla.RazonSocial" type="text" formControlName="RazonSocial" class="form-control"
-            id="RazonSocial" placeholder="Razon Social">
+            id="RazonSocial" placeholder="Razon Social" [ngClass]="{'is-invalid': isFieldInvalid('RazonSocial'), 'is-valid': !isFieldInvalid('RazonSocial') && isFieldTouched('RazonSocial')}">
+          <div *ngIf="isFieldInvalid('RazonSocial')" class="invalid-feedback">
+            {{ getErrorMessage('RazonSocial') }}
+          </div>
         </div>
         <div class="form-group col-md-4">
           <div style="margin-bottom: 15px;">
             <label for="FechaNacimiento">Fecha de Nacimiento:</label>
           </div>
           <input [(ngModel)]="itemGrilla.FechaNacimiento" type="date" formControlName="FechaNacimiento"
-            class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
+            class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento" 
+            [ngClass]="{'is-invalid': isFieldInvalid('FechaNacimiento'), 'is-valid': !isFieldInvalid('FechaNacimiento') && isFieldTouched('FechaNacimiento')}">
+          <div *ngIf="isFieldInvalid('FechaNacimiento')" class="invalid-feedback">
+            {{ getErrorMessage('FechaNacimiento') }}
+          </div>
         </div>
       </div>
       <div class="row">
@@ -226,31 +265,43 @@
             <label for="Telefono">Telefono:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Telefono" type="text" formControlName="Telefono" class="form-control"
-            id="Telefono" placeholder="Telefono">
-        </div>
-        <div class="form-group col-md-4">
-          <div style="margin-bottom: 15px;">
-            <label for="Localidad">Localidad:</label>
+            id="Telefono" placeholder="Telefono" [ngClass]="{'is-invalid': isFieldInvalid('Telefono'), 'is-valid': !isFieldInvalid('Telefono') && isFieldTouched('Telefono')}">
+          <div *ngIf="isFieldInvalid('Telefono')" class="invalid-feedback">
+            {{ getErrorMessage('Telefono') }}
           </div>
-          <select [(ngModel)]="itemGrilla.IdLocalidad" formControlName="Localidad" class="form-control">
-            <option [value]="undefined">Seleccione...</option>
-            <option *ngFor="let Localidad of llocalidad" [value]="Localidad.IdLocalidad"> {{Localidad.Detalle }}
-            </option>
-          </select>
         </div>
         <div class="form-group col-md-4">
           <div style="margin-bottom: 15px;">
             <label for="Provincia">Provincia:</label>
           </div>
-          <select [(ngModel)]="itemGrilla.IdProvincia" formControlName="Provincia" class="form-control">
-            <option [value]="undefined">Seleccione...</option>
+          <select [(ngModel)]="itemGrilla.IdProvincia" formControlName="Provincia" class="form-control"
+          [ngClass]="{'is-invalid': isFieldInvalid('Provincia'), 'is-valid': !isFieldInvalid('Provincia') && isFieldTouched('Provincia')}"
+          (change)="obtenerLocalidadesPorProv(itemGrilla.IdProvincia)">
+            <option [value]="undefined" disabled>Seleccione...</option>
             <option *ngFor="let Provincia of lprovincia" [value]="Provincia.IdProvincia"> {{Provincia.Detalle }}
             </option>
           </select>
+          <div *ngIf="isFieldInvalid('Provincia')" class="invalid-feedback">
+            {{ getErrorMessage('Provincia') }}
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div style="margin-bottom: 15px;">
+            <label for="Localidad">Localidad:</label>
+          </div>
+          <select [(ngModel)]="itemGrilla.IdLocalidad" formControlName="Localidad" class="form-control"
+          [ngClass]="{'is-invalid': isFieldInvalid('Localidad'), 'is-valid': !isFieldInvalid('Localidad') && isFieldTouched('Localidad')}">
+            <option [value]="undefined" disabled>Seleccione...</option>
+            <option *ngFor="let Localidad of llocalidad" [value]="Localidad.IdLocalidad"> {{Localidad.Detalle }}
+            </option>
+          </select>
+          <div *ngIf="isFieldInvalid('Localidad')" class="invalid-feedback">
+            {{ getErrorMessage('Localidad') }}
+          </div>
         </div>
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
-        <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-danger" is="btnCancelar" (click)="cerrarModal()">Cancelar</button>
         <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
       </div>
     </form>
