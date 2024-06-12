@@ -98,6 +98,5 @@ export class StockService {
     const body = { IdProducto, Cantidad, Token: token };
     return this.http.post(url, body);
   }
-  
     
 }

@@ -63,8 +63,7 @@ import { BusquedaPipe } from './components/busqueda/busqueda.pipe';
 import { BusquedastockPipe } from './components/busqueda/busquedastock.pipe';
 import { BusquedausuariosPipe } from './components/busqueda/busquedausuarios.pipe';
 import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
-import { BusquedaNombreApellidoDniPipe } from './components/busqueda/busquedaPersonal.pipe';
-import { ToastrModule } from 'ngx-toastr';
+import { BusquedaNombreApellidoDniPipe } from './components/busqueda/busquedaPersonalyProveedor.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -117,7 +116,6 @@ import { MatButtonModule } from '@angular/material/button';
     BusquedaPipe,
     BusquedastockPipe,
     BusquedausuariosPipe,
-    BusquedausuariosPipe,
     RealizarventaComponent,
     BusquedaNombreApellidoDniPipe,
     SnackbarComponent,
@@ -140,7 +138,6 @@ import { MatButtonModule } from '@angular/material/button';
     NgxPaginationModule,
     NgbModule,
     NgbTooltipModule,
-    ToastrModule,
     MatSnackBarModule,
     MatButtonModule
   ],

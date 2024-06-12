@@ -44,10 +44,11 @@ export class StockComponent {
   tiposAumento: any[] = [];
   aumentosProducto: any[] = [];
   aumentos: any[] = [];
-  aumentoExtra: number;
   columns: any[][];
   StockSucursal:StockSucursal;
   cantidad: number;
+  selectedRows: any[] = [];
+  aumentoExtra: number = 0;  // Variable para el input de aumento extra
 
   constructor(private stockService: StockService,
     private modalService: NgbModal,
@@ -94,6 +95,21 @@ export class StockComponent {
 
     this.obtenerListas();
   }
+
+  toggleSelection(item: any) {
+    const index = this.selectedRows.indexOf(item);
+    console.log(this.selectedRows,"hola")
+    console.log(item);
+    if (index === -1) {
+      this.selectedRows.push(item);
+    } else {
+      this.selectedRows.splice(index, 1);
+    }
+  }
+
+  isSelected(item: any): boolean {
+    return this.selectedRows.includes(item);
+  }
   obtenerListas(){
     this.tipoCategoriaService.listar(1).subscribe(data => {
       this.lTipoCategoria = data.TipoCategoria;
@@ -138,6 +154,17 @@ export class StockComponent {
     this.listar(filtro);
   }
 
+  openModal(content: TemplateRef<any>) {
+    this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+  }
+
+  updatePrices() {
+    this.selectedRows = [...this.selectedRows];  // Trigger change detection
+  }
+  calculateNewPrice(precioCosto: number): number {
+    return precioCosto * (1 + (this.aumentoExtra || 0) / 100);
+  }
+
   openAgregar(content) {
     this.tituloModal = "Agregar";
     this.tituloBoton = "Agregar";
@@ -151,6 +178,13 @@ export class StockComponent {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item); // Duplica el item
+    Object.keys(this.formItemGrilla.controls).forEach(controlName => {
+      if (controlName !== 'PrecioCosto') {
+        this.formItemGrilla.controls[controlName].disable();
+      } else {
+        this.formItemGrilla.controls[controlName].enable();
+      }
+    });
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
   }
   openAumentos(content: any, item: Productos): void {
@@ -242,6 +276,7 @@ export class StockComponent {
         Aumentos: this.tiposAumento.filter(tipo => tipo.seleccionado).map(tipo => ({ IdTipoAumento: tipo.IdTipoAumento })),
         AumentoExtra: this.aumentoExtra
     };
+    console.log(payload)
 
     this.stockService.guardarAumentosProducto(payload).subscribe(
         response => {

@@ -40,3 +40,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+package-lock.json
+package-lock.json
+package-lock.json
+package-lock.json
+src/app/app.module.ts
+src/app/components/busqueda/busquedaPersonal.pipe.ts

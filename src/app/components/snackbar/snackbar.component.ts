@@ -43,7 +43,6 @@ import { Subscription, timer } from 'rxjs';
   left: 0;
   height: 3px;
   background-color: #FF8C00;
-  transition: width linear {{ duration }}ms;
 }
 
   `]
