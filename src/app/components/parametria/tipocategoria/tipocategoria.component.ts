@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { TipoCategoriaService } from '../../../services/parametria/tipocategoria.service';
 import { TipoCategoria } from '../../../models/parametria/tipoCategoria';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
@@ -94,7 +94,18 @@ export class TipocategoriaComponent implements OnInit {
     this.tituloBoton = 'Agregar';
     this.itemGrilla = Object.assign({}, new TipoCategoria());
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
-  }
+    this.modalRef.result.then((result) => {
+      console.log(result, 'BOTON');
+      if (result === 'Cancelar') {
+        this.formItemGrilla.reset();
+      }
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        console.log('BOTONDSDASDSA');
+        this.formItemGrilla.reset();
+      }
+    });
+  }
 
   openEditar(content, item: TipoCategoria) {
     this.tituloModal = 'Editar';
@@ -117,31 +128,39 @@ export class TipocategoriaComponent implements OnInit {
 
   guardar(): void {
     this.loading = true;
-    if (this.itemGrilla.IdTipoCategoria == null) {
-      this.tipoCategoriaService.agregar(this.itemGrilla, this.Token).subscribe(
-        response => {
-          this.listar(1);
-          this.modalRef.close();
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-        },
-        error => {
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false;
-        }
-      );
-    } else {
-      this.tipoCategoriaService.editar(this.itemGrilla, this.Token).subscribe(
-        response => {
-          this.listar(1);
-          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-          this.modalRef.close();
-        },
-        error => {
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false;
-        }
-      );
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdTipoCategoria == null) {
+        this.tipoCategoriaService.agregar(this.itemGrilla, this.Token).subscribe(
+          response => {
+            this.listar(1);
+            this.modalRef.close();
+            this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+          },
+          error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
+          }
+        );
+      } else {
+        this.tipoCategoriaService.editar(this.itemGrilla, this.Token).subscribe(
+          response => {
+            this.listar(1);
+            this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
+            this.modalRef.close();
+          },
+          error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
+          }
+        );
+      }
     }
+    else {
+        // console.log('El formulario no es válido:', this.obtenerErroresDeCampos()); //
+        this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+        this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+        this.loading = false;
+      }
   }
 
   inhabilitar(): void {
@@ -195,4 +214,11 @@ export class TipocategoriaComponent implements OnInit {
     return this.ValidacionErroresService.getErrorMessage(field, fieldName);
   }
 
+  cerrarModal () {
+    console.log('cerrando')
+    this.formItemGrilla.reset();
+    console.log(this.formItemGrilla)
+    this.modalRef.close();
+  }
+  
 }

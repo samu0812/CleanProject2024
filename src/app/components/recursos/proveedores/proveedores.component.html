@@ -217,7 +217,8 @@
               <div style="margin-bottom: 15px;">
                 <label for="Nro">Numero Calle:</label>
               </div>
-              <input [(ngModel)]="itemGrilla.Nro" type="text" formControlName="Nro" class="form-control" id="Nro" placeholder="Nro" [ngClass]="{'is-invalid': isFieldInvalid('Nro')
+              <input [(ngModel)]="itemGrilla.Nro" type="text" formControlName="Nro" class="form-control" id="Nro" 
+              placeholder="Nro" [ngClass]="{'is-invalid': isFieldInvalid('Nro')
                 ,'is-valid': !isFieldInvalid('Nro') && isFieldTouched('Nro')
               }">
               <div *ngIf="isFieldInvalid('Nro')" class="invalid-feedback">
