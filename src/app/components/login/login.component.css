@@ -298,3 +298,10 @@
   }
 }
 
+.position-relative .btn-outline-secondary {
+	margin-top: 13px;
+	border: none;
+	background: transparent;
+	font-size: 1.2em;
+  }
+  
