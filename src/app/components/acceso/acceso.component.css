@@ -33,3 +33,10 @@
         font-size: 2em;
     }
 }
+
+#AgregarModalbtn{
+    margin-top: 18px;
+    background-color: rgb(31, 31, 95);
+    border-color: rgb(31, 31, 95);
+    font-size: 20px;
+  }
