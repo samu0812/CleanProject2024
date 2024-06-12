@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     if (this.authService.isAuthenticatedUser()) {
       return true; // Devuelve true si el usuario está autenticado y puede acceder a la ruta protegida
     } else {
-      return this.router.createUrlTree(['/login']); // Redirige al usuario a la página de inicio de sesión si no está autenticado
+      return this.router.createUrlTree(['/acceso']); // Redirige al usuario a la página de inicio de sesión si no está autenticado
     }
   }
 }
