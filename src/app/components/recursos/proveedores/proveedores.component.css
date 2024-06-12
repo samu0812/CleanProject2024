@@ -218,3 +218,21 @@
 #footerRol{
   margin-top: 20px;
 }
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  display: block;
+}
+
+.is-valid {
+  border-color: #28a745; /* Cambia el color del borde a verde para indicar que el campo es válido */
+}
+
+.valid-feedback {
+  color: #28a745; /* Cambia el color del mensaje de retroalimentación a verde */
+  display: block;
+}
