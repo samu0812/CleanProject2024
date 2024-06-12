@@ -65,17 +65,17 @@ export class StockComponent {
     this.obtenerImgMenu()
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
-       Codigo: new FormControl('', [Validators.required]),
-       Nombre: new FormControl('', [Validators.required]),
-       Marca: new FormControl('', [Validators.required]),
-       PrecioCosto: new FormControl('', [Validators.required]),
-       Tamano: new FormControl('', [Validators.required]),
-       CantMaxima: new FormControl('', [Validators.required]),
-       CantMinima: new FormControl('', [Validators.required]),
-       tipoMedida: new FormControl('', [Validators.required]),
-       tipoCategoria:new FormControl('', [Validators.required]),
-       tipoProducto: new FormControl('', [Validators.required]),
-       proveedor: new FormControl('', [Validators.required])
+      Codigo: Productos.validarCampo('', Productos.obtenerValidadoresCampo('Codigo')),
+      Nombre: Productos.validarCampo('', Productos.obtenerValidadoresCampo('Nombre')),
+      Marca: Productos.validarCampo('', Productos.obtenerValidadoresCampo('Marca')),
+      PrecioCosto: Productos.validarCampo('', Productos.obtenerValidadoresCampo('PrecioCosto')),
+      Tamano: Productos.validarCampo('', Productos.obtenerValidadoresCampo('Tamano')),
+      CantMaxima: Productos.validarCampo('', Productos.obtenerValidadoresCampo('CantMaxima')),
+      CantMinima: Productos.validarCampo('', Productos.obtenerValidadoresCampo('CantMinima')),
+      tipoMedida: Productos.validarCampo('', Productos.obtenerValidadoresCampo('tipoMedida')),
+      tipoCategoria: Productos.validarCampo('', Productos.obtenerValidadoresCampo('tipoCategoria')),
+      tipoProducto: Productos.validarCampo('', Productos.obtenerValidadoresCampo('tipoProducto')),
+      proveedor: Productos.validarCampo('', Productos.obtenerValidadoresCampo('proveedor'))
     });
 
     this.formFiltro = this.formBuilder.group({
@@ -94,6 +94,22 @@ export class StockComponent {
     });
 
     this.obtenerListas();
+  }
+
+  obtenerMensajeError(nombreCampo: string): string {
+    return Productos.obtenerMensajeError(nombreCampo);
+  }
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  esCampoInvalido(nombreCampo: string): boolean {
+    const control = this.formItemGrilla.get(nombreCampo);
+    if (control instanceof FormControl) {
+      return Productos.esCampoInvalido(control);
+    }
+    return false;
   }
 
   toggleSelection(item: any) {
@@ -305,33 +321,40 @@ export class StockComponent {
 
   guardar(): void {
     this.loading = true;
-    if (this.itemGrilla.IdProducto == null) {
-      this.stockService.agregar(this.itemGrilla, this.Token)
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdProducto == null) {
+        this.stockService.agregar(this.itemGrilla, this.Token)
+          .subscribe(response => {
+            console.log(response);
+            this.listar(1);
+            this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+            this.modalRef.close();
+            this.loading = false;
+          }, error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
+          })
+        }
+      else{
+        this.loading = true;
+        console.log(this.itemGrilla);
+        this.stockService.editar(this.itemGrilla, this.Token)
         .subscribe(response => {
-          console.log(response);
           this.listar(1);
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
           this.loading = false;
         }, error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
           this.loading = false;
         })
-      }
-    else{
-      this.loading = true;
-      console.log(this.itemGrilla);
-      this.stockService.editar(this.itemGrilla, this.Token)
-      .subscribe(response => {
-        this.listar(1);
-        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-        this.modalRef.close();
-        this.loading = false;
-      }, error => {
-        this.alertasService.ErrorAlert('Error', error.error.Message);
-        this.loading = false;
-      })
-    };
+      };
+    }
+    else {
+      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+      this.loading = false;
+    }
   }
   
 

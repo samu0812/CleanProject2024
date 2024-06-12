@@ -278,3 +278,12 @@
     max-width: 100%; /* Mostrar 1 columna en pantallas extra pequeñas */
   }
 }
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  display: block;
+}
