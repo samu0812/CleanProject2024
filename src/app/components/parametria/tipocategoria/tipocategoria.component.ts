@@ -7,6 +7,7 @@ import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
 import { NgIfContext } from '@angular/common';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
 
 @Component({
   selector: 'app-tipocategoria',
@@ -35,7 +36,8 @@ export class TipocategoriaComponent implements OnInit {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService
+    private alertasService: AlertasService,
+    private ValidacionErroresService: ValidacionErroresService
   ) {}
 
   ngOnInit(): void {
@@ -177,4 +179,20 @@ export class TipocategoriaComponent implements OnInit {
   cambiarPagina(event): void {
     this.paginaActual = event;
   }
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
+
 }
