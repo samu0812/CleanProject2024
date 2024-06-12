@@ -153,10 +153,8 @@ export class ProveedoresComponent {
     this.loading = true;
     console.log(this.itemGrilla);
     if (this.itemGrilla.IdPersona == null) {
-
       this.ProveedorService.agregarProveedor(this.itemGrilla,this.Token).subscribe(
         response => {
-          this.loading = false;
           this.listar(1);
           this.modalRef.close();
           this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
@@ -188,7 +186,6 @@ export class ProveedoresComponent {
      this.ProveedorService.inhabilitar(this.itemGrilla , this.Token).subscribe(
       response => {
         this.listar(1);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       },
@@ -203,8 +200,6 @@ export class ProveedoresComponent {
     this.loading = true;
     this.ProveedorService.habilitar(this.itemGrilla,this.Token).subscribe(
       response => {
-        this.listar(2);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       },

@@ -156,11 +156,9 @@ export class PersonalComponent {
 
       this.PersonalService.agregarPersonal(this.itemGrilla,this.Token).subscribe(
         response => {
-          this.loading = false;
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
           this.listar(1);
           this.modalRef.close();
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-
         },
         error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
@@ -168,6 +166,7 @@ export class PersonalComponent {
         }
       );
     } else {
+      this.loading = true;
        this.PersonalService.editar(this.itemGrilla, this.Token).subscribe(
          response => {
            this.loading = false;
@@ -184,12 +183,10 @@ export class PersonalComponent {
   }
 
   inhabilitar(): void {
-    console.log(this.itemGrilla,'------' ,this.Token);
     this.loading = true;
     this.PersonalService.inhabilitar(this.itemGrilla , this.Token).subscribe(
       response => {
         this.listar(1);
-        this.loading = false;
         this.alertasService.OkAlert('OK', 'Se Inhabilitó Correctamente');
         this.modalRef.close();
       },
@@ -200,12 +197,10 @@ export class PersonalComponent {
     );
   }
   habilitar(): void {
-     console.log(this.itemGrilla,'------' ,this.Token);
     this.loading = true;
     this.PersonalService.habilitar(this.itemGrilla,this.Token).subscribe(
       response => {
-        this.listar(2);
-        this.loading = false;
+        this.listar(1);
         this.alertasService.OkAlert('OK', 'Se Habilitó Correctamente');
         this.modalRef.close();
       },
@@ -220,7 +215,6 @@ export class PersonalComponent {
     const filtro = this.formFiltro.get('idFiltro').value;
     this.listar(filtro);
   }
-
 
   openAgregar(content) {
     this.tituloModal = "Agregar";

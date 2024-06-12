@@ -72,7 +72,7 @@ export class PersonalService {
   }
 
   habilitar(item: Personal,Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/personal`;
+    const url = `${this.apiUrl}/recursos/personal/habilitar`;
     const body = {
       IdPersona: item.IdPersona,
       Token: Token

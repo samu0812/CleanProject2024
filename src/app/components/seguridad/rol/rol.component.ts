@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef } from '@angular/core';
+import { NgIfContext } from '@angular/common';
 import { ModulosporrolService } from '../../../services/seguridad/modulosporrol.service';
 import { ModulosPorRol } from '../../../models/seguridad/modulosporrol'
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -33,6 +34,11 @@ export class RolComponent {
   lTipoRol: TipoRol[];
   lTipoPermiso: TipoPermiso[];
   lTipoModulo: TipoModulo[];
+  paginaActual = 1;
+  elementosPorPagina = 10;
+  loading: boolean = true;
+  noData: TemplateRef<NgIfContext<boolean>>;
+
 
   constructor(private modulosPorRolService: ModulosporrolService,
     private tipoRolService: TiporolService,
@@ -64,6 +70,9 @@ export class RolComponent {
     this.listar(1, null);
     this.formFiltro.get('idFiltroMostrar').valueChanges.subscribe(value => {
       let rol = this.formFiltro.get('idFiltroRoles').value;
+      if (rol == undefined || rol == '' || rol == null){
+        rol = 0;
+      }
       this.listar(value, rol);
     });
     this.formFiltro.get('idFiltroRoles').valueChanges.subscribe(value => {
@@ -73,30 +82,26 @@ export class RolComponent {
 
   }
 
-  cambiarFiltro(): void {
-    const filtro = this.formFiltro.get('idFiltroMostrar').value;
-    this.listar(filtro, null);
-  }
-
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/seguridad/rolmodulos').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
-    });
-  }
+    });
+  }
 
   obtenerListas(){
     this.tipoRolService.listar(1).subscribe(data => {
       this.lTipoRol = data.TiposRol;
-      });
+      });
     this.tipoPermisoService.listar().subscribe(data => {
       this.lTipoPermiso = data.TipoPermisos;
-      });
+      });
     this.tipoModuloService.listar(1).subscribe(data => {
       this.lTipoModulo = data.TipoModulos;
-      });
-    }
+      });
+    }
 
   listar(TipoLista: number, TipoRol: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     if (TipoRol == null){
       TipoRol = 0;
     }
@@ -104,9 +109,11 @@ export class RolComponent {
       response => {
         this.itemGrilla = new ModulosPorRol();
         this.listaGrilla = response.RolModulo || [];
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
+        this.loading = false;
       }
     );
   }
@@ -131,6 +138,7 @@ export class RolComponent {
   }
 
   guardar(): void {
+    this.loading = true;
     this.modulosPorRolService.agregar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1, 0);
@@ -138,10 +146,12 @@ export class RolComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', 'Error al agregar.');
+        this.loading = false;
       })
     }
 
   inhabilitar(): void {
+    this.loading = true;
     console.log(this.itemGrilla)
     this.modulosPorRolService.inhabilitar(this.itemGrilla.IdRolModulo, this.Token)
       .subscribe(response => {
@@ -150,10 +160,12 @@ export class RolComponent {
         this.modalRef.close();
       }, response => {
         this.alertasService.ErrorAlert('Error', 'Error al Inhabilitarr.');
+        this.loading = false;
       });
   }
 
   habilitar(): void {
+    this.loading = true;
     this.modulosPorRolService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1, 0);
@@ -161,6 +173,10 @@ export class RolComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
+        this.loading = false;
       });
+  }
+  cambiarPagina(event): void {
+    this.paginaActual = event;
   }
 }

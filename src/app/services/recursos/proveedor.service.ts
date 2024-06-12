@@ -67,7 +67,7 @@ export class ProveedorService {
   }
 
   habilitar(item: Proveedor,Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/proveedores`;
+    const url = `${this.apiUrl}/recursos/proveedores/habilitar`;
     const body = {
       IdPersona: item.IdPersona,
       Token: Token

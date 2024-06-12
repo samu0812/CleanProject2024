@@ -1,34 +1,35 @@
+<app-loader [isLoading]="loading"></app-loader>
 <div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
     <form [formGroup]="formFiltro">
       <div class="container">
         <h4 class="title-menu centered-rounded-background">
-            <a>
-                <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
-            </a>
-            <a style="margin-left: 5px;">Rol Modulo</a>
+          <a>
+            <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+          </a>
+          <a style="margin-left: 5px;">Rol Modulo</a>
         </h4>
       </div>
       <div class="row mt-3">
         <div class="col-md-2">
           <label for="idFiltroMostrar">Filtrar Por:</label>
           <div class="input-group"></div>
-            <select formControlName="idFiltroMostrar" class="form-control" id="idFiltroMostrar" (change)="cambiarFiltro()">
-              <option value="1">Solo Habilitados</option>
-              <option value="2">Solo Inhabilitados</option>
-            </select>
+          <select formControlName="idFiltroMostrar" class="form-control" id="idFiltroMostrar">
+            <option value="1">Solo Habilitados</option>
+            <option value="2">Solo Inhabilitados</option>
+          </select>
         </div>
         <div class="col-md-2">
           <label for="idFiltroRoles">Tipo Rol:</label>
           <div class="input-group">
             <select class="form-control" id="tiporol" formControlName="idFiltroRoles">
               <option value="" disabled selected hidden>Seleccione...</option>
-              <option [value]="itemTipoRol.IdTipoRol" *ngFor="let itemTipoRol of lTipoRol">{{itemTipoRol.Descripcion}}</option>
+              <option [value]="itemTipoRol.IdTipoRol" *ngFor="let itemTipoRol of lTipoRol">{{itemTipoRol.Descripcion}}
+              </option>
             </select>
           </div>
         </div>
-
         <div class="col-md-8 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
           <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
             <i class="fa-solid fa-user-plus button-icon"></i>Agregar
@@ -39,54 +40,57 @@
     <!-- Grilla -->
     <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
       <div class="table-responsive">
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col-1">Nro Rol</th>
-              <th scope="col-2">Tipo Rol</th>
-              <th scope="col-1">Nro Modulo</th>
-              <th scope="col-2">Tipo Modulo</th>
-              <th scope="col-1">Nro Permiso</th>
-              <th scope="col-3">Tipo Permiso</th>
-              <th scope="col-1">Estado</th>
-              <th scope="col-1">Acción</th>
-            </tr>
-          </thead>
-          <tbody class="tablaUser">
-            <tr *ngFor="let item of listaGrilla; let i = index">
-              <td scope="col-1">{{ item.IdTipoRol }}</td>
-              <td scope="col-2">{{ item.DescripcionTipoRol }}</td>
-              <td scope="col-1">{{ item.IdTipoModulo }}</td>
-              <td scope="col-2">{{ item.DetalleTipoModulo }}</td>
-              <td scope="col-1">{{ item.IdTipoPermiso }}</td>
-              <td scope="col-3">{{ item.DetalleTipoPermiso }}</td>
-              <td scope="col-1">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
-              <td scope="col-1" class="dropdown">
-                <!-- Botón de acción con menú desplegable -->
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-gears"></i>
-                </button>
-                <!-- Menú desplegable con opciones -->
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <!-- Mostrar solo si FechaBaja no es null -->
-                  <li *ngIf="item.FechaBaja !== null">
-                    <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
-                      <i class="fa-solid fa-check"></i> Habilitar
-                    </a>
-                  </li>
-                  <!-- Mostrar solo si FechaBaja es null -->
-                  <li *ngIf="item.FechaBaja === null">
-                    <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
-                      <i class="fa-solid fa-xmark"></i> Inhabilitar
-                    </a>
-                  </li>
-                </ul>
-              </td>              
-            </tr>
-          </tbody>
-        </table>
+        <div class="scroll-table">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col-1">Nro Rol</th>
+                <th scope="col-2">Tipo Rol</th>
+                <th scope="col-2">Tipo Modulo</th>
+                <th scope="col-3">Tipo Permiso</th>
+                <th scope="col-1">Estado</th>
+                <th scope="col-1">Acción</th>
+              </tr>
+            </thead>
+            <tbody class="tablaUser">
+              <tr
+                *ngFor="let item of listaGrilla | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
+                <td scope="col-1">{{ item.IdTipoRol }}</td>
+                <td scope="col-2">{{ item.DescripcionTipoRol }}</td>
+                <td scope="col-2">{{ item.DetalleTipoModulo }}</td>
+                <td scope="col-3">{{ item.DetalleTipoPermiso }}</td>
+                <td scope="col-1">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                <td scope="col-1" class="dropdown">
+                  <!-- Botón de acción con menú desplegable -->
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-gears"></i>
+                  </button>
+                  <!-- Menú desplegable con opciones -->
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <!-- Mostrar solo si FechaBaja no es null -->
+                    <li *ngIf="item.FechaBaja !== null">
+                      <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
+                        <i class="fa-solid fa-check"></i> Habilitar
+                      </a>
+                    </li>
+                    <!-- Mostrar solo si FechaBaja es null -->
+                    <li *ngIf="item.FechaBaja === null">
+                      <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                        <i class="fa-solid fa-xmark"></i> Inhabilitar
+                      </a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+    <div class="mt-3"></div>
+    <pagination-controls (pageChange)="cambiarPagina($event)" class="my-pagination" previousLabel="Anterior"
+      nextLabel="Siguiente"></pagination-controls>
     <ng-template #noData>
       <h5>No se encontraron registros...</h5>
     </ng-template>
@@ -98,7 +102,8 @@
     <a>
       <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
     </a>
-    <a style="margin-left: 5px;"></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a style="margin-left: 5px;"></a>
+    <h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="formItemGrilla">
@@ -107,7 +112,8 @@
           <label for="tiporol">Tipo Rol:</label>
           <select [(ngModel)]="itemGrilla.IdTipoRol" class="form-control" id="tiporol" formControlName="tiporol">
             <option [value]="undefined">Seleccione...</option>
-            <option [value]="itemTipoRol.IdTipoRol" *ngFor="let itemTipoRol of lTipoRol">{{itemTipoRol.Descripcion}}</option>
+            <option [value]="itemTipoRol.IdTipoRol" *ngFor="let itemTipoRol of lTipoRol">{{itemTipoRol.Descripcion}}
+            </option>
           </select>
           <small *ngIf="fItemGrilla['tiporol'].invalid && fItemGrilla['tiporol'].touched" class="invalid-feedback">
             <div>Debe seleccionar una Acción.</div>
@@ -115,19 +121,23 @@
         </div>
         <div class="flex-grow-1 form-group p-2">
           <label for="tipopermiso">Tipo Permiso:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoPermiso" class="form-control" id="tipopermiso" formControlName="tipopermiso">
+          <select [(ngModel)]="itemGrilla.IdTipoPermiso" class="form-control" id="tipopermiso"
+            formControlName="tipopermiso">
             <option [value]="undefined">Seleccione...</option>
-            <option [value]="itemTipoPermiso.IdTipoPermiso" *ngFor="let itemTipoPermiso of lTipoPermiso">{{itemTipoPermiso.Detalle}}</option>
+            <option [value]="itemTipoPermiso.IdTipoPermiso" *ngFor="let itemTipoPermiso of lTipoPermiso">
+              {{itemTipoPermiso.Detalle}}</option>
           </select>
         </div>
         <div class="flex-grow-1 form-group p-2">
           <label for="tipomodulo">Modulo:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoModulo" class="form-control" id="tipomodulo" formControlName="tipomodulo">
+          <select [(ngModel)]="itemGrilla.IdTipoModulo" class="form-control" id="tipomodulo"
+            formControlName="tipomodulo">
             <option [value]="undefined">Seleccione...</option>
-            <option [value]="itemTipoModulo.IdTipoModulo" *ngFor="let itemTipoModulo of lTipoModulo">{{itemTipoModulo.Detalle}}</option>
+            <option [value]="itemTipoModulo.IdTipoModulo" *ngFor="let itemTipoModulo of lTipoModulo">
+              {{itemTipoModulo.Detalle}}</option>
           </select>
         </div>
-      </div>      
+      </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
         <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
         <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
@@ -138,27 +148,31 @@
 
 <ng-template #contentInhabilitar let-modal>
   <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a></a>
+    <h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
-      <a></a><h4 class="">Desea Eliminar?</h4>
+    <a></a>
+    <h4 class="">Desea Eliminar?</h4>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
-        </div>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #contentHabilitar let-modal>
   <div class="modal-header">
-    <a></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a></a>
+    <h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
-      <a></a><h4 class="">Desea Habilitar?</h4>
+    <a></a>
+    <h4 class="">Desea Habilitar?</h4>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="habilitar()">Aceptar</button>
-        </div>
+    </div>
   </div>
 </ng-template>
 

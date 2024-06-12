@@ -39,7 +39,7 @@ export class ModulosporrolService {
   }
 
   habilitar(item: ModulosPorRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/rolmodulos`;
+    const url = `${this.apiUrl}/seguridad/rolmodulos/habilitar`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       DescripcionTipoRol: item.DescripcionTipoRol,

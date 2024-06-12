@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   CantProductosPorSucursal:[];
   CantProveedores: [];
   CantClientes: [];
+  loading: boolean = true;
 
   graficoPersonalPorSucursal: GraficoBarra = new GraficoBarra({ xAxisLabel: 'Sucursal', yAxisLabel: 'Personal' });
 
@@ -58,6 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   obtenerDatosGraficos(){
+    this.loading = true;
     this.HomeService.CantPersonalPorSucursal(this.Token).subscribe(data => {
       this.CantPersonalPorSucursal = data.cantPersonalSucursal;
       // console.log(this.CantPersonalPorSucursal, 'CantPersonalPorSucursal');
@@ -65,18 +67,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       const { datosFormateados, coloresPersonalizados } = this.GraficosService.prepararDatosParaGrafico(this.CantPersonalPorSucursal, 'Sucursal', 'cantPersonal');
       this.graficoPersonalPorSucursal.actualizarDatos(datosFormateados, coloresPersonalizados);
+      
 
     
     });
     this.HomeService.CantPersonalTotal(this.Token).subscribe(data => {
-      this.CantPersonalTotal = data.PersonalTotal
+      this.CantPersonalTotal = data.PersonalTotal;
+      
       // console.log(this.CantPersonalTotal, 'CantPersonalTotal');
     });
     this.HomeService.ObtenerStockSucursal(this.Token).subscribe(data => {
-      this.StockSucursal = data.StockSucursal
-      // console.log(this.StockSucursal, 'StockSucursal');
-      // console.log(typeof this.StockSucursal, 'this.StockSucursal typeof');
-
+      this.StockSucursal = data.StockSucursal;
       const { datosFormateados, coloresPersonalizados } = this.GraficosService.prepararDatosParaGrafico(this.StockSucursal, 'Sucursal', 'TotalProductos');
       this.graficoStockPorSucursal.actualizarDatos(datosFormateados, coloresPersonalizados);
 
@@ -88,7 +89,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     //   // console.log(this.StockSucursalPorCategoria, 'StockSucursalPorCategoria');
     // });
     this.HomeService.ObtenerCantProductos(this.Token).subscribe(data => {
-      this.CantProductos = data.CantProductos
+      this.CantProductos = data.CantProductos;
       // console.log(this.CantProductos, 'CantProductos');
     });
     // this.HomeService.ObtenerCantProductosPorSucursal(this.Token).subscribe(data => {
@@ -97,13 +98,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     // });
 
     this.HomeService.ObtenerCantProveedores(this.Token).subscribe(data => {
-      this.CantProveedores = data.CantProveedores
+      this.CantProveedores = data.CantProveedores;
       console.log(this.CantProveedores, 'CantProveedores');
     });
 
     this.HomeService.ObtenerCantClientes(this.Token).subscribe(data => {
-      this.CantClientes = data.CantClientes
-      console.log(this.CantClientes, 'CantClientes');
+      this.CantClientes = data.CantClientes;
+      this.loading = false;
     });
 
   }

@@ -1,3 +1,4 @@
+<app-loader [isLoading]="loading"></app-loader>
 <div class="container-fluid main-section">
   <div class="modal-content">
     <!-- Filtros de Búsqueda -->
@@ -5,10 +6,10 @@
       <!-- <h1 id="tituloTabla">Usuarios <i class="fa-solid fa-users"></i></h1> -->
       <div class="container">
         <h4 class="title-menu centered-rounded-background">
-            <a>
-                <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
-            </a>
-            <a style="margin-left: 5px;">Usuario</a>
+          <a>
+            <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+          </a>
+          <a style="margin-left: 5px;">Usuario</a>
         </h4>
       </div>
       <div class="row mt-3">
@@ -19,7 +20,18 @@
             <option value="2">Solo Inhabilitados</option>
           </select>
         </div>
-        <div class="col-md-9 d-flex justify-content-end"> <!-- Utiliza d-flex y justify-content-end -->
+        <div class="col-md-4">
+          <label for="busquedausuarios">Buscar:</label>
+          <div class="input-group">
+            <input type="text" formControlName="busquedausuarios" class="form-control" id="busquedausuarios"
+              placeholder="Buscar...">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="limpiarBusqueda()" style="margin-left: 5px;"
+                id="btnBusqueda"><i class="fa-solid fa-eraser"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 d-flex justify-content-end"><!-- Utiliza d-flex y justify-content-end -->
           <button type="button" class="btn btn-primary" id="AgregarModalbtn" (click)="openAgregar(content)">
             <i class="fa-solid fa-user-plus button-icon"></i>Crear
           </button>
@@ -29,79 +41,95 @@
     <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
       <div class="table-responsive">
         <div class="scroll-table">
-          <table class="table">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col"></th> <!-- Ver -->
-                <th scope="col">Nro</th>
-                <th scope="col">Usuario</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Documentacion</th>
-                <th scope="col">Sucursal</th>
-                <th scope="col">Fecha de Alta</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
-              </tr>
-            </thead>
-            <tbody class="tablaUser" *ngFor="let item of listaGrilla; let i = index">
-              <tr>
-                <td scope="col"></td> <!-- Ver -->
-                <td scope="col">{{ item.IdUsuario }}</td>
-                <td scope="col">{{ item.Usuario}}</td>
-                <td scope="col">{{ item.Nombre}}</td>
-                <td scope="col">{{ item.Apellido}}</td>
-                <td scope="col">{{ item.Documentacion}}</td>
-                <td scope="col">{{ item.Descripcion ? item.Descripcion : 'No Designado' }}</td>
-                <td scope="col">{{ item.FechaAlta }}</td>
-                <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
-                <td scope="col" class="dropdown">
+          <ng-container *ngIf="(listaGrilla | busquedausuarios:busquedausuarios:'IdUsuario':'Usuario':'Nombre':'Apellido':'Documentacion').length > 0; else noResults">
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col"></th> <!-- Ver -->
+                  <th scope="col">Nro</th>
+                  <th scope="col">Usuario</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">Documentacion</th>
+                  <th scope="col">Sucursal</th>
+                  <th scope="col">Fecha de Alta</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Acción</th> <!-- Corregido: "Accion" a "Acción" -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of listaGrilla | busquedausuarios:busquedausuarios:'IdUsuario':'Usuario':'Nombre':'Apellido':'Documentacion' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
+                  <td scope="col"></td> <!-- Ver -->
+                  <td scope="col">{{ item.IdUsuario }}</td>
+                  <td scope="col">{{ item.Usuario}}</td>
+                  <td scope="col">{{ item.Nombre}}</td>
+                  <td scope="col">{{ item.Apellido}}</td>
+                  <td scope="col">{{ item.Documentacion}}</td>
+                  <td scope="col">{{ item.Descripcion ? item.Descripcion : 'No Designado' }}</td>
+                  <td scope="col">{{ item.FechaAlta }}</td>
+                  <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
+                  <td scope="col" class="dropdown">
                     <!-- Botón de acción con menú desplegable -->
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-user-gear"></i>
-                      </button>
-                      <!-- Menú desplegable con opciones -->
-                  <ul *ngIf="item.FechaBaja === null" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li *ngIf="item.FechaBaja === null">
-                      <a class="dropdown-item" (click)="openEditar(content, item)">
-                        <i class="fas fa-edit"></i> Modificar Usuario
-                      </a>
-                    </li>
-                    <li *ngIf="item.FechaBaja === null">
-                      <a class="dropdown-item" (click)="openEditarSucursal(contentSucursal, item)">
-                        <i class="fas fa-landmark"></i> Gestionar Sucursal
-                      </a>
-                    </li>
-                    <li *ngIf="item.FechaBaja === null">
-                      <a class="dropdown-item" (click)="openEditarRol(contentRol, item)">
-                        <i class="fas fa-chalkboard-teacher"></i> Asignar Rol/es
-                      </a>
-                    </li>
-                    <li *ngIf="item.FechaBaja === null">
-                      <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
-                        <i class="fa-solid fa-xmark"></i> Inhabilitar
-                      </a>
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa-solid fa-user-gear"></i>
+                    </button>
+                    <!-- Menú desplegable con opciones -->
+                    <ul *ngIf="item.FechaBaja === null" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li *ngIf="item.FechaBaja === null">
+                        <a class="dropdown-item" (click)="openEditar(content, item)">
+                          <i class="fas fa-edit"></i> Modificar Usuario
+                        </a>
+                      </li>
+                      <li *ngIf="item.FechaBaja === null">
+                        <a class="dropdown-item" (click)="openEditarSucursal(contentSucursal, item)">
+                          <i class="fas fa-landmark"></i> Gestionar Sucursal
+                        </a>
+                      </li>
+                      <li *ngIf="item.FechaBaja === null">
+                        <a class="dropdown-item" (click)="openEditarRol(contentRol, item)">
+                          <i class="fas fa-chalkboard-teacher"></i> Asignar Rol/es
+                        </a>
+                      </li>
+                      <li *ngIf="item.FechaBaja === null">
+                        <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                          <i class="fa-solid fa-xmark"></i> Inhabilitar
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+
+          <ng-template #noResults>
+            <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
+              No se encontraron resultados.
+            </div>
+          </ng-template>
         </div>
       </div>
+      <div class="mt-3"></div>
+      <pagination-controls (pageChange)="cambiarPagina($event)" class="my-pagination" previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
     </div>
     <ng-template #noData>
-      <h5>No se encontraron registros...</h5>
+      <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
+        No hay datos disponibles.
+      </div>
     </ng-template>
   </div>
 </div>
+
 <!-- AgregarUsuarioModal -->
 <ng-template #content let-modal>
   <div class="modal-header">
     <a>
       <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
     </a>
-    <a style="margin-left: 5px;"></a><h4 class="modal-title">{{ tituloModal }}</h4>
+    <a style="margin-left: 5px;"></a>
+    <h4 class="modal-title">{{ tituloModal }}</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="formItemGrilla">
@@ -110,13 +138,15 @@
           <div style="margin-bottom: 15px">
             <label for="Usuario">Usuario</label>
           </div>
-          <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control" id="usuario" placeholder="Ingrese un Usuario">
+          <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control"
+            id="usuario" placeholder="Ingrese un Usuario">
         </div>
         <div *ngIf="tituloModal == 'Agregar' || tituloModal == 'Editar'" class="form-group col-md-10">
           <div style="margin-bottom: 15px ; margin-top: 15px">
             <label for="Clave">Clave</label>
           </div>
-          <input [(ngModel)]="itemGrilla.Clave" type="text" formControlName="clave" class="form-control" id="clave" placeholder="Ingrese una Clave">
+          <input [(ngModel)]="itemGrilla.Clave" type="text" formControlName="clave" class="form-control" id="clave"
+            placeholder="Ingrese una Clave">
         </div>
         <div *ngIf="tituloModal == 'Agregar'" class="form-group col-md-10">
           <label for="recipient-name" class="col-form-label">Personal</label>
@@ -136,7 +166,8 @@
 
 <ng-template #contentSucursal let-modal>
   <div class="modal-header">
-    <a><img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" /></a><h4 class="modal-title">{{tituloModal}}</h4>
+    <a><img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" /></a>
+    <h4 class="modal-title">{{tituloModal}}</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="formItemGrilla">
@@ -148,11 +179,12 @@
           </div>
         </div>
         <div class="form-group col-md-12 d-flex align-items-center">
-          <div *ngIf="tituloModal == 'Editar Sucursal'"   class="form-group col-md-12">
+          <div *ngIf="tituloModal == 'Editar Sucursal'" class="form-group col-md-12">
             <label for="sucursal" class="col-form-label">Sucursal</label>
             <select [(ngModel)]="itemGrilla.IdSucursal" formControlName="sucursal" class="form-control" id="sucursal">
               <option value="" disabled>Seleccione...</option>
-              <option *ngFor="let sucursal of lSucursales" [value]="sucursal.IdSucursal">{{ sucursal.Descripcion }}</option>
+              <option *ngFor="let sucursal of lSucursales" [value]="sucursal.IdSucursal">{{ sucursal.Descripcion }}
+              </option>
             </select>
           </div>
         </div>
@@ -168,7 +200,8 @@
 
 <ng-template #contentRol let-modal>
   <div class="modal-header">
-    <a><img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" /></a><h4 class="modal-title">{{tituloModal}}</h4>
+    <a><img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" /></a>
+    <h4 class="modal-title">{{tituloModal}}</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]="formItemRol">
@@ -195,12 +228,14 @@
 
       <div class="form-row">
         <div class="form-group col-md-12">
-
-          <div *ngIf="lRoles == undefined || lRoles.length == undefined || lRoles.length == 0">
-            <h5>No se encontraron roles para el usuario...</h5>
+          <!-- Mensaje de No Posee Roles -->
+          <div *ngIf="!lRolesUsuario || lRolesUsuario.length === 0">
+            <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
+              No posee roles...
+            </div>
           </div>
 
-          <div *ngIf="lRoles != undefined && lRoles.length > 0">
+          <div *ngIf="lRolesUsuario && lRolesUsuario.length > 0">
             <table class="table table-sm table-hover col-md-12">
               <thead class="tablaUser">
                 <tr class="d-flex">
@@ -210,7 +245,7 @@
               </thead>
               <tbody>
                 <tr class="d-flex" *ngFor="let itemRol of lRolesUsuario">
-                  <td  class="col" scope="row">{{itemRol.Descripcion}}</td>
+                  <td class="col" scope="row">{{itemRol.Descripcion}}</td>
                   <td class="col-2" scope="row">
                     <button class="btn btn-outline-danger btn-sm" (click)="eliminarRol(itemRol)">Eliminar</button>
                   </td>
@@ -229,6 +264,7 @@
     </form>
   </div>
 </ng-template>
+
 
 <ng-template #contentInhabilitar let-modal>
   <div class="modal-header">
