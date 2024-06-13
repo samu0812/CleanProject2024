@@ -395,28 +395,30 @@
       <div *ngIf="selectedRows.length > 0">
         <div class="mb-3">
           <label for="aumentoExtra" class="form-label">Aumento Extra</label>
-          <input type="number" class="form-control" id="aumentoExtra"[(ngModel)]="aumentoExtra" (input)="updatePrices()">
+          <input type="number" class="form-control" id="aumentoExtra" [(ngModel)]="aumentoExtra" (input)="updatePrices()">
         </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Nro</th>
-              <th scope="col">Código</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Precio Costo</th>
-              <th scope="col">Aumento</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of selectedRows">
-              <td>{{ item.IdProducto}}</td>
-              <td>{{ item.Codigo }}</td>
-              <td>{{ item.Nombre }}</td>
-              <td>{{ item.PrecioCosto }}</td>
-              <td><input type="text" [value]="calculateNewPrice(item.PrecioCosto)" disabled></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nro</th>
+                <th scope="col">Código</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Precio Costo</th>
+                <th scope="col">Aumento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of selectedRows">
+                <td>{{ item.IdProducto }}</td>
+                <td>{{ item.Codigo }}</td>
+                <td>{{ item.Nombre }}</td>
+                <td>{{ item.PrecioCosto }}</td>
+                <td><input type="text" [value]="calculateNewPrice(item.PrecioCosto)" disabled></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div *ngIf="selectedRows.length === 0">
         <p>No se han seleccionado productos.</p>
@@ -426,7 +428,7 @@
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Cerrar</button>
       <button type="button" class="btn btn-primary ml-2" (click)="guardarAumentoStock()">Guardar</button>
     </div>
-  </ng-template>
+  </ng-template>  
   <footer class="footer">
     <app-footer></app-footer>
   </footer>

@@ -72,11 +72,11 @@ const routes: Routes = [
   {path: 'gestion/enviarinventario', component: ConstruccionComponent,canActivate: [AuthGuard]},
   {path: 'gestion/confirmarrecepcion', component: ConstruccionComponent,canActivate: [AuthGuard]},
 
-  {path: 'reportes/informesdeventa', component:InformesdeventaComponent,  canActivate: [AuthGuard]},
-  {path: 'reportes/informesfinancieros', component: InformesfinancierosComponent,  canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeabastecimiento', component: InformesdeabastecimientoComponent,  canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeclientes', component:InformesdeclientesComponent,  canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeproductos', component: InformesdeproductosComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/informesdeventa', component:ConstruccionComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/informesfinancieros', component: ConstruccionComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/informesdeabastecimiento', component: ConstruccionComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/informesdeclientes', component:ConstruccionComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/informesdeproductos', component: ConstruccionComponent,  canActivate: [AuthGuard]},
 
   {path: 'acceso', component: AccesoComponent,  },
   { path: '**', redirectTo: '/acceso' }, 
