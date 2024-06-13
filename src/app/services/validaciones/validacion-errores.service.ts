@@ -21,6 +21,8 @@ export class ValidacionErroresService {
   };
 
   private fieldNames = {
+    Nombre:'Nombre',
+    Apellido:'Apellido',
     Mail: 'Mail',
     RazonSocial: 'Razón Social',
     Telefono: 'Teléfono',

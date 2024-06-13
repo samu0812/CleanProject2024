@@ -17,6 +17,8 @@ import { Localidad } from '../../../models/recursos/localidad';
 import { TipoDocumentacion } from '../../../models/parametria/tipodocumentacion';
 import { TipodocumentacionService } from '../../../services/parametria/tipodocumentacion.service';
 import { NgIfContext } from '@angular/common';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
+import { localidadesPorProvService } from '../../../services/recursos/localidadesPorProv.service';
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
@@ -56,7 +58,9 @@ export class PersonalComponent {
     private TipodomicilioService: TipodomicilioService,
     private ProvinciaService: ProvinciaService,
     private LocalidadService: LocalidadService,
-    private TipodocumentacionService: TipodocumentacionService
+    private TipodocumentacionService: TipodocumentacionService,
+    private ValidacionErroresService: ValidacionErroresService,
+    private localidadesPorProvService : localidadesPorProvService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -125,6 +129,27 @@ export class PersonalComponent {
     });
   }
   
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
+
+  obtenerLocalidadesPorProv(IdProvincia) {
+    this.itemGrilla.IdLocalidad = undefined;
+    this.localidadesPorProvService.listar(IdProvincia).subscribe(data => {
+      this.lLocalidad = data.Localidades;
+    });
+  }
 
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/recursos/personal').subscribe(data => {

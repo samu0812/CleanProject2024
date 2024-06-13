@@ -69,6 +69,8 @@ import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { ConstruccionComponent } from './components/construccion/construccion.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -122,6 +124,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
     RealizarventaComponent,
     BusquedaNombreApellidoDniPipe,
     SnackbarComponent,
+    ConstruccionComponent,
     
 
   ],
@@ -144,7 +147,8 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
     NgbTooltipModule,
     MatSnackBarModule,
     MatButtonModule,
-    NgxChartsModule 
+    NgxChartsModule,
+    FontAwesomeModule
 
     
   ],

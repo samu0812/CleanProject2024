@@ -35,7 +35,9 @@ import { AccesoComponent } from './components/acceso/acceso.component';
 import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
 import { AuthGuard } from './services/auth/auth.guard';
 import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
+import { ConstruccionComponent } from './components/construccion/construccion.component';
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: ':id/submenu', component: SubmenuComponent},
@@ -66,9 +68,9 @@ const routes: Routes = [
   {path: 'recursos/clientes', component:ClientesComponent ,  canActivate: [AuthGuard]},
 
   {path: 'gestion/realizarventa', component:RealizarventaComponent ,  canActivate: [AuthGuard]},
-  {path: 'gestion/realizarpedidos', component:RealizarpedidosComponent ,  canActivate: [AuthGuard]},
-  {path: 'gestion/enviodeinventario', component: EnviodeinventarioComponent,  canActivate: [AuthGuard]},
-  {path: 'gestion/confirmacionderecepcion', component: ConfirmacionderecepcionComponent,  canActivate: [AuthGuard]},
+  {path: 'gestion/realizarpedido', component:ConstruccionComponent ,canActivate: [AuthGuard]},
+  {path: 'gestion/enviarinventario', component: ConstruccionComponent,canActivate: [AuthGuard]},
+  {path: 'gestion/confirmarrecepcion', component: ConstruccionComponent,canActivate: [AuthGuard]},
 
   {path: 'reportes/informesdeventa', component:InformesdeventaComponent,  canActivate: [AuthGuard]},
   {path: 'reportes/informesfinancieros', component: InformesfinancierosComponent,  canActivate: [AuthGuard]},
