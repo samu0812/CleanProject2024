@@ -202,6 +202,7 @@ export class ProveedoresComponent {
           }
         );
       } else {
+        console.log(this.itemGrilla);
         this.ProveedorService.editar(this.itemGrilla, this.Token).subscribe(
           response => {
             this.listar(1);

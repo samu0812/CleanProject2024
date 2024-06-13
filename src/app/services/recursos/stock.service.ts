@@ -66,7 +66,7 @@ export class StockService {
   }
 
   habilitar(item: Productos, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/recursos/inventario`;
+    const url = `${this.apiUrl}/recursos/inventario/habilitar`;
     const body = {
       IdProducto: item.IdProducto,
       Token: Token

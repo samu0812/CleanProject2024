@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ClienteService } from '../../../services/recursos/cliente.service';
 import { cliente } from '../../../models/recursos/cliente';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef , ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
@@ -16,6 +16,8 @@ import { Localidad } from '../../../models/seguridad/localidad';
 import { LocalidadService } from '../../../services/recursos/localidad.service';
 import { provincia } from '../../../models/parametria/provincia';
 import { ProvinciaService } from '../../../services/parametria/provincia.service';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
+import { localidadesPorProvService } from '../../../services/recursos/localidadesPorProv.service';
 
 @Component({
   selector: 'app-clientes',
@@ -52,25 +54,27 @@ export class ClientesComponent implements OnInit {
     private TipodocumentacionService: TipodocumentacionService,
     private LocalidadService: LocalidadService,
     private ProvinciaService: ProvinciaService,
+    private ValidacionErroresService: ValidacionErroresService,
+    private localidadesPorProvService : localidadesPorProvService
   ) {}
 
   ngOnInit(): void {
     this.obtenerImgMenu();
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
-      TipoPersona: new FormControl('', [Validators.required]),
+      tipoPersona: new FormControl('', [Validators.required]),
       TipoDomicilio: new FormControl('', [Validators.required]),
-      Calle: new FormControl('', [Validators.required]),
-      Nro: new FormControl('', [Validators.required]),
-      Piso: new FormControl('', [Validators.required]),
+      Calle: new FormControl('', [Validators.required, Validators.maxLength(45)]),
+      Nro: new FormControl('', [Validators.required, Validators.maxLength(45), Validators.pattern(/^\d+$/)]),
+      Piso: new FormControl('', [Validators.maxLength(45)]),
       TipoDocumentacion: new FormControl('', [Validators.required]),
-      Documentacion: new FormControl('', [Validators.required]),
-      Nombre: new FormControl('', [Validators.required]),
-      Apellido: new FormControl('', [Validators.required]),
-      Mail: new FormControl('', [Validators.required]),
-      RazonSocial: new FormControl('', [Validators.required]),
+      Documentacion: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(45)]),
+      Nombre: new FormControl('', [Validators.required, Validators.maxLength(45)], ),
+      Apellido: new FormControl('', [Validators.required, Validators.maxLength(45)]),
+      Mail: new FormControl('', [Validators.required, Validators.maxLength(45), Validators.email]),
+      RazonSocial: new FormControl('', [Validators.required , Validators.maxLength(45)]),
       FechaNacimiento: new FormControl('', [Validators.required]),
-      Telefono: new FormControl('', [Validators.required]),
+      Telefono: new FormControl('', [Validators.required , Validators.minLength(10), Validators.maxLength(45)]),
       Localidad: new FormControl('', [Validators.required]),
       Provincia: new FormControl('', [Validators.required]),
     });
@@ -96,15 +100,45 @@ export class ClientesComponent implements OnInit {
     this.TipodocumentacionService.listar(1).subscribe(data => {
       this.lTipoDocumentacion = data.TipoDocumentacion;
     });
-    this.LocalidadService.listar(1).subscribe(data => {
-      console.log(data.Localidades);
-      this.llocalidad = data.Localidades;
-    });
+    // this.LocalidadService.listar(1).subscribe(data => {
+    //   console.log(data.Localidades);
+    //   this.llocalidad = data.Localidades;
+    // });
     this.ProvinciaService.listar(1).subscribe(data => {
       console.log(data.Provincias);
       this.lprovincia = data.Provincias;
     });
   }
+
+  obtenerLocalidadesPorProv(IdProvincia) {
+    this.itemGrilla.IdLocalidad = undefined;
+    this.localidadesPorProvService.listar(IdProvincia).subscribe(data => {
+      this.llocalidad = data.Localidades;
+    });
+  }
+
+  cerrarModal () {
+    console.log('cerrando')
+    this.formItemGrilla.reset();
+    console.log(this.formItemGrilla)
+    this.modalRef.close();
+  }
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
+
   obtenerImgMenu() {
     this.imagenService.getImagenSubMenu('/recursos/clientes').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
@@ -137,6 +171,18 @@ export class ClientesComponent implements OnInit {
     this.tituloBoton = 'Agregar';
     this.itemGrilla = Object.assign({}, new cliente());
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+
+    this.modalRef.result.then((result) => {
+      console.log(result, 'BOTON');
+      if (result === 'Cancelar') {
+        this.formItemGrilla.reset();
+      }
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        console.log('BOTONDSDASDSA');
+        this.formItemGrilla.reset();
+      }
+    });
   }
 
   openEditar(content, item: cliente) {
@@ -163,32 +209,38 @@ export class ClientesComponent implements OnInit {
   //falta agregar los seletc de provincias y localidades
   guardar(): void {
     this.loading = true;
-    if (this.itemGrilla.IdCliente == null) {
-      this.ClienteService.agregar(this.itemGrilla, this.Token).subscribe(
-        response => {
-          this.listar(1);
-          this.modalRef.close();
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-        },
-        error => {
-          console.log('Error', error.error.Message);
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false; // Asegúrate de manejar el caso de error
-        }
-      );
-    } else {
-      console.log(this.itemGrilla);
-      this.ClienteService.editar(this.itemGrilla, this.Token).subscribe(
-        response => {
-          this.listar(1);
-          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-          this.modalRef.close();
-        },
-        error => {
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false; // Asegúrate de manejar el caso de error
-        }
-      );
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdCliente == null) {
+        this.ClienteService.agregar(this.itemGrilla, this.Token).subscribe(
+          response => {
+            this.listar(1);
+            this.modalRef.close();
+            this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+          },
+          error => {
+            console.log('Error', error.error.Message);
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false; // Asegúrate de manejar el caso de error
+          }
+        );
+      } else {
+        console.log(this.itemGrilla);
+        this.ClienteService.editar(this.itemGrilla, this.Token).subscribe(
+          response => {
+            this.listar(1);
+            this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
+            this.modalRef.close();
+          },
+          error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false; // Asegúrate de manejar el caso de error
+          }
+        );
+      }
+    }else {
+      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+      this.loading = false;
     }
   }
 
