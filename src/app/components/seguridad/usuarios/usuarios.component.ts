@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { Usuario } from '../../../models/seguridad/Usuario';
 import { UsuarioService } from '../../../services/seguridad/usuario.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
@@ -11,6 +11,8 @@ import { TiposucursalService } from '../../../services/parametria/tiposucursal.s
 import { TipoRol } from '../../../models/seguridad/TipoRol';
 import { TiporolService } from '../../../services/seguridad/tiporol.service';
 import { NgIfContext } from '@angular/common';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
+
 
 @Component({
   selector: 'app-usuarios',
@@ -48,7 +50,8 @@ export class UsuariosComponent implements OnInit {
     private imagenService: ImagenService,
     private tiposucursalService: TiposucursalService,
     private tiporolService: TiporolService,
-    private alertasService: AlertasService // agregue las alertas
+    private alertasService: AlertasService, // agregue las alertas
+    private ValidacionErroresService: ValidacionErroresService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -85,34 +88,55 @@ export class UsuariosComponent implements OnInit {
 
   }
 
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
+
   obtenerImgMenu() {
     this.imagenService.getImagenSubMenu('/seguridad/usuarios').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
     });
   }
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.UsuarioService.listar(TipoLista).subscribe(
       response => {
         this.itemGrilla = new Usuario();
         this.listaGrilla = response.Usuarios;
+        this.loading = false;
       },
       error => {
-        console.error('Error al cargar tipos de categoría:', error);
+        this.alertasService.ErrorAlert('Error', error.error.message);
+        this.loading = false;
       }
     );
     //llama a la api y trae la lista de personas
     this.UsuarioService.listarPersonas().subscribe(
       data => {
         this.lPersonas = data.Personas;
+        this.loading = false;
       },
       error => {
         console.error('Error fetching personas', error);
       });
     this.tiposucursalService.listar(1).subscribe(data => {
       this.lSucursales = data.Sucursales;
+      this.loading = false;
     });
     this.tiporolService.listar(1).subscribe(data => {
       this.lRoles = data.TiposRol;
+      this.loading = false;
     });
   }
   cambiarFiltro(): void {
@@ -121,6 +145,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   agregarRol() {
+    this.loading = true;
     const rolSeleccionado = this.formItemRol.get('rol').value;
     this.rolesUsuario.IdTipoRol = rolSeleccionado;
     this.UsuarioService.agregarRolUsuario(this.rolesUsuario, this.Token)
@@ -131,13 +156,16 @@ export class UsuariosComponent implements OnInit {
       console.error('Error al agregar usuario:', error);
       if (error.error && error.error.Message) {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       } else {
         this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+        this.loading = false;
       }
     });
   }
 
   eliminarRol(item: any) {
+    this.loading = true;
     this.UsuarioService.eliminarUsuarioRol(item, this.Token)
     .subscribe(response => {
       this.alertasService.OkAlert('Éxito', 'Rol eliminado exitosamente');
@@ -145,8 +173,10 @@ export class UsuariosComponent implements OnInit {
     }, error => {
       if (error.error && error.error.Message) {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       } else {
         this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+        this.loading = false;
       }
     });
   }
@@ -155,6 +185,13 @@ export class UsuariosComponent implements OnInit {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Usuario());
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+    this.modalRef.result.then((result) => {
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        console.log('BOTONDSDASDSA');
+        this.formItemGrilla.reset();
+      }
+    });
   }
   openEditar(content, item: Usuario) {
     this.tituloModal = "Editar";
@@ -169,7 +206,13 @@ export class UsuariosComponent implements OnInit {
     this.modalRef = this.modalService.open(contentSucursal, { size: 'sm', centered: true });
   }
 
+  cerrarModal () {
+    this.formItemGrilla.reset();
+    this.modalRef.close();
+  }
+
   modUsuarioSucursal(): void {
+    this.loading = true;
     this.UsuarioService.modificarUsuarioSucursal(this.itemGrilla.IdUsuario, this.itemGrilla.IdSucursal, this.Token)
       .subscribe(response => {
         this.listar(1);
@@ -177,12 +220,14 @@ export class UsuariosComponent implements OnInit {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 
   getListaRoles(IdUsuario: number){
     this.UsuarioService.listarUsuariosRol(IdUsuario).subscribe(data => {
       this.lRolesUsuario = data.UsuariosPorRol;
+      this.loading = false;
     });
   }
 
@@ -201,40 +246,57 @@ export class UsuariosComponent implements OnInit {
   }
 
   guardar(): void {
-    if (this.itemGrilla.IdUsuario == null) {
-      const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
-      this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
-      this.UsuarioService.agregar(this.itemGrilla, this.Token)
-        .subscribe(response => {
-          this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
-          this.modalRef.close();
-          this.listar(1);
-        }, error => {
-          if (error.error && error.error.Message) {
-            this.alertasService.ErrorAlert('Error', error.error.Message);
-          } else {
-            this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
-          }
-        });
+    this.loading = true;
+
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdUsuario == null) {
+        const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
+        this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
+        this.UsuarioService.agregar(this.itemGrilla, this.Token)
+          .subscribe(response => {
+            this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
+            this.modalRef.close();
+            this.listar(1);
+          }, error => {
+            if (error.error && error.error.Message) {
+              this.alertasService.ErrorAlert('Error', error.error.Message);
+              this.loading = false;
+            } else {
+              this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+              this.loading = false;
+            }
+          });
+      } else {
+        this.loading = true;
+        this.UsuarioService.editar(this.itemGrilla, this.Token)
+          .subscribe(response => {
+            this.listar(1);
+            this.alertasService.OkAlert('Éxito', 'Usuario modificado exitosamente');
+            this.modalRef.close();
+          }, error => {
+            if (error.error.Errors.NuevoUsuario) {
+              this.alertasService.ErrorAlert('Error', error.error.Errors.NuevoUsuario);
+              this.loading = false;
+            }if (error.error.Errors.NuevaClave) {
+              this.alertasService.ErrorAlert('Error', error.error.Errors.NuevaClave);
+              this.loading = false;
+            } else {
+              this.alertasService.ErrorAlert('Error', 'Ocurrió un error al modificar el usuario');
+              this.loading = false;
+            }
+          });
+      }
     } else {
-      this.UsuarioService.editar(this.itemGrilla, this.Token)
-        .subscribe(response => {
-          this.listar(1);
-          this.alertasService.OkAlert('Éxito', 'Usuario modificado exitosamente');
-          this.modalRef.close();
-        }, error => {
-          if (error.error.Errors.NuevoUsuario) {
-            this.alertasService.ErrorAlert('Error', error.error.Errors.NuevoUsuario);
-          }if (error.error.Errors.NuevaClave) {
-            this.alertasService.ErrorAlert('Error', error.error.Errors.NuevaClave);
-          } else {
-            this.alertasService.ErrorAlert('Error', 'Ocurrió un error al modificar el usuario');
-          }
-        });
+      this.alertasService.ErrorAlert('Error', 'Formulario Inválido');
+      this.formItemGrilla.markAllAsTouched();
+      this.loading = false;
     }
+
+    
   }
 
   inhabilitar(): void {
+    this.loading = true;
     this.UsuarioService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.alertasService.OkAlert('Éxito', 'Usuario eliminado exitosamente');
@@ -243,8 +305,10 @@ export class UsuariosComponent implements OnInit {
       }, error => {
         if (error.error && error.error.Message) {
           this.alertasService.ErrorAlert('Error', error.error.Message);
+          this.loading = false;
         } else {
           this.alertasService.ErrorAlert('Error', 'Ocurrió un error al eliminar el usuario');
+          this.loading = false;
         }
       });
   }

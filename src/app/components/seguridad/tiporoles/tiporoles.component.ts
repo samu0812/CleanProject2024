@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { NgIfContext } from '@angular/common';
 import { TipoRol } from '../../../models/seguridad/TipoRol';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TiporolService } from '../../../services/seguridad/tiporol.service';
 import { Menu } from '../../../models/menu/menu';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { AlertasService } from '../../../services/alertas/alertas.service';
 import { ImagenService } from '../../../services/imagen/imagen.service';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
 
 @Component({
   selector: 'app-tiporoles',
@@ -36,7 +37,9 @@ export class TiporolesComponent {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService,){
+    private alertasService: AlertasService,
+    private ValidacionErroresService: ValidacionErroresService,
+  ){
 
   }
   ngOnInit(): void {
@@ -62,6 +65,21 @@ export class TiporolesComponent {
     });
 
   }
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
   
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/seguridad/tiporoles').subscribe(data => {
@@ -70,14 +88,17 @@ export class TiporolesComponent {
   }
 
   listar(TipoLista: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
+    this.loading = true;
     this.TiporolService.listar(TipoLista).subscribe(
       response => {
         console.log('API response:', response);
         this.itemGrilla = new TipoRol();
         this.listaGrilla = response.TiposRol || [];
+        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       }
     );
   }
@@ -92,6 +113,19 @@ export class TiporolesComponent {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new TipoRol());
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+
+    this.modalRef.result.then((result) => {
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        console.log('BOTONDSDASDSA');
+        this.formItemGrilla.reset();
+      }
+    });
+  }
+
+  cerrarModal () {
+    this.formItemGrilla.reset();
+    this.modalRef.close();
   }
 
   openEditar(content, item: TipoRol) {
@@ -114,29 +148,40 @@ export class TiporolesComponent {
   }
 
   guardar(): void {
-    if (this.itemGrilla.IdTipoRol== null) {
-      this.TiporolService.agregar(this.itemGrilla, this.Token)
+    this.loading = true;
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdTipoRol== null) {
+        this.TiporolService.agregar(this.itemGrilla, this.Token)
+          .subscribe(response => {
+            this.listar(1);
+            this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+            this.modalRef.close();
+          }, error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
+          })
+        }
+      else{
+        this.loading = true;
+        this.TiporolService.editar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+          this.alertasService.OkAlert('OK', 'Se modificó Correctamente');
           this.modalRef.close();
         }, error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
+          this.loading = false;
         })
-      }
-    else{
-      this.TiporolService.editar(this.itemGrilla, this.Token)
-      .subscribe(response => {
-        this.listar(1);
-        this.alertasService.OkAlert('OK', 'Se modificó Correctamente');
-        this.modalRef.close();
-      }, error => {
-        this.alertasService.ErrorAlert('Error', error.error.Message);
-      })
-    };
+      };
+    } else {
+      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+      this.loading = false;
+    }
   }
 
   inhabilitar(): void {
+    this.loading = true;
     this.TiporolService.inhabilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1);
@@ -144,17 +189,20 @@ export class TiporolesComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 
   habilitar(): void {
+    this.loading = true;
     this.TiporolService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
-        this.listar(1);
+        this.listar(2);
         this.alertasService.OkAlert('OK', 'Se habilitó Correctamente');
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', error.error.Message);
+        this.loading = false;
       });
   }
 
