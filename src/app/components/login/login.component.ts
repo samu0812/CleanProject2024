@@ -6,13 +6,15 @@ import { AuthService } from '../../services/auth/auth.service';
 import { AlertasService } from '../../services/alertas/alertas.service';
 
 @Component({
-  selector:'app-login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   FormularioLogin: FormGroup;
   loading: boolean;
+  showPassword: boolean = false; // Variable para controlar la visibilidad de la contraseña
+
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
@@ -28,9 +30,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  
+  // Función para alternar la visibilidad de la contraseña
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
   onSubmit(): void {
-    
     if (this.FormularioLogin.valid) {
       this.loading = true;
       const formData = this.FormularioLogin.value;
@@ -54,9 +59,6 @@ export class LoginComponent implements OnInit {
       );
     } else {
       this.alertasService.ErrorAlert('Error al autenticar', 'Por favor intenta de nuevo.');
-    
     }
   }
-
-
 }

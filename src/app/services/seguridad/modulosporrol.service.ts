@@ -44,6 +44,6 @@ export class ModulosporrolService {
       IdRolModulo: item.IdRolModulo,
       Token: Token};
     return this.http.put<ModulosPorRol[]>(url,body);
-  }
+  }
 
 }

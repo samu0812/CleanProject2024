@@ -161,7 +161,6 @@
 }
 
 
-/*modalessss*/
 #btnGuardar{
   background-color: rgb(31, 31, 95);
   border-color: rgb(31, 31, 95);
@@ -261,6 +260,11 @@
   margin-bottom: 0;
 }
 
+.table-hover tr.selected {
+  background-color: orange;
+}
+
+
 /* Media query para pantallas pequeñas */
 @media screen and (max-width: 768px) {
   .checkbox-column {
@@ -273,4 +277,13 @@
   .checkbox-column {
     max-width: 100%; /* Mostrar 1 columna en pantallas extra pequeñas */
   }
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  display: block;
 }

@@ -136,46 +136,64 @@
             <label for="descripcion">Descripción:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Descripcion" type="text" formControlName="descripcion" class="form-control"
-            id="descripcion" placeholder="Descripción">
+            id="descripcion" placeholder="Descripción"
+            [ngClass]="{'is-invalid': isFieldInvalid('descripcion'), 'is-valid': !isFieldInvalid('descripcion') && isFieldTouched('descripcion')}">
+            <div *ngIf="isFieldInvalid('descripcion')" class="invalid-feedback">
+              {{ getErrorMessage('descripcion') }}
+            </div>
         </div>
         <div class="form-group col-md-6">
           <div style="margin-bottom: 15px;">
-            <label for="tipoDomicilio">Tipo Domicilio:</label>
+            <label for="TipoDomicilio">Tipo domicilio</label>
           </div>
-          <select [(ngModel)]="itemGrilla.IdTipoDomicilio" formControlName="IdTipoDomicilio" class="form-control"
-            id="IdTipoDomicilio">
-            <option value="1">Legal</option>
-            <option value="2">Real</option>
-            <option value="3">Jurídico</option>
-            <option value="4">Fiscal</option>
-          </select>
+            <select [(ngModel)]="itemGrilla.IdTipoDomicilio" type="text" formControlName="domicilio" class="form-control" id="domicilio" placeholder="100" [ngClass]="{'is-invalid': isFieldInvalid('domicilio')
+              ,'is-valid': !isFieldInvalid('domicilio') && isFieldTouched('domicilio')
+            }">
+              <option [value]="undefined" disabled>Seleccione...</option>
+              <option *ngFor="let tipo of lTipoDomicilio" [value]="tipo.IdTipoDomicilio">
+                {{ tipo.Descripcion }}
+              </option>
+            </select>
+            <div *ngIf="isFieldInvalid('domicilio')" class="invalid-feedback">
+              {{ getErrorMessage('domicilio') }}
+            </div>
         </div>
       </div>
-
       <div class="row">
         <div class="form-group col-md-6">
           <div style="margin-bottom: 15px;">
             <label for="calle">Calle:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Calle" type="text" formControlName="calle" class="form-control" id="calle"
-            placeholder="Calle">
+            placeholder="Calle"
+            [ngClass]="{'is-invalid': isFieldInvalid('calle'), 'is-valid': !isFieldInvalid('calle') && isFieldTouched('calle')}">
+            <div *ngIf="isFieldInvalid('calle')" class="invalid-feedback">
+              {{ getErrorMessage('calle') }}
+            </div>
         </div>
         <div class="form-group col-md-6">
           <div style="margin-bottom: 15px;">
             <label for="nro">Nro:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Nro" type="text" formControlName="nro" class="form-control" id="nro"
-            placeholder="Número">
+            placeholder="Número"
+            [ngClass]="{'is-invalid': isFieldInvalid('nro'), 'is-valid': !isFieldInvalid('nro') && isFieldTouched('nro')}">
+            <div *ngIf="isFieldInvalid('nro')" class="invalid-feedback">
+              {{ getErrorMessage('nro') }}
+            </div>
         </div>
       </div>
-
       <div class="row">
         <div class="form-group col-md-6">
           <div style="margin-bottom: 15px;">
             <label for="piso">Piso:</label>
           </div>
           <input [(ngModel)]="itemGrilla.Piso" type="text" formControlName="piso" class="form-control" id="piso"
-            placeholder="Piso">
+            placeholder="Piso"
+            [ngClass]="{'is-invalid': isFieldInvalid('piso'), 'is-valid': !isFieldInvalid('piso') && isFieldTouched('piso')}">
+            <div *ngIf="isFieldInvalid('piso')" class="invalid-feedback">
+              {{ getErrorMessage('piso') }}
+            </div>
         </div>
       </div>
 
@@ -202,7 +220,7 @@
     <a></a>
     <h4 class="">Desea Eliminar?</h4>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cancelar</button>
       <button type="button" class="btn btn-primary" id="btnGuardar" (click)="inhabilitar()">Aceptar</button>
     </div>
   </div>

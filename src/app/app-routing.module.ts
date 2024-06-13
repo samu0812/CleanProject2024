@@ -77,7 +77,7 @@ const routes: Routes = [
   {path: 'reportes/informesdeproductos', component: InformesdeproductosComponent,  canActivate: [AuthGuard]},
 
   {path: 'acceso', component: AccesoComponent,  },
-  { path: '**', redirectTo: '/acceso' }, // Ruta wildcard para manejar rutas no encontradas
+  { path: '**', redirectTo: '/acceso' }, 
 
 ];
 

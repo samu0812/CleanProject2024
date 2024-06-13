@@ -1,12 +1,13 @@
 import { TipoimpuestoService } from './../../../services/parametria/tipoimpuesto.service';
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { TipoImpuesto } from '../../../models/parametria/tipoimpuesto';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
 import { NgIfContext } from '@angular/common';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
 
 @Component({
   selector: 'app-tipoimpuesto',
@@ -35,7 +36,8 @@ export class TipoimpuestoComponent {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService
+    private alertasService: AlertasService,
+    private ValidacionErroresService:ValidacionErroresService
   ) {}
   
   ngOnInit(): void {
@@ -93,7 +95,16 @@ export class TipoimpuestoComponent {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new TipoImpuesto());
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
-  }
+    this.modalRef.result.then((result) => {
+      if (result === 'Cancelar') {
+        this.formItemGrilla.reset();
+      }
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        this.formItemGrilla.reset();
+      }
+    });
+  }
 
   openEditar(content, item: TipoImpuesto) {
     this.tituloModal = "Editar";
@@ -116,30 +127,38 @@ export class TipoimpuestoComponent {
 
   guardar(): void {
     this.loading = true;
-    if (this.itemGrilla.IdTipoImpuesto == null) {
-      this.tipoImpuestoService.agregar(this.itemGrilla, this.Token)
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdTipoImpuesto == null) {
+        this.tipoImpuestoService.agregar(this.itemGrilla, this.Token)
+          .subscribe(response => {
+            this.listar(1);
+            this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+            this.modalRef.close();
+          }, error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
+          })
+        }
+      else{
+        this.loading = true;
+        this.tipoImpuestoService.editar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
         }, error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
           this.loading = false;
         })
-      }
-    else{
-      this.loading = true;
-      this.tipoImpuestoService.editar(this.itemGrilla, this.Token)
-      .subscribe(response => {
-        this.listar(1);
-        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-        this.modalRef.close();
-      }, error => {
-        this.alertasService.ErrorAlert('Error', error.error.Message);
-        this.loading = false;
-      })
-    };
+      };
   }
+  else {
+      // console.log('El formulario no es válido:', this.obtenerErroresDeCampos()); //
+      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+      this.loading = false;
+    }
+}
   
 
   inhabilitar(): void {
@@ -173,6 +192,28 @@ export class TipoimpuestoComponent {
   }
   cambiarPagina(event): void {
     this.paginaActual = event;
+  }
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
+
+  cerrarModal () {
+    console.log('cerrando')
+    this.formItemGrilla.reset();
+    console.log(this.formItemGrilla)
+    this.modalRef.close();
   }
 
 }

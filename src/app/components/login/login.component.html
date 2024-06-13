@@ -30,10 +30,13 @@
                           <label class="form-label" for="Usuario">Usuario</label>
                           <input type="text" id="Usuario" class="form-control" formControlName="Usuario" placeholder="Ingrese su Nombre" />
                         </div>
-                        <div class="form-outline mb-4">
+                        <div class="form-outline mb-4 position-relative">
                           <label class="form-label" for="Clave">Contraseña</label>
-                          <input type="password" id="Clave" class="form-control" formControlName="Clave" placeholder="Ingrese su Contraseña" />
-                        </div>
+                          <input type="password" id="Clave" class="form-control" formControlName="Clave" placeholder="Ingrese su Contraseña" [type]="showPassword ? 'text' : 'password'" />
+                          <button type="button" class="btn btn-outline-secondary position-absolute top-50 end-0 translate-middle-y" (click)="togglePasswordVisibility()">
+                            <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                          </button>
+                        </div>                        
                         <div class="text-center pt-1 mb-3">
                           <button class="btn btn-custom btn-block fa-lg gradient-custom-2" type="submit">Iniciar Sesión</button>
                         </div>

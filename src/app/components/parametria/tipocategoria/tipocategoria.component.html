@@ -111,8 +111,10 @@
   <!-- AgregarCategoriaModal -->
   <ng-template #content let-modal>
     <div class="modal-header">
-      <a></a>
-      <h4 class="modal-title">{{ tituloModal }}</h4>
+      <a>
+        <img *ngIf="imgSubmenu !== undefined" class="img-crud" src="{{imgSubmenu.TipoIcono}}{{imgSubmenu.Icono}}" />
+      </a>
+      <h4 style="margin-left: 5px;" class="modal-title">{{ tituloModal }}</h4>
     </div>
     <div class="modal-body">
       <form [formGroup]="formItemGrilla">
@@ -121,12 +123,15 @@
             <div style="margin-bottom: 15px">
               <label for="descripcion">Descripción:</label>
             </div>
-            <input [(ngModel)]="itemGrilla.Descripcion" type="text" formControlName="descripcion" class="form-control"
-              id="descripcion" placeholder="Descripción">
+            <input [(ngModel)]="itemGrilla.Descripcion" type="text" formControlName="descripcion" class="form-control" id="descripcion" placeholder="Descripción"
+            [ngClass]="{'is-invalid': isFieldInvalid('descripcion'), 'is-valid': !isFieldInvalid('descripcion') && isFieldTouched('descripcion')}">
+              <div *ngIf="isFieldInvalid('descripcion')" class="invalid-feedback">
+                {{ getErrorMessage('descripcion') }}
+              </div>
           </div>
         </div>
         <div class="form-group col text-right" style="margin-top: 25px;">
-          <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+          <button type="button" class="btn btn-danger" is="btnCancelar" (click)="cerrarModal()">Cancelar</button>
           <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
         </div>
       </form>

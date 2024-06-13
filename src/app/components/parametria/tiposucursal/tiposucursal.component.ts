@@ -1,12 +1,16 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Sucursales } from '../../../models/parametria/tiposucursal';
 import { TiposucursalService } from '../../../services/parametria/tiposucursal.service';
+import { TipodomicilioService } from '../../../services/parametria/tipodomicilio.service';
+import { TipoDomicilios } from '../../../models/parametria/tipodomicilio';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
 import { NgIfContext } from '@angular/common';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
+
 @Component({
   selector: 'app-tiposucursal',
   templateUrl: './tiposucursal.component.html',
@@ -17,6 +21,7 @@ export class TiposucursalComponent {
   tituloBoton: string;
   itemGrilla: Sucursales; // cada item de la tabla
   listaGrilla: Sucursales[]; // tabla completa en donde se cargan los datos
+  lTipoDomicilio: TipoDomicilios[];
   modalRef: NgbModalRef;
   formItemGrilla: FormGroup;
   formFiltro: FormGroup;
@@ -32,7 +37,9 @@ export class TiposucursalComponent {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService
+    private alertasService: AlertasService,
+    private ValidacionErroresService:ValidacionErroresService,
+    private TipodomicilioService:TipodomicilioService
   ) {}
   
   ngOnInit(): void {
@@ -41,6 +48,7 @@ export class TiposucursalComponent {
     this.formItemGrilla = this.formBuilder.group({
       descripcion: new FormControl('', [Validators.required]),
       IdTipoDomicilio: new FormControl('', [Validators.required]),
+      domicilio: new FormControl('', [Validators.required]),
       calle: new FormControl('', [Validators.required]),
       nro: new FormControl('', [Validators.required]),
       piso: new FormControl('', [Validators.required])
@@ -52,6 +60,7 @@ export class TiposucursalComponent {
     });
 
     this.listar(1);
+    this.obtenerListas();
 
     this.formFiltro.get('idFiltro').valueChanges.subscribe(value => {
       this.listar(value);
@@ -81,6 +90,13 @@ export class TiposucursalComponent {
     );
   }
 
+  obtenerListas(){
+    this.TipodomicilioService.listar(1).subscribe(data => {
+      this.lTipoDomicilio = data.TipoDomicilios;
+      console.log(this.lTipoDomicilio);
+    });
+  }
+
   cambiarFiltro(): void {
     const filtro = this.formFiltro.get('idFiltro').value;
     this.listar(filtro);
@@ -91,7 +107,16 @@ export class TiposucursalComponent {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Sucursales());
     this.modalRef = this.modalService.open(content, { size: 'md', centered: true });
-  }
+    this.modalRef.result.then((result) => {
+      if (result === 'Cancelar') {
+        this.formItemGrilla.reset();
+      }
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        this.formItemGrilla.reset();
+      }
+    });
+  }
 
   openEditar(content, item: Sucursales) {
     this.tituloModal = "Editar";
@@ -110,32 +135,41 @@ export class TiposucursalComponent {
 
   guardar(): void {
     this.loading = true;
-    if (this.itemGrilla.IdSucursal == null) {
-      this.tiposucursalService.agregar(this.itemGrilla, this.Token)
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdSucursal == null) {
+        this.tiposucursalService.agregar(this.itemGrilla, this.Token)
+          .subscribe(response => {
+            this.listar(1);
+            this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+            this.modalRef.close();
+            this.loading = false;
+          }, error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
+          })
+        }
+      else{
+        this.loading = true;
+        this.tiposucursalService.editar(this.itemGrilla, this.Token)
         .subscribe(response => {
           this.listar(1);
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
           this.modalRef.close();
           this.loading = false;
         }, error => {
           this.alertasService.ErrorAlert('Error', error.error.Message);
           this.loading = false;
         })
-      }
-    else{
-      this.loading = true;
-      this.tiposucursalService.editar(this.itemGrilla, this.Token)
-      .subscribe(response => {
-        this.listar(1);
-        this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-        this.modalRef.close();
-        this.loading = false;
-      }, error => {
-        this.alertasService.ErrorAlert('Error', error.error.Message);
-        this.loading = false;
-      })
-    };
+      };
   }
+  else {
+      // console.log('El formulario no es válido:', this.obtenerErroresDeCampos()); //
+      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+      this.loading = false;
+    }
+  }
+
 
   inhabilitar(): void {
     this.loading = true;
@@ -155,7 +189,27 @@ export class TiposucursalComponent {
   cambiarPagina(event): void {
     this.paginaActual = event;
   }
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
 
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
+
+  cerrarModal () {
+    console.log('cerrando')
+    this.formItemGrilla.reset();
+    console.log(this.formItemGrilla)
+    this.modalRef.close();
+  }
 
 
 }

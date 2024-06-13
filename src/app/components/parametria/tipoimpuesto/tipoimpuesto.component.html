@@ -127,20 +127,28 @@
               <label for="detalle">Detalle:</label>
             </div>
             <input [(ngModel)]="itemGrilla.Detalle" type="text" formControlName="detalle" class="form-control"
-              id="detalle" placeholder="Detalle">
+              id="detalle" placeholder="Detalle"
+              [ngClass]="{'is-invalid': isFieldInvalid('detalle'), 'is-valid': !isFieldInvalid('detalle') && isFieldTouched('detalle')}">
+              <div *ngIf="isFieldInvalid('detalle')" class="invalid-feedback">
+                {{ getErrorMessage('detalle') }}
+              </div>
           </div>
           <div class="form-group col-md-10">
             <div style="margin-bottom: 15px">
               <label for="porcentaje">Porcentaje:</label>
             </div>
             <input [(ngModel)]="itemGrilla.Porcentaje" type="number" formControlName="porcentaje" class="form-control"
-              id="porcentaje" placeholder="Porcentaje">
+              id="porcentaje" placeholder="Porcentaje"
+              [ngClass]="{'is-invalid': isFieldInvalid('porcentaje'), 'is-valid': !isFieldInvalid('porcentaje') && isFieldTouched('porcentaje')}">
+              <div *ngIf="isFieldInvalid('porcentaje')" class="invalid-feedback">
+                {{ getErrorMessage('porcentaje') }}
+              </div>
           </div>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+      <button type="button" class="btn btn-danger" is="btnCancelar" (click)="cerrarModal()">Cancelar</button>
       <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
     </div>
   </ng-template>

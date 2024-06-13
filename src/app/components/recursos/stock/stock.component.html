@@ -35,6 +35,10 @@
             <i class="fa-solid fa-circle-plus"></i>
             Agregar
           </button>
+          <button style="margin-left: 5px;" type="button" class="btn btn-primary" (click)="openModal(modalAumentosProductos)" id="AgregarModalbtn">
+            <i class="fa-solid fa-circle-plus"></i>
+            Aumento
+          </button>
         </div>
       </div>
     </form>
@@ -42,12 +46,11 @@
     <div class="registros mt-3" *ngIf="listaGrilla && listaGrilla.length > 0; else noData">
       <div class="table-responsive">
         <div class="scroll-table">
-          <ng-container
-            *ngIf="(listaGrilla | busquedastock:busquedastock:'IdProducto':'Nombre'
-          :'Codigo':'Marca':'TipoMedidaDescripcion':'CategoriaDescripcion':'TipoProductoDescripcion').length > 0; else noResults">
-            <table class="table">
+          <ng-container *ngIf="(listaGrilla | busquedastock:busquedastock:'IdProducto':'Nombre':'Codigo':'Marca':'TipoMedidaDescripcion':'CategoriaDescripcion':'TipoProductoDescripcion').length > 0; else noResults">
+            <table class="table table-hover">
               <thead class="thead-dark">
                 <tr>
+                  <th scope="col"></th> <!-- Checkbox Column -->
                   <th scope="col">Nro</th>
                   <th scope="col">Estado</th>
                   <th scope="col">Código</th>
@@ -70,9 +73,11 @@
                 </tr>
               </thead>
               <tbody class="tablaUser">
-                <tr
-                  *ngFor="let item of listaGrilla | busquedastock:busquedastock:'IdProducto':'Nombre':'Codigo':'Marca':'TipoMedidaDescripcion'
-                :'CategoriaDescripcion':'TipoProductoDescripcion' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index">
+                <tr *ngFor="let item of listaGrilla | busquedastock:busquedastock:'IdProducto':'Nombre':'Codigo':'Marca':'TipoMedidaDescripcion':'CategoriaDescripcion':'TipoProductoDescripcion' | paginate: { itemsPerPage: 10, currentPage: paginaActual }; let i = index"
+                    [ngClass]="{'selected': isSelected(item)}">
+                  <td scope="col">
+                    <input type="checkbox" (change)="toggleSelection(item)" [checked]="isSelected(item)" [disabled]="item.FechaBaja !== null">
+                  </td>
                   <td scope="col">{{ item.IdProducto }}</td>
                   <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
                   <td scope="col">{{ item.Codigo }}</td>
@@ -82,49 +87,43 @@
                   <td scope="col">{{ item.CantMaxima }}</td>
                   <td scope="col">{{ item.CantMinima }}</td>
                   <td scope="col">{{ item.FechaAlta }}</td>
-                  <td scope="col" class="hide-column">{{ item.IdTipoMedida}}</td>
-                  <td scope="col">{{ item.TipoMedidaDescripcion}}</td>
-                  <td scope="col">{{ item.Tamano}}</td>
+                  <td scope="col" class="hide-column">{{ item.IdTipoMedida }}</td>
+                  <td scope="col">{{ item.TipoMedidaDescripcion }}</td>
+                  <td scope="col">{{ item.Tamano }}</td>
                   <td scope="col" class="hide-column">{{ item.IdTipoCategoria }}</td>
-                  <td scope="col">{{ item.CategoriaDescripcion}}</td>
+                  <td scope="col">{{ item.CategoriaDescripcion }}</td>
                   <td scope="col" class="hide-column">{{ item.IdTipoProducto }}</td>
                   <td scope="col">{{ item.TipoProductoDescripcion }}</td>
                   <td scope="col" class="hide-column">{{ item.IdPersona }}</td>
                   <td scope="col">{{ item.RazonSocial }}</td>
                   <td scope="col" class="dropdown">
-                    <!-- Botón de acción con menú desplegable -->
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                      data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="fa-solid fa-gears"></i>
                     </button>
-                    <!-- Menú desplegable con opciones -->
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <!-- Mostrar solo si FechaBaja no es null -->
                       <li *ngIf="item.FechaBaja !== null">
                         <a class="dropdown-item" (click)="openHabilitar(contentHabilitar, item)">
                           <i class="fa-solid fa-check"></i> Habilitar
                         </a>
                       </li>
-                      <!-- Mostrar solo si FechaBaja es null -->
                       <li *ngIf="item.FechaBaja === null">
                         <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
                           <i class="fa-solid fa-xmark"></i> Inhabilitar
                         </a>
                       </li>
-                      <!-- Mostrar solo si FechaBaja es null -->
                       <li *ngIf="item.FechaBaja === null">
                         <a class="dropdown-item" (click)="openEditar(content, item)">
                           <i class="fa-solid fa-pen-to-square"></i> Editar
                         </a>
                       </li>
                       <li *ngIf="item.FechaBaja === null">
-                        <a class="dropdown-item"(click)="openCantidad(contentCantidad,item)" >
+                        <a class="dropdown-item" (click)="openCantidad(contentCantidad, item)">
                           <i class="fa-solid fa-box"></i> Cantidad
                         </a>
                       </li>
-                      
                       <li *ngIf="item.FechaBaja === null">
-                        <a class="dropdown-item"(click)="openAumentos(contentAumento,item)" >
+                        <a class="dropdown-item" (click)="openAumentos(contentAumento, item)">
                           <i class="fa-solid fa-percent"></i> Aumento
                         </a>
                       </li>
@@ -134,7 +133,6 @@
               </tbody>
             </table>
           </ng-container>
-
           <ng-template #noResults>
             <div class="alert alert-info alert-custom-orange mt-4" role="alert" id="alerta">
               No se encontraron resultados.
@@ -142,6 +140,7 @@
           </ng-template>
         </div>
       </div>
+           
       <div class="mt-3"></div>
       <pagination-controls (pageChange)="cambiarPagina($event)" class="my-pagination" previousLabel="Anterior"
         nextLabel="Siguiente"></pagination-controls>
@@ -166,88 +165,120 @@
       <form [formGroup]="formItemGrilla">
         <div class="row">
           <div class="form-group col-md-4">
-            <div style="margin-bottom: 15px;">
-              <label for="Codigo">Código:</label>
-            </div>
+            <label for="Codigo">Código:</label>
             <input [(ngModel)]="itemGrilla.Codigo" type="text" formControlName="Codigo" class="form-control" id="Codigo"
-              placeholder="Código">
+              placeholder="Código"
+              [ngClass]="{'is-invalid': isFieldInvalid('Codigo')}">
+              <div *ngIf="isFieldInvalid('Codigo')" class="invalid-feedback">
+                {{ obtenerMensajeError('Codigo') }}
+              </div>
           </div>
           <div class="form-group col-md-4">
-            <div style="margin-bottom: 15px;">
-              <label for="Nombre">Nombre:</label>
-            </div>
+            <label for="Nombre">Nombre:</label>
             <input [(ngModel)]="itemGrilla.Nombre" type="text" formControlName="Nombre" class="form-control" id="Nombre"
-              placeholder="Nombre">
+              placeholder="Nombre"
+              [ngClass]="{'is-invalid': isFieldInvalid('Nombre')}">
+            <div *ngIf="isFieldInvalid('Nombre')" class="invalid-feedback">
+              El campo Nombre es requerido.
+            </div>
           </div>
           <div class="form-group col-md-4">
-            <div style="margin-bottom: 15px;">
-              <label for="Marca">Marca:</label>
-            </div>
+            <label for="Marca">Marca:</label>
             <input [(ngModel)]="itemGrilla.Marca" type="text" formControlName="Marca" class="form-control" id="Marca"
-              placeholder="Marca">
+              placeholder="Marca"
+              [ngClass]="{'is-invalid': isFieldInvalid('Marca')}">
+            <div *ngIf="isFieldInvalid('Marca')" class="invalid-feedback">
+              El campo Marca es requerido.
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="form-group col-md-4">
-            <div style="margin-bottom: 15px;">
-              <label for="PrecioCosto">Precio Costo:</label>
-            </div>
+            <label for="PrecioCosto">Precio Costo:</label>
             <input [(ngModel)]="itemGrilla.PrecioCosto" type="number" formControlName="PrecioCosto" class="form-control"
-              id="PrecioCosto" placeholder="100">
+              id="PrecioCosto" placeholder="100"
+              [ngClass]="{'is-invalid': isFieldInvalid('PrecioCosto')}">
+            <div *ngIf="isFieldInvalid('PrecioCosto')" class="invalid-feedback">
+              El campo Precio Costo es requerido.
+            </div>
           </div>
           <div class="form-group col-md-4">
-            <div style="margin-bottom: 15px;">
-              <label for="CantMaxima">Can. Max.</label>
-            </div>
+            <label for="CantMaxima">Can. Max.</label>
             <input [(ngModel)]="itemGrilla.CantMaxima" type="number" formControlName="CantMaxima" class="form-control"
-              id="CantMaxima" placeholder="100">
+              id="CantMaxima" placeholder="100"
+              [ngClass]="{'is-invalid': isFieldInvalid('CantMaxima')}">
+            <div *ngIf="isFieldInvalid('CantMaxima')" class="invalid-feedback">
+              El campo Cantidad Máxima es requerido.
+            </div>
           </div>
           <div class="form-group col-md-4">
-            <div style="margin-bottom: 15px;">
-              <label for="CantMinima">Can. Min.</label>
-            </div>
+            <label for="CantMinima">Can. Min.</label>
             <input [(ngModel)]="itemGrilla.CantMinima" type="number" formControlName="CantMinima" class="form-control"
-              id="CantMinima" placeholder="100">
+              id="CantMinima" placeholder="100"
+              [ngClass]="{'is-invalid': isFieldInvalid('CantMinima')}">
+            <div *ngIf="isFieldInvalid('CantMinima')" class="invalid-feedback">
+              El campo Cantidad Mínima es requerido.
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="form-group col-md-4">
             <label for="Tamano">Tamaño:</label>
             <input [(ngModel)]="itemGrilla.Tamano" type="number" formControlName="Tamano" class="form-control"
-              id="Tamano" placeholder="100">
+              id="Tamano" placeholder="100"
+              [ngClass]="{'is-invalid': isFieldInvalid('Tamano')}">
+            <div *ngIf="isFieldInvalid('Tamano')" class="invalid-feedback">
+              El campo Tamaño es requerido.
+            </div>
           </div>
           <div class="form-group col-md-4">
             <label for="tipoMedida">Medida:</label>
             <select [(ngModel)]="itemGrilla.IdTipoMedida" formControlName="tipoMedida" class="form-control"
-              id="tipoMedida">
+              id="tipoMedida" [ngClass]="{'is-invalid': isFieldInvalid('tipoMedida')}">
               <option [value]="undefined">Seleccione...</option>
               <option *ngFor="let tipo of lTipoMedida" [value]="tipo.IdTipoMedida">{{ tipo.Detalle }}</option>
             </select>
+            <div *ngIf="isFieldInvalid('tipoMedida')" class="invalid-feedback">
+              El campo Medida es requerido.
+            </div>
           </div>
           <div class="form-group col-md-4">
             <label for="tipoCategoria">Tipo de Categoría:</label>
-            <select [(ngModel)]="itemGrilla.IdTipoCategoria" formControlName="tipoCategoria" class="form-control">
+            <select [(ngModel)]="itemGrilla.IdTipoCategoria" formControlName="tipoCategoria" class="form-control" 
+              [ngClass]="{'is-invalid': isFieldInvalid('tipoCategoria')}">
               <option [value]="undefined">Seleccione...</option>
-              <option *ngFor="let categoria of lTipoCategoria" [value]="categoria.IdTipoCategoria"> {{
-                categoria.Descripcion }}</option>
+              <option *ngFor="let categoria of lTipoCategoria" [value]="categoria.IdTipoCategoria">
+                {{ categoria.Descripcion }}
+              </option>
             </select>
+            <div *ngIf="isFieldInvalid('tipoCategoria')" class="invalid-feedback">
+              El campo Tipo de Categoría es requerido.
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="form-group col-md-4">
             <label for="tipoProducto">Tipo de Producto:</label>
-            <select [(ngModel)]="itemGrilla.IdTipoProducto" class="form-control" formControlName="tipoProducto">
+            <select [(ngModel)]="itemGrilla.IdTipoProducto" class="form-control" formControlName="tipoProducto" 
+              [ngClass]="{'is-invalid': isFieldInvalid('tipoProducto')}">
               <option [value]="undefined">Seleccione...</option>
               <option *ngFor="let tipo of lTipoProducto" [ngValue]="tipo.IdTipoProducto">{{ tipo.Detalle }}</option>
             </select>
-          </div>
-            <div class="form-group col-md-4">
-               <label for="proveedor">Proveedor:</label>
-               <select [(ngModel)]="itemGrilla.IdPersona" class="form-control" formControlName="proveedor">
-                  <option [value]="undefined">Seleccione...</option>
-                  <option *ngFor="let tipo of lProveedor" [ngValue]="tipo.IdPersona">{{ tipo.RazonSocial }}</option>
-               </select>
+            <div *ngIf="isFieldInvalid('tipoProducto')" class="invalid-feedback">
+              El campo Tipo de Producto es requerido.
             </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="proveedor">Proveedor:</label>
+            <select [(ngModel)]="itemGrilla.IdPersona" class="form-control" formControlName="proveedor" 
+              [ngClass]="{'is-invalid': isFieldInvalid('proveedor')}">
+              <option [value]="undefined">Seleccione...</option>
+              <option *ngFor="let tipo of lProveedor" [ngValue]="tipo.IdPersona">{{ tipo.RazonSocial }}</option>
+            </select>
+            <div *ngIf="isFieldInvalid('proveedor')" class="invalid-feedback">
+              El campo Proveedor es requerido.
+            </div>
+          </div>
         </div>
         <div class="form-group col text-right" style="margin-top: 25px;">
           <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
@@ -354,7 +385,48 @@
       </div>
     </div>
   </ng-template>
-  
+
+  <ng-template #modalAumentosProductos let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Productos Seleccionados</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="selectedRows.length > 0">
+        <div class="mb-3">
+          <label for="aumentoExtra" class="form-label">Aumento Extra</label>
+          <input type="number" class="form-control" id="aumentoExtra"[(ngModel)]="aumentoExtra" (input)="updatePrices()">
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Nro</th>
+              <th scope="col">Código</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Precio Costo</th>
+              <th scope="col">Aumento</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selectedRows">
+              <td>{{ item.IdProducto}}</td>
+              <td>{{ item.Codigo }}</td>
+              <td>{{ item.Nombre }}</td>
+              <td>{{ item.PrecioCosto }}</td>
+              <td><input type="text" [value]="calculateNewPrice(item.PrecioCosto)" disabled></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="selectedRows.length === 0">
+        <p>No se han seleccionado productos.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Cerrar</button>
+      <button type="button" class="btn btn-primary ml-2" (click)="guardarAumentoStock()">Guardar</button>
+    </div>
+  </ng-template>
   <footer class="footer">
     <app-footer></app-footer>
   </footer>

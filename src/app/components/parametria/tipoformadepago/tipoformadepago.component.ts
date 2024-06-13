@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TipoFormaDePago } from '../../../models/parametria/tipoformadepago';
 import { TipoformadepagoService } from './../../../services/parametria/tipoformadepago.service';
@@ -7,6 +6,8 @@ import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
 import { AlertasService } from '../../../services/alertas/alertas.service';
 import { NgIfContext } from '@angular/common';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
 
 @Component({
   selector: 'app-tipoformadepago',
@@ -24,7 +25,6 @@ export class TipoformadepagoComponent implements OnInit {
   formFiltro: FormGroup;
   Token: string;
   imgSubmenu: Menu;
-
   paginaActual = 1;
   elementosPorPagina = 10;
   loading: boolean = true;
@@ -36,7 +36,9 @@ export class TipoformadepagoComponent implements OnInit {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService
+    private alertasService: AlertasService,
+    private ValidacionErroresService: ValidacionErroresService
+
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +95,16 @@ export class TipoformadepagoComponent implements OnInit {
     this.tituloBoton = 'Agregar';
     this.itemGrilla = Object.assign({}, new TipoFormaDePago());
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
-  }
+    this.modalRef.result.then((result) => {
+      if (result === 'Cancelar') {
+        this.formItemGrilla.reset();
+      }
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        this.formItemGrilla.reset();
+      }
+    });
+  }
 
   openEditar(content, item: TipoFormaDePago) {
     this.tituloModal = 'Editar';
@@ -116,33 +127,41 @@ export class TipoformadepagoComponent implements OnInit {
 
   guardar(): void {
     this.loading = true;
-    if (this.itemGrilla.IdTipoFormaDePago == null) {
-      this.tipoformadepagoService.agregar(this.itemGrilla, this.Token).subscribe(
-        response => {
-          this.listar(this.formFiltro.get('idFiltro').value);
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-          this.modalRef.close();
-        },
-        error => {
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false;
-        }
-      );
-    } else {
-      this.loading = true;
-      this.tipoformadepagoService.editar(this.itemGrilla, this.Token).subscribe(
-        response => {
-          this.listar(this.formFiltro.get('idFiltro').value);
-          this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
-          this.modalRef.close();
-        },
-        error => {
-          this.alertasService.ErrorAlert('Error', error.error.Message);
-          this.loading = false;
-        }
-      );
-    }
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdTipoFormaDePago == null) {
+        this.tipoformadepagoService.agregar(this.itemGrilla, this.Token).subscribe(
+          response => {
+            this.listar(this.formFiltro.get('idFiltro').value);
+            this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+            this.modalRef.close();
+          },
+          error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
+          }
+        );
+      } else {
+        this.loading = true;
+        this.tipoformadepagoService.editar(this.itemGrilla, this.Token).subscribe(
+          response => {
+            this.listar(this.formFiltro.get('idFiltro').value);
+            this.alertasService.OkAlert('OK', 'Se Modificó Correctamente');
+            this.modalRef.close();
+          },
+          error => {
+            this.alertasService.ErrorAlert('Error', error.error.Message);
+            this.loading = false;
+          }
+        );
+      }
   }
+  else {
+      // console.log('El formulario no es válido:', this.obtenerErroresDeCampos()); //
+      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+      this.loading = false;
+    }
+}
 
   inhabilitar(): void {
     this.loading = true;
@@ -180,4 +199,27 @@ export class TipoformadepagoComponent implements OnInit {
   cambiarPagina(event): void {
     this.paginaActual = event;
   }
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
+  }
+
+  cerrarModal () {
+    console.log('cerrando')
+    this.formItemGrilla.reset();
+    console.log(this.formItemGrilla)
+    this.modalRef.close();
+  }
+  
 }
