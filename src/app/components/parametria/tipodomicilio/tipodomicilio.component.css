@@ -15,7 +15,7 @@
   background: #FF8C00; /* Color de fondo */
   border-radius: 10px; /* Bordes redondeados */
   padding: 5px 50px; /* Espacio interno reducido */
-  align-items: center; /* Alinea los elementos hijos verticalmente */
+    align-items: center; /* Alinea los elementos hijos verticalmente */
 }
 .title-menu {
   display: inline-flex;

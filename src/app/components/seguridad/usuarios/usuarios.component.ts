@@ -61,9 +61,9 @@ export class UsuariosComponent implements OnInit {
     this.formItemGrilla = this.formBuilder.group({
       usuario: new FormControl('', [Validators.required]),
       clave: new FormControl('', [Validators.required]),
-      sucursal: new FormControl(''),
-      rol: new FormControl(''),
-      listaPersonal: new FormControl('')
+      sucursal: new FormControl('', [Validators.required]),
+      rol: new FormControl('', [Validators.required]),
+      listaPersonal: new FormControl('', [Validators.required])
     });
 
     this.formItemRol = this.formBuilder.group({
@@ -185,10 +185,19 @@ export class UsuariosComponent implements OnInit {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Usuario());
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+    const selectSucursal = this.formItemGrilla.get('sucursal').value;
+    const selectRol = this.formItemGrilla.get('rol').value;
+
+    if (selectSucursal == null || selectSucursal == ''){
+      this.formItemGrilla.get('sucursal').setValue(1);
+    }
+
+    if (selectRol == null || selectRol == ''){
+      this.formItemGrilla.get('rol').setValue(1);
+    }
     this.modalRef.result.then((result) => {
     }, (reason) => {
       if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
-        console.log('BOTONDSDASDSA');
         this.formItemGrilla.reset();
       }
     });
@@ -198,12 +207,45 @@ export class UsuariosComponent implements OnInit {
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
+    const selectSucursal = this.formItemGrilla.get('sucursal').value;
+    const selectRol = this.formItemGrilla.get('rol').value;
+
+    if (selectSucursal == null || selectSucursal == ''){
+      this.formItemGrilla.get('sucursal').setValue(1);
+    }
+
+    if (selectRol == null || selectRol == ''){
+      this.formItemGrilla.get('rol').setValue(1);
+    }
+
+    this.modalRef.result.then((result) => {
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        this.formItemGrilla.reset();
+      }
+    });
   }
   openEditarSucursal(contentSucursal, item: Usuario) {
     this.tituloModal = "Editar Sucursal";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentSucursal, { size: 'sm', centered: true });
+    const selectRol = this.formItemGrilla.get('rol').value;
+    const selectListaPersonal = this.formItemGrilla.get('listaPersonal').value;
+
+    if (selectRol == null || selectRol == ''){
+      this.formItemGrilla.get('rol').setValue(1);
+    }
+    if (selectListaPersonal == null || selectListaPersonal == ''){
+      this.formItemGrilla.get('listaPersonal').setValue(1);
+    }
+
+    this.modalRef.result.then((result) => {
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        this.formItemGrilla.reset();
+      }
+    });
   }
 
   cerrarModal () {
@@ -238,6 +280,24 @@ export class UsuariosComponent implements OnInit {
     this.rol = Object.assign({}, new TipoRol());
     this.getListaRoles(this.rolesUsuario.IdUsuario);
     this.modalRef = this.modalService.open(contentRol, { size: 'lg', centered: true });
+    const selectListaPersonal = this.formItemGrilla.get('listaPersonal').value;
+    const selectSucursal = this.formItemGrilla.get('sucursal').value;
+
+    if (selectListaPersonal == null || selectListaPersonal == ''){
+      this.formItemGrilla.get('listaPersonal').setValue(1);
+    }
+
+    if (selectSucursal == null || selectSucursal == ''){
+      this.formItemGrilla.get('sucursal').setValue(1);
+    }
+
+    this.modalRef.result.then((result) => {
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        console.log('BOTONDSDASDSA');
+        this.formItemGrilla.reset();
+      }
+    });
   }
   openInhabilitar(contentInhabilitar, item: Usuario) {
     this.tituloModal = "Inhabilitar";
@@ -248,10 +308,11 @@ export class UsuariosComponent implements OnInit {
   guardar(): void {
     this.loading = true;
 
+    const selectListaPersonal = this.formItemGrilla.get('listaPersonal').value;
+
     if (this.formItemGrilla.valid) {
       if (this.itemGrilla.IdUsuario == null) {
-        const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
-        this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
+        this.itemGrilla.IdPersona = selectListaPersonal; // Asigna el ID de la persona seleccionada
         this.UsuarioService.agregar(this.itemGrilla, this.Token)
           .subscribe(response => {
             this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
@@ -291,8 +352,6 @@ export class UsuariosComponent implements OnInit {
       this.formItemGrilla.markAllAsTouched();
       this.loading = false;
     }
-
-    
   }
 
   inhabilitar(): void {
@@ -312,7 +371,7 @@ export class UsuariosComponent implements OnInit {
         }
       });
   }
-  
+
   limpiarBusqueda(): void {
     this.formFiltro.get('busquedausuarios').setValue('');
   }
