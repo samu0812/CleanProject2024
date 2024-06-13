@@ -2,7 +2,7 @@ import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { NgIfContext } from '@angular/common';
 import { ModulosporrolService } from '../../../services/seguridad/modulosporrol.service';
 import { ModulosPorRol } from '../../../models/seguridad/modulosporrol'
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
@@ -14,6 +14,7 @@ import { TipoPermiso } from '../../../models/parametria/tipopermiso';
 import { TipomoduloService } from '../../../services/parametria/tipomodulo.service';
 import { TipoModulo } from '../../../models/parametria/tipoModulo';
 import { FormsModule } from '@angular/forms';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
 
 @Component({
   selector: 'app-rol',
@@ -47,7 +48,8 @@ export class RolComponent {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService
+    private alertasService: AlertasService,
+    private ValidacionErroresService: ValidacionErroresService
   ) {}
 
   get fItemGrilla() { return this.formItemGrilla.controls; }
@@ -80,6 +82,21 @@ export class RolComponent {
       this.listar(filtro, value);
     });
 
+  }
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
   }
 
   obtenerImgMenu(){
@@ -123,6 +140,17 @@ export class RolComponent {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new ModulosPorRol());
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+    this.modalRef.result.then((result) => {
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        this.formItemGrilla.reset();
+      }
+    });
+  }
+
+  cerrarModal () {
+    this.formItemGrilla.reset();
+    this.modalRef.close();
   }
 
   openInhabilitar(contentInhabilitar, item: ModulosPorRol) {
@@ -139,16 +167,22 @@ export class RolComponent {
 
   guardar(): void {
     this.loading = true;
-    this.modulosPorRolService.agregar(this.itemGrilla, this.Token)
-      .subscribe(response => {
-        this.listar(1, 0);
-        this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-        this.modalRef.close();
-      }, error => {
-        this.alertasService.ErrorAlert('Error', 'Error al agregar.');
-        this.loading = false;
-      })
+    if (this.formItemGrilla.valid) {
+      this.modulosPorRolService.agregar(this.itemGrilla, this.Token)
+        .subscribe(response => {
+          this.listar(1, 0);
+          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+          this.modalRef.close();
+        }, error => {
+          this.alertasService.ErrorAlert('Error', 'Error al agregar.');
+          this.loading = false;
+        })
+    } else {
+      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
+      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
+      this.loading = false;
     }
+    } 
 
   inhabilitar(): void {
     this.loading = true;

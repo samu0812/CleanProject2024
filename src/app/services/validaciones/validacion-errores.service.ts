@@ -35,6 +35,11 @@ export class ValidacionErroresService {
     Documentacion: 'Documentación',
     Provincia: 'Provincia',
     listaProveedor: 'Lista de Proveedor',
+    usuario: 'Usuario',
+    clave: 'Clave',
+    sucursal: 'Sucursal',
+    rol: 'Rol',
+    listaPersonal: 'Personal',
     // Agrega más campos aquí según sea necesario
   };
 
