@@ -1,3 +1,12 @@
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  display: block;
+}
+
 .container {
   display: flex; /* Utiliza flexbox para el contenedor */
   justify-content: center; /* Centra horizontalmente */

@@ -152,7 +152,6 @@ export class RolComponent {
 
   inhabilitar(): void {
     this.loading = true;
-    console.log(this.itemGrilla)
     this.modulosPorRolService.inhabilitar(this.itemGrilla.IdRolModulo, this.Token)
       .subscribe(response => {
         this.listar(1, 0);
