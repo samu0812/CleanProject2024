@@ -2,7 +2,7 @@ import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { NgIfContext } from '@angular/common';
 import { ModulosporrolService } from '../../../services/seguridad/modulosporrol.service';
 import { ModulosPorRol } from '../../../models/seguridad/modulosporrol'
-import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
@@ -14,7 +14,6 @@ import { TipoPermiso } from '../../../models/parametria/tipopermiso';
 import { TipomoduloService } from '../../../services/parametria/tipomodulo.service';
 import { TipoModulo } from '../../../models/parametria/tipoModulo';
 import { FormsModule } from '@angular/forms';
-import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
 
 @Component({
   selector: 'app-rol',
@@ -48,8 +47,7 @@ export class RolComponent {
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private imagenService: ImagenService,
-    private alertasService: AlertasService,
-    private ValidacionErroresService: ValidacionErroresService
+    private alertasService: AlertasService
   ) {}
 
   get fItemGrilla() { return this.formItemGrilla.controls; }
@@ -84,21 +82,6 @@ export class RolComponent {
 
   }
 
-  isFieldTouched(fieldName: string): boolean {
-    const field = this.formItemGrilla.get(fieldName);
-    return field.touched || field.dirty;
-  }
-
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.formItemGrilla.get(fieldName);
-    return field.invalid && (field.touched || field.dirty);
-  }
-
-  getErrorMessage(fieldName: string): string | null {
-    const field = this.formItemGrilla.get(fieldName);
-    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
-  }
-
   obtenerImgMenu(){
     this.imagenService.getImagenSubMenu('/seguridad/rolmodulos').subscribe(data => {
       this.imgSubmenu = data.ImagenSubmenu[0];
@@ -118,7 +101,9 @@ export class RolComponent {
     }
 
   listar(TipoLista: number, TipoRol: number): void { // 1 habilitados, 2 inhabilitados y 3 todos
-    this.loading = true;
+    console.log("hola")
+    console.log(TipoLista)
+    console.log(TipoRol)
     if (TipoRol == null){
       TipoRol = 0;
     }
@@ -126,11 +111,9 @@ export class RolComponent {
       response => {
         this.itemGrilla = new ModulosPorRol();
         this.listaGrilla = response.RolModulo || [];
-        this.loading = false;
       },
       error => {
         this.alertasService.ErrorAlert('Error', 'Error al Cargar la lista.');
-        this.loading = false;
       }
     );
   }
@@ -140,17 +123,6 @@ export class RolComponent {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new ModulosPorRol());
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
-    this.modalRef.result.then((result) => {
-    }, (reason) => {
-      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
-        this.formItemGrilla.reset();
-      }
-    });
-  }
-
-  cerrarModal () {
-    this.formItemGrilla.reset();
-    this.modalRef.close();
   }
 
   openInhabilitar(contentInhabilitar, item: ModulosPorRol) {
@@ -166,26 +138,18 @@ export class RolComponent {
   }
 
   guardar(): void {
-    this.loading = true;
-    if (this.formItemGrilla.valid) {
-      this.modulosPorRolService.agregar(this.itemGrilla, this.Token)
-        .subscribe(response => {
-          this.listar(1, 0);
-          this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
-          this.modalRef.close();
-        }, error => {
-          this.alertasService.ErrorAlert('Error', 'Error al agregar.');
-          this.loading = false;
-        })
-    } else {
-      this.alertasService.ErrorAlert('Error','Formulario no válido. Por favor, completa los campos requeridos.');
-      this.formItemGrilla.markAllAsTouched(); // Marca todos los controles como tocados para mostrar errores
-      this.loading = false;
+    this.modulosPorRolService.agregar(this.itemGrilla, this.Token)
+      .subscribe(response => {
+        this.listar(1, 0);
+        this.alertasService.OkAlert('OK', 'Se Agregó Correctamente');
+        this.modalRef.close();
+      }, error => {
+        this.alertasService.ErrorAlert('Error', 'Error al agregar.');
+      })
     }
-    } 
 
   inhabilitar(): void {
-    this.loading = true;
+    console.log(this.itemGrilla)
     this.modulosPorRolService.inhabilitar(this.itemGrilla.IdRolModulo, this.Token)
       .subscribe(response => {
         this.listar(1, 0);
@@ -193,12 +157,10 @@ export class RolComponent {
         this.modalRef.close();
       }, response => {
         this.alertasService.ErrorAlert('Error', 'Error al Inhabilitarr.');
-        this.loading = false;
       });
   }
 
   habilitar(): void {
-    this.loading = true;
     this.modulosPorRolService.habilitar(this.itemGrilla, this.Token)
       .subscribe(response => {
         this.listar(1, 0);
@@ -206,7 +168,6 @@ export class RolComponent {
         this.modalRef.close();
       }, error => {
         this.alertasService.ErrorAlert('Error', 'Error al Habilitar.');
-        this.loading = false;
       });
   }
   cambiarPagina(event): void {
