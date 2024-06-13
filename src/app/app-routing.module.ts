@@ -35,7 +35,9 @@ import { AccesoComponent } from './components/acceso/acceso.component';
 import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodulo.component';
 import { AuthGuard } from './services/auth/auth.guard';
 import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
+import { ConstruccionComponent } from './components/construccion/construccion.component';
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: ':id/submenu', component: SubmenuComponent},
@@ -66,15 +68,15 @@ const routes: Routes = [
   {path: 'recursos/clientes', component:ClientesComponent ,  canActivate: [AuthGuard]},
 
   {path: 'gestion/realizarventa', component:RealizarventaComponent ,  canActivate: [AuthGuard]},
-  {path: 'gestion/realizarpedidos', component:RealizarpedidosComponent ,  canActivate: [AuthGuard]},
-  {path: 'gestion/enviodeinventario', component: EnviodeinventarioComponent,  canActivate: [AuthGuard]},
-  {path: 'gestion/confirmacionderecepcion', component: ConfirmacionderecepcionComponent,  canActivate: [AuthGuard]},
+  {path: 'gestion/realizarpedido', component:ConstruccionComponent ,canActivate: [AuthGuard]},
+  {path: 'gestion/enviarinventario', component: ConstruccionComponent,canActivate: [AuthGuard]},
+  {path: 'gestion/confirmarrecepcion', component: ConstruccionComponent,canActivate: [AuthGuard]},
 
-  {path: 'reportes/informesdeventa', component:InformesdeventaComponent,  canActivate: [AuthGuard]},
-  {path: 'reportes/informesfinancieros', component: InformesfinancierosComponent,  canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeabastecimiento', component: InformesdeabastecimientoComponent,  canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeclientes', component:InformesdeclientesComponent,  canActivate: [AuthGuard]},
-  {path: 'reportes/informesdeproductos', component: InformesdeproductosComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/ventas', component:ConstruccionComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/finanzas', component: ConstruccionComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/abastecimiento', component: ConstruccionComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/clientes', component:ConstruccionComponent,  canActivate: [AuthGuard]},
+  {path: 'reportes/inventario', component: ConstruccionComponent,  canActivate: [AuthGuard]},
 
   {path: 'acceso', component: AccesoComponent,  },
   { path: '**', redirectTo: '/acceso' }, 
