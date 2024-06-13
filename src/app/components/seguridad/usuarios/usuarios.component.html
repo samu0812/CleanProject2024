@@ -138,26 +138,36 @@
           <div style="margin-bottom: 15px">
             <label for="Usuario">Usuario</label>
           </div>
-          <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control"
-            id="usuario" placeholder="Ingrese un Usuario">
+          <input [(ngModel)]="itemGrilla.Usuario" type="text" formControlName="usuario" class="form-control" id="usuario" placeholder="Ingrese un Usuario"
+          [ngClass]="{'is-invalid': isFieldInvalid('usuario'), 'is-valid': !isFieldInvalid('usuario') && isFieldTouched('usuario')}">
+          <div *ngIf="isFieldInvalid('usuario')" class="invalid-feedback">
+            {{ getErrorMessage('usuario') }}
+          </div>
         </div>
         <div *ngIf="tituloModal == 'Agregar' || tituloModal == 'Editar'" class="form-group col-md-10">
           <div style="margin-bottom: 15px ; margin-top: 15px">
             <label for="Clave">Clave</label>
           </div>
-          <input [(ngModel)]="itemGrilla.Clave" type="text" formControlName="clave" class="form-control" id="clave"
-            placeholder="Ingrese una Clave">
+          <input [(ngModel)]="itemGrilla.Clave" type="text" formControlName="clave" class="form-control" id="clave" placeholder="Ingrese una Clave"
+          [ngClass]="{'is-invalid': isFieldInvalid('clave'), 'is-valid': !isFieldInvalid('clave') && isFieldTouched('clave')}">
+          <div *ngIf="isFieldInvalid('clave')" class="invalid-feedback">
+            {{ getErrorMessage('clave') }}
+          </div>
         </div>
         <div *ngIf="tituloModal == 'Agregar'" class="form-group col-md-10">
           <label for="recipient-name" class="col-form-label">Personal</label>
-          <select formControlName="listaPersonal" class="form-control" id="listaPersonal">
+          <select formControlName="listaPersonal" class="form-control" id="listaPersonal"
+          [ngClass]="{'is-invalid': isFieldInvalid('listaPersonal'), 'is-valid': !isFieldInvalid('listaPersonal') && isFieldTouched('listaPersonal')}">
             <option value="" disabled>Seleccione...</option>
             <option *ngFor="let persona of lPersonas" [value]="persona.IdPersona">{{ persona.NombrePersona }}</option>
           </select>
+          <div *ngIf="isFieldInvalid('listaPersonal')" class="invalid-feedback">
+            {{ getErrorMessage('listaPersonal') }}
+          </div>
         </div>
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
-        <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-danger me-2" (click)="cerrarModal()">Cancelar</button>
         <button type="button" class="btn btn-success" (click)="guardar()">{{ tituloBoton }}</button>
       </div>
     </form>
@@ -175,22 +185,30 @@
         <div class="form-group col-md-12 d-flex align-items-center">
           <div style="margin-right: 10px;" class="col-md-10">
             <label for="usuario">Usuario:</label>
-            <input [(ngModel)]="itemGrilla.Usuario" type="text" class="form-control" formControlName="usuario">
+            <input [(ngModel)]="itemGrilla.Usuario" type="text" class="form-control" formControlName="usuario"
+            [ngClass]="{'is-invalid': isFieldInvalid('usuario'), 'is-valid': !isFieldInvalid('usuario') && isFieldTouched('usuario')}">
+            <div *ngIf="isFieldInvalid('usuario')" class="invalid-feedback">
+              {{ getErrorMessage('usuario') }}
+            </div>
           </div>
         </div>
         <div class="form-group col-md-12 d-flex align-items-center">
           <div *ngIf="tituloModal == 'Editar Sucursal'" class="form-group col-md-12">
             <label for="sucursal" class="col-form-label">Sucursal</label>
-            <select [(ngModel)]="itemGrilla.IdSucursal" formControlName="sucursal" class="form-control" id="sucursal">
+            <select [(ngModel)]="itemGrilla.IdSucursal" formControlName="sucursal" class="form-control" id="sucursal"
+            [ngClass]="{'is-invalid': isFieldInvalid('sucursal'), 'is-valid': !isFieldInvalid('sucursal') && isFieldTouched('sucursal')}">
               <option value="" disabled>Seleccione...</option>
               <option *ngFor="let sucursal of lSucursales" [value]="sucursal.IdSucursal">{{ sucursal.Descripcion }}
               </option>
             </select>
+            <div *ngIf="isFieldInvalid('sucursal')" class="invalid-feedback">
+              {{ getErrorMessage('sucursal') }}
+            </div>
           </div>
         </div>
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
-        <button type="button" class="btn btn-danger me-2" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-danger me-2" (click)="cerrarModal()">Cancelar</button>
         <button type="button" class="btn btn-success" (click)="modUsuarioSucursal()">{{ tituloBoton }}</button>
       </div>
 
@@ -209,15 +227,23 @@
         <div class="form-group col-md-12 d-flex align-items-center">
           <div style="margin-right: 10px; margin-top: 15px;" class="col-md-3">
             <label for="usuario">Usuario:</label>
-            <input [(ngModel)]="rolesUsuario.Usuario" type="text" class="form-control" formControlName="usuario">
+            <input [(ngModel)]="rolesUsuario.Usuario" type="text" class="form-control" formControlName="usuario"
+            [ngClass]="{'is-invalid': isFieldInvalid('usuario'), 'is-valid': !isFieldInvalid('usuario') && isFieldTouched('usuario')}">
+            <div *ngIf="isFieldInvalid('usuario')" class="invalid-feedback">
+              {{ getErrorMessage('usuario') }}
+            </div>
           </div>
 
           <div style="margin-right: 10px;" class="form-group col-md-6">
             <label for="rol" class="col-form-label">Roles</label>
-            <select formControlName="rol" class="form-control" id="rol">
+            <select formControlName="rol" class="form-control" id="rol"
+            [ngClass]="{'is-invalid': isFieldInvalid('rol'), 'is-valid': !isFieldInvalid('rol') && isFieldTouched('rol')}">
               <option value="" disabled>Seleccione...</option>
               <option *ngFor="let rol of lRoles" [value]="rol.IdTipoRol">{{ rol.Descripcion }}</option>
             </select>
+            <div *ngIf="isFieldInvalid('rol')" class="invalid-feedback">
+              {{ getErrorMessage('rol') }}
+            </div>
           </div>
 
           <div class="col-md-3">
@@ -258,7 +284,7 @@
       </div>
 
       <div class="form-group col text-right">
-        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cancelar</button>
       </div>
 
     </form>
@@ -275,7 +301,7 @@
     <a></a>
     <h4 class="">Desea Eliminar?</h4>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cancelar</button>
       <button type="button" class="btn btn-primary" (click)="inhabilitar()">Aceptar</button>
     </div>
   </div>

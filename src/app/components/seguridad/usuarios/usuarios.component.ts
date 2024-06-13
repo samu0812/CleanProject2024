@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { Usuario } from '../../../models/seguridad/Usuario';
 import { UsuarioService } from '../../../services/seguridad/usuario.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Menu } from '../../../models/menu/menu';
 import { ImagenService } from '../../../services/imagen/imagen.service';
@@ -11,6 +11,8 @@ import { TiposucursalService } from '../../../services/parametria/tiposucursal.s
 import { TipoRol } from '../../../models/seguridad/TipoRol';
 import { TiporolService } from '../../../services/seguridad/tiporol.service';
 import { NgIfContext } from '@angular/common';
+import { ValidacionErroresService } from '../../../services/validaciones/validacion-errores.service';
+
 
 @Component({
   selector: 'app-usuarios',
@@ -48,7 +50,8 @@ export class UsuariosComponent implements OnInit {
     private imagenService: ImagenService,
     private tiposucursalService: TiposucursalService,
     private tiporolService: TiporolService,
-    private alertasService: AlertasService // agregue las alertas
+    private alertasService: AlertasService, // agregue las alertas
+    private ValidacionErroresService: ValidacionErroresService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -83,6 +86,21 @@ export class UsuariosComponent implements OnInit {
       this.busquedausuarios = value;
     });
 
+  }
+
+  isFieldTouched(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.touched || field.dirty;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.formItemGrilla.get(fieldName);
+    return field.invalid && (field.touched || field.dirty);
+  }
+
+  getErrorMessage(fieldName: string): string | null {
+    const field = this.formItemGrilla.get(fieldName);
+    return this.ValidacionErroresService.getErrorMessage(field, fieldName);
   }
 
   obtenerImgMenu() {
@@ -167,6 +185,13 @@ export class UsuariosComponent implements OnInit {
     this.tituloBoton = "Agregar";
     this.itemGrilla = Object.assign({}, new Usuario());
     this.modalRef = this.modalService.open(content, { size: 'lg', centered: true });
+    this.modalRef.result.then((result) => {
+    }, (reason) => {
+      if (reason === ModalDismissReasons.BACKDROP_CLICK || reason === ModalDismissReasons.ESC) {
+        console.log('BOTONDSDASDSA');
+        this.formItemGrilla.reset();
+      }
+    });
   }
   openEditar(content, item: Usuario) {
     this.tituloModal = "Editar";
@@ -179,6 +204,11 @@ export class UsuariosComponent implements OnInit {
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item);
     this.modalRef = this.modalService.open(contentSucursal, { size: 'sm', centered: true });
+  }
+
+  cerrarModal () {
+    this.formItemGrilla.reset();
+    this.modalRef.close();
   }
 
   modUsuarioSucursal(): void {
@@ -217,43 +247,52 @@ export class UsuariosComponent implements OnInit {
 
   guardar(): void {
     this.loading = true;
-    if (this.itemGrilla.IdUsuario == null) {
-      const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
-      this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
-      this.UsuarioService.agregar(this.itemGrilla, this.Token)
-        .subscribe(response => {
-          this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
-          this.modalRef.close();
-          this.listar(1);
-        }, error => {
-          if (error.error && error.error.Message) {
-            this.alertasService.ErrorAlert('Error', error.error.Message);
-            this.loading = false;
-          } else {
-            this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
-            this.loading = false;
-          }
-        });
+
+    if (this.formItemGrilla.valid) {
+      if (this.itemGrilla.IdUsuario == null) {
+        const selectedPersonaId = this.formItemGrilla.get('listaPersonal').value;
+        this.itemGrilla.IdPersona = selectedPersonaId; // Asigna el ID de la persona seleccionada
+        this.UsuarioService.agregar(this.itemGrilla, this.Token)
+          .subscribe(response => {
+            this.alertasService.OkAlert('Éxito', 'Usuario creado exitosamente');
+            this.modalRef.close();
+            this.listar(1);
+          }, error => {
+            if (error.error && error.error.Message) {
+              this.alertasService.ErrorAlert('Error', error.error.Message);
+              this.loading = false;
+            } else {
+              this.alertasService.ErrorAlert('Error', 'Ocurrió un error al guardar el usuario');
+              this.loading = false;
+            }
+          });
+      } else {
+        this.loading = true;
+        this.UsuarioService.editar(this.itemGrilla, this.Token)
+          .subscribe(response => {
+            this.listar(1);
+            this.alertasService.OkAlert('Éxito', 'Usuario modificado exitosamente');
+            this.modalRef.close();
+          }, error => {
+            if (error.error.Errors.NuevoUsuario) {
+              this.alertasService.ErrorAlert('Error', error.error.Errors.NuevoUsuario);
+              this.loading = false;
+            }if (error.error.Errors.NuevaClave) {
+              this.alertasService.ErrorAlert('Error', error.error.Errors.NuevaClave);
+              this.loading = false;
+            } else {
+              this.alertasService.ErrorAlert('Error', 'Ocurrió un error al modificar el usuario');
+              this.loading = false;
+            }
+          });
+      }
     } else {
-      this.loading = true;
-      this.UsuarioService.editar(this.itemGrilla, this.Token)
-        .subscribe(response => {
-          this.listar(1);
-          this.alertasService.OkAlert('Éxito', 'Usuario modificado exitosamente');
-          this.modalRef.close();
-        }, error => {
-          if (error.error.Errors.NuevoUsuario) {
-            this.alertasService.ErrorAlert('Error', error.error.Errors.NuevoUsuario);
-            this.loading = false;
-          }if (error.error.Errors.NuevaClave) {
-            this.alertasService.ErrorAlert('Error', error.error.Errors.NuevaClave);
-            this.loading = false;
-          } else {
-            this.alertasService.ErrorAlert('Error', 'Ocurrió un error al modificar el usuario');
-            this.loading = false;
-          }
-        });
+      this.alertasService.ErrorAlert('Error', 'Formulario Inválido');
+      this.formItemGrilla.markAllAsTouched();
+      this.loading = false;
     }
+
+    
   }
 
   inhabilitar(): void {

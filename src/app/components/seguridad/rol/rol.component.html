@@ -110,36 +110,43 @@
       <div class="d-flex flex-row">
         <div class="flex-grow-1 form-group p-2">
           <label for="tiporol">Tipo Rol:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoRol" class="form-control" id="tiporol" formControlName="tiporol">
+          <select [(ngModel)]="itemGrilla.IdTipoRol" class="form-control" id="tiporol" formControlName="tiporol"
+          [ngClass]="{'is-invalid': isFieldInvalid('tiporol') ,'is-valid': !isFieldInvalid('tiporol') && isFieldTouched('tiporol')}">
             <option [value]="undefined">Seleccione...</option>
             <option [value]="itemTipoRol.IdTipoRol" *ngFor="let itemTipoRol of lTipoRol">{{itemTipoRol.Descripcion}}
             </option>
           </select>
-          <small *ngIf="fItemGrilla['tiporol'].invalid && fItemGrilla['tiporol'].touched" class="invalid-feedback">
-            <div>Debe seleccionar una Acción.</div>
-          </small>
+          <div *ngIf="isFieldInvalid('tiporol')" class="invalid-feedback">
+            {{ getErrorMessage('tiporol') }}
+          </div>
         </div>
         <div class="flex-grow-1 form-group p-2">
           <label for="tipopermiso">Tipo Permiso:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoPermiso" class="form-control" id="tipopermiso"
-            formControlName="tipopermiso">
+          <select [(ngModel)]="itemGrilla.IdTipoPermiso" class="form-control" id="tipopermiso" formControlName="tipopermiso"
+          [ngClass]="{'is-invalid': isFieldInvalid('tipopermiso') ,'is-valid': !isFieldInvalid('tipopermiso') && isFieldTouched('tipopermiso')}">
             <option [value]="undefined">Seleccione...</option>
             <option [value]="itemTipoPermiso.IdTipoPermiso" *ngFor="let itemTipoPermiso of lTipoPermiso">
               {{itemTipoPermiso.Detalle}}</option>
           </select>
+          <div *ngIf="isFieldInvalid('tipopermiso')" class="invalid-feedback">
+            {{ getErrorMessage('tipopermiso') }}
+          </div>
         </div>
         <div class="flex-grow-1 form-group p-2">
           <label for="tipomodulo">Modulo:</label>
-          <select [(ngModel)]="itemGrilla.IdTipoModulo" class="form-control" id="tipomodulo"
-            formControlName="tipomodulo">
+          <select [(ngModel)]="itemGrilla.IdTipoModulo" class="form-control" id="tipomodulo" formControlName="tipomodulo"
+          [ngClass]="{'is-invalid': isFieldInvalid('tipomodulo') ,'is-valid': !isFieldInvalid('tipomodulo') && isFieldTouched('tipomodulo')}">
             <option [value]="undefined">Seleccione...</option>
             <option [value]="itemTipoModulo.IdTipoModulo" *ngFor="let itemTipoModulo of lTipoModulo">
               {{itemTipoModulo.Detalle}}</option>
           </select>
+          <div *ngIf="isFieldInvalid('tipomodulo')" class="invalid-feedback">
+            {{ getErrorMessage('tipomodulo') }}
+          </div>
         </div>
       </div>
       <div class="form-group col text-right" style="margin-top: 25px;">
-        <button type="button" class="btn btn-danger" is="btnCancelar" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-danger" is="btnCancelar" (click)="cerrarModal()">Cancelar</button>
         <button type="button" class="btn btn-success" id="btnGuardar" (click)="guardar()">{{ tituloBoton }}</button>
       </div>
     </form>
