@@ -135,7 +135,6 @@
   .table-responsive {
     border-radius: 10px; /* Redondea los bordes */
     overflow: hidden; /* Asegura que el contenido redondeado no se desborde */
-    min-height: 400px;
     display: grid;
   }
   .hide-column {
