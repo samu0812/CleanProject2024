@@ -36,11 +36,12 @@ import { TipomoduloComponent } from './components/parametria/tipomodulo/tipomodu
 import { AuthGuard } from './services/auth/auth.guard';
 import { RealizarventaComponent } from './components/gestion/realizarventa/realizarventa.component';
 const routes: Routes = [
+  {path: '', redirectTo: '/login', pathMatch: 'full' },
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: ':id/submenu', component: SubmenuComponent},
 
-  {path: 'seguridad/usuarios', component: UsuariosComponent, canActivate: [AuthGuard]},
+  {path: 'seguridad/usuarios', component: UsuariosComponent},
   {path: 'seguridad/tiporoles', component: TiporolesComponent,  canActivate: [AuthGuard]},
   {path: 'seguridad/rolmodulos', component: RolComponent,  canActivate: [AuthGuard]},
   {path: 'seguridad/apispormodulo', component: ApisComponent,  canActivate: [AuthGuard]},
@@ -77,7 +78,7 @@ const routes: Routes = [
   {path: 'reportes/informesdeproductos', component: InformesdeproductosComponent,  canActivate: [AuthGuard]},
 
   {path: 'acceso', component: AccesoComponent,  },
-  { path: '**', redirectTo: '/acceso' }, 
+  { path: '**', redirectTo: '/acceso' },
 
 ];
 
