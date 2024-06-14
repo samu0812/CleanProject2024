@@ -206,6 +206,7 @@ export class UsuariosComponent implements OnInit {
     this.tituloModal = "Editar";
     this.tituloBoton = "Guardar";
     this.itemGrilla = Object.assign({}, item);
+    const selectListaPersonal = this.formItemGrilla.get('listaPersonal').value;
     this.modalRef = this.modalService.open(content, { size: 'sm', centered: true });
     const selectSucursal = this.formItemGrilla.get('sucursal').value;
     const selectRol = this.formItemGrilla.get('rol').value;
@@ -216,6 +217,9 @@ export class UsuariosComponent implements OnInit {
 
     if (selectRol == null || selectRol == ''){
       this.formItemGrilla.get('rol').setValue(1);
+    }
+    if (selectListaPersonal == null || selectListaPersonal == ''){
+      this.formItemGrilla.get('listaPersonal').setValue(1);
     }
 
     this.modalRef.result.then((result) => {
@@ -307,7 +311,7 @@ export class UsuariosComponent implements OnInit {
 
   guardar(): void {
     this.loading = true;
-
+    console.log(this.formItemGrilla);
     const selectListaPersonal = this.formItemGrilla.get('listaPersonal').value;
 
     if (this.formItemGrilla.valid) {
