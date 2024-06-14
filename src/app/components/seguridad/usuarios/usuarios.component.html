@@ -69,34 +69,39 @@
                   <td scope="col">{{ item.FechaAlta }}</td>
                   <td scope="col">{{ item.FechaBaja === null ? 'Activo' : 'No Activo' }}</td>
                   <td scope="col" class="dropdown">
-                    <!-- Botón de acción con menú desplegable -->
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                      data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa-solid fa-user-gear"></i>
-                    </button>
-                    <!-- Menú desplegable con opciones -->
-                    <ul *ngIf="item.FechaBaja === null" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <li *ngIf="item.FechaBaja === null">
-                        <a class="dropdown-item" (click)="openEditar(content, item)">
-                          <i class="fas fa-edit"></i> Modificar Usuario
-                        </a>
-                      </li>
-                      <li *ngIf="item.FechaBaja === null">
-                        <a class="dropdown-item" (click)="openEditarSucursal(contentSucursal, item)">
-                          <i class="fas fa-landmark"></i> Gestionar Sucursal
-                        </a>
-                      </li>
-                      <li *ngIf="item.FechaBaja === null">
-                        <a class="dropdown-item" (click)="openEditarRol(contentRol, item)">
-                          <i class="fas fa-chalkboard-teacher"></i> Asignar Rol/es
-                        </a>
-                      </li>
-                      <li *ngIf="item.FechaBaja === null">
-                        <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
-                          <i class="fa-solid fa-xmark"></i> Inhabilitar
-                        </a>
-                      </li>
-                    </ul>
+                    <!-- Condicional para mostrar el botón o el guion -->
+                    <ng-container *ngIf="item.FechaBaja === null; else noActivo">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-user-gear"></i>
+                      </button>
+                      <!-- Menú desplegable con opciones -->
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                          <a class="dropdown-item" (click)="openEditar(content, item)">
+                            <i class="fas fa-edit"></i> Modificar Usuario
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" (click)="openEditarSucursal(contentSucursal, item)">
+                            <i class="fas fa-landmark"></i> Gestionar Sucursal
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" (click)="openEditarRol(contentRol, item)">
+                            <i class="fas fa-chalkboard-teacher"></i> Asignar Rol/es
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" (click)="openInhabilitar(contentInhabilitar, item)">
+                            <i class="fa-solid fa-xmark"></i> Inhabilitar
+                          </a>
+                        </li>
+                      </ul>
+                    </ng-container>
+                    <ng-template #noActivo>
+                      -
+                    </ng-template>
                   </td>
                 </tr>
               </tbody>
@@ -227,13 +232,8 @@
         <div class="form-group col-md-12 d-flex align-items-center">
           <div style="margin-right: 10px; margin-top: 15px;" class="col-md-3">
             <label for="usuario">Usuario:</label>
-            <input [(ngModel)]="rolesUsuario.Usuario" type="text" class="form-control" formControlName="usuario"
-            [ngClass]="{'is-invalid': isFieldInvalid('usuario'), 'is-valid': !isFieldInvalid('usuario') && isFieldTouched('usuario')}">
-            <div *ngIf="isFieldInvalid('usuario')" class="invalid-feedback">
-              {{ getErrorMessage('usuario') }}
-            </div>
-          </div>
-
+            <input [(ngModel)]="rolesUsuario.Usuario" type="text" class="form-control" formControlName="usuario" [attr.disabled]="true">
+          </div>                
           <div style="margin-right: 10px;" class="form-group col-md-6">
             <label for="rol" class="col-form-label">Roles</label>
             <select formControlName="rol" class="form-control" id="rol"

@@ -47,7 +47,6 @@ export class TiposucursalComponent {
     this.Token = localStorage.getItem('Token');
     this.formItemGrilla = this.formBuilder.group({
       descripcion: new FormControl('', [Validators.required]),
-      IdTipoDomicilio: new FormControl('', [Validators.required]),
       domicilio: new FormControl('', [Validators.required]),
       calle: new FormControl('', [Validators.required]),
       nro: new FormControl('', [Validators.required]),
@@ -135,6 +134,7 @@ export class TiposucursalComponent {
 
   guardar(): void {
     this.loading = true;
+    console.log(this.formItemGrilla);
     if (this.formItemGrilla.valid) {
       if (this.itemGrilla.IdSucursal == null) {
         this.tiposucursalService.agregar(this.itemGrilla, this.Token)

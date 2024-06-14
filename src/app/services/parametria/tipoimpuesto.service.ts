@@ -41,7 +41,7 @@ export class TipoimpuestoService {
   }
 
   habilitar(item: TipoImpuesto, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/parametria/tipoimpuesto`;
+    const url = `${this.apiUrl}/parametria/tipoimpuesto/habilitar`;
     const body = {
       IdTipoImpuesto: item.IdTipoImpuesto,
       Token: Token};

@@ -38,7 +38,7 @@ export class TiporolService {
     return this.http.delete(url);
   }
   habilitar(item: TipoRol, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/tiporoles`;
+    const url = `${this.apiUrl}/seguridad/tiporoles/habilitar`;
     const body = {
       IdTipoRol: item.IdTipoRol,
       Token: Token};

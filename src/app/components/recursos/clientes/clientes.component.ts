@@ -163,7 +163,7 @@ export class ClientesComponent implements OnInit {
 
   cambiarFiltro(): void {
     const filtro = this.formFiltro.get('idFiltro').value;
-    //this.listar(filtro);
+    this.listar(filtro);
   }
 
   openAgregar(content) {
