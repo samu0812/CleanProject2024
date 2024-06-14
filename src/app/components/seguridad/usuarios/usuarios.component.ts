@@ -166,6 +166,7 @@ export class UsuariosComponent implements OnInit {
 
   eliminarRol(item: any) {
     this.loading = true;
+    console.log(item, this.Token)
     this.UsuarioService.eliminarUsuarioRol(item, this.Token)
     .subscribe(response => {
       this.alertasService.OkAlert('Éxito', 'Rol eliminado exitosamente');
@@ -311,7 +312,6 @@ export class UsuariosComponent implements OnInit {
 
   guardar(): void {
     this.loading = true;
-    console.log(this.formItemGrilla);
     const selectListaPersonal = this.formItemGrilla.get('listaPersonal').value;
 
     if (this.formItemGrilla.valid) {

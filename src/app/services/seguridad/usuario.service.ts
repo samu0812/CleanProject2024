@@ -59,12 +59,13 @@ export class UsuarioService {
   }
 
   eliminarUsuarioRol(item: any, Token: string): Observable<any> {
-    const url = `${this.apiUrl}/seguridad/usuarios?IdUsuarioRol=${item.IdUsuarioRol}&Token=${Token}`;
+    const url = `${this.apiUrl}/seguridad/usuarios/rol?IdUsuarioRol=${item.IdUsuarioRol}&Token=${Token}`;
     return this.http.delete(url);
   }
 
   modificarUsuarioSucursal(IdUsuario: number, IdSucursal: number, Token: string): Observable<any> {
     const url = `${this.apiUrl}/seguridad/usuarios/sucursal`;
+    console.log(IdSucursal);
     const body = {
       IdUsuario: IdUsuario,
       IdSucursal: IdSucursal,
